@@ -1,38 +1,81 @@
-import { useState } from "react"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
-    const [correo, setCorreo] = useState("")
-    const [contraseña, setContraseña] = useState("")
-    
-    return (
-        <div className="flex h-screen w-screen bg-white">
-            <div className="w-3/5 h-full bg-blue-700">
-                <h1>Correo: {correo}</h1>
-                <h1>Contraseña: {contraseña}</h1>
-            </div>
-            <div className="w-2/5 h-full bg-white flex items-center justify-center">
-                <div className="w-4/5 h-[365px] flex flex-col items-start">
-                    <h1 className="text-3xl">Iniciar sesión</h1>
-                    <div className="w-4/5 h-[85%] bg-gray-100 rounded-xl pl-6 pt-6">
-                        <div className="w-[90%] h-full flex-col">
-                            <div className="w-full h-[80px] flex flex-col items-start">
-                                <h1>Correo</h1>
-                                <input type="text" className="w-full h-3/5 rounded-xl pl-2" onChange={e => setCorreo(e.target.value)}/>
-                            </div>
-                            <br />
-                            <div className="w-full h-[80px] flex flex-col items-start">
-                                <h1>Contraseña</h1>
-                                <input type="password" className="w-full h-3/5 rounded-xl pl-2" onChange={e => setContraseña(e.target.value)}/>
-                            </div>
-                            <br />
-                            <button className="w-full h-[40px] bg-blue-800 rounded-xl text-white">Iniciar sesión</button>
-                        </div>
-                    </div>
-                    <h1>¿No tienes cuenta? Contactar a ventas</h1>
-                </div>
-            </div>
-        </div>
-    )
-}
+  const [correo, setCorreo] = useState("");
+  const [contrasena, setContrasena] = useState("");
+  const navigate = useNavigate();
 
-export default Login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/login",
+        {
+          correo: correo,
+          contrasena: contrasena,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // Store the token in localStorage
+      localStorage.setItem("token", response.data.token);
+
+      // Redirect to home or another page after successful login
+      navigate("/home");
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Login failed. Please check your credentials.");
+    }
+  };
+
+  return (
+    <div className="flex h-screen w-screen bg-white">
+      <div className="w-3/5 h-full bg-blue-700">
+        <h1>Correo: {correo}</h1>
+        <h1>Contraseña: {contrasena}</h1>
+      </div>
+      <div className="w-2/5 h-full bg-white flex items-center justify-center">
+        <div className="w-4/5 h-[365px] flex flex-col items-start">
+          <h1 className="text-3xl">Iniciar sesión</h1>
+          <div className="w-4/5 h-[85%] bg-gray-100 rounded-xl pl-6 pt-6">
+            <div className="w-[90%] h-full flex-col">
+              <div className="w-full h-[80px] flex flex-col items-start">
+                <h1>Correo</h1>
+                <input
+                  type="text"
+                  className="w-full h-3/5 rounded-xl pl-2"
+                  onChange={(e) => setCorreo(e.target.value)}
+                />
+              </div>
+              <br />
+              <div className="w-full h-[80px] flex flex-col items-start">
+                <h1>Contraseña</h1>
+                <input
+                  type="password"
+                  className="w-full h-3/5 rounded-xl pl-2"
+                  onChange={(e) => setContrasena(e.target.value)}
+                />
+              </div>
+              <br />
+              <button
+                className="w-full h-[40px] bg-blue-800 rounded-xl text-white"
+                onClick={handleLogin}
+              >
+                Iniciar sesión
+              </button>
+            </div>
+          </div>
+          <h1>¿No tienes cuenta? Contactar a ventas</h1>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Login;

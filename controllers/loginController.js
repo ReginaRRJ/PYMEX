@@ -1,33 +1,74 @@
 const connection = require("../config/db");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { correo, contrasena } = req.body;
 
-    const query = `SELECT * FROM USERS WHERE EMAIL = ?`;
-    connection.exec(query, [email], async (err, result) => {
+    if (!correo || !contrasena) {
+      return res.status(400).json({ message: "Correo and Contraseña are required" });
+    }
+
+    if (!connection) {
+      console.error("Database connection is not established.");
+      return res.status(500).json({ error: "Database connection failed" });
+    }
+
+    const query = 'SELECT * FROM "Usuario" WHERE "correo" = ?';
+    console.log("Running query:", query, correo);
+
+    connection.prepare(query, (err, statement) => {
       if (err) {
-        return res.status(500).json({ error: err.message });
+        console.error("Error preparing statement:", err);
+        return res.status(500).json({ error: "Database preparation error", details: err.message });
       }
 
-      if (result.length === 0) {
-        return res.status(401).json({ message: "Usuario no encontrado" });
-      }
+      statement.exec([correo], async (err, result) => {
+        if (err) {
+          console.error("Database query execution error:", err);
+          return res.status(500).json({ error: "Database query error", details: err.message });
+        }
 
-      const user = result[0];
-      const passwordMatch = await bcrypt.compare(password, user.PASSWORD);
+        if (!result || result.length === 0) {
+          return res.status(401).json({ message: "Usuario no encontrado" });
+        }
 
-      if (!passwordMatch) {
-        return res.status(401).json({ message: "Contraseña incorrecta" });
-      }
+        const user = result[0];
 
-      const token = jwt.sign({ userId: user.ID }, process.env.SECRET_KEY, { expiresIn: "1h" });
-      res.json({ token });
+        // Commenting out bcrypt comparison since passwords are plain text
+        // let passwordMatch = false;
+        // try {
+        //   passwordMatch = await bcrypt.compare(contrasena, user.contrasena);
+        // } catch (bcryptError) {
+        //   console.error("Error comparing passwords:", bcryptError);
+        //   return res.status(500).json({ error: "Error comparing passwords" });
+        // }
+
+        // Plain text password comparison
+        if (contrasena !== user.contrasena) {
+          return res.status(401).json({ message: "Contraseña incorrecta" });
+        }
+
+        const secretKey = process.env.SECRET_KEY;
+        if (!secretKey) {
+          console.error("SECRET_KEY is not defined in .env");
+          return res.status(500).json({ message: "Secret key not defined" });
+        }
+        
+        console.log("SECRET_KEY:", secretKey);
+
+        const token = jwt.sign(
+          { idUsuario: user.idUsuario, correo: user.correo },
+          secretKey,
+          { expiresIn: "1h" }
+        );
+
+        res.json({ token });
+      });
     });
   } catch (error) {
+    console.error("Unexpected error:", error);
     res.status(500).json({ error: error.message });
   }
 };

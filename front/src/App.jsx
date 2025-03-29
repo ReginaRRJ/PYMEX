@@ -1,27 +1,48 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from 'react'
-import './App.css'
 import Login from "./Login";
-import About from "./About";
 import Home from "./Home";
+import About from "./About";
 import ClientMain from "./pages/Client/ClientMain";
-import AdminMain from "./pages/Admin/AdminMain";
-import SucursalMain from "./pages/Sucursal/SucursalMain";
+import PrivateRoute from "../PrivateRoute"; // Corrected the import path
 
 function App() {
-
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/client" element={<ClientMain />} />
-        <Route path="/admin" element={<AdminMain />} />
-        <Route path="/sucursal" element={<SucursalMain />} />
+        
+        {/* Wrap protected routes with PrivateRoute */}
+        <Route
+          path="/home"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
+        
+        <Route
+          path="/about"
+          element={
+            <PrivateRoute>
+              <About />
+            </PrivateRoute>
+          }
+        />
+        
+        <Route
+          path="/client"
+          element={
+            <PrivateRoute>
+              <ClientMain />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

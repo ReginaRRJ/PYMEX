@@ -5,8 +5,8 @@ const connParams = {
   serverNode: process.env.DB_HOST,
   uid: process.env.DB_USER,
   pwd: process.env.DB_PASSWORD,
-  encrypt: "true", // Importante para conexiones en la nube
-  sslValidateCertificate: "false", // Evita problemas de certificados
+  encrypt: "true", // Important for cloud connections
+  sslValidateCertificate: "false", // Avoid certificate issues
 };
 
 const connection = hana.createConnection();

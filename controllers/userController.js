@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 const getUsers = async (req, res) => {
   try {
-    const query = `SELECT * FROM USERS`;
+    const query = `SELECT * FROM Usuario`;
     connection.exec(query, [], (err, result) => {
       if (err) {
         return res.status(500).json({ error: err.message });
@@ -22,7 +22,7 @@ const createUser = async (req, res) => {
     // Hashear la contraseña antes de guardarla
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const query = `INSERT INTO USERS (USERNAME, EMAIL, PASSWORD) VALUES (?, ?, ?)`;
+    const query = `INSERT INTO Usuario (nombreUsuario, correo, contrasena) VALUES (?, ?, ?)`;
     connection.exec(query, [username, email, hashedPassword], (err, result) => {
       if (err) {
         return res.status(500).json({ error: err.message });
@@ -48,16 +48,16 @@ const updateUser = async (req, res) => {
     let values = [];
 
     if (username) {
-      updates.push("USERNAME = ?");
+      updates.push("nombreUsuario = ?");
       values.push(username);
     }
     if (email) {
-      updates.push("EMAIL = ?");
+      updates.push("correo = ?");
       values.push(email);
     }
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10);
-      updates.push("PASSWORD = ?");
+      updates.push("contrasena = ?");
       values.push(hashedPassword);
     }
 
