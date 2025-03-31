@@ -1,6 +1,11 @@
 const connection = require("../config/db");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto"); 
 require("dotenv").config();
+
+const hashPassword = (password) => {
+  return crypto.createHash("sha256").update(password).digest("hex"); 
+};
 
 const login = async (req, res) => {
   try {
@@ -35,18 +40,13 @@ const login = async (req, res) => {
         }
 
         const user = result[0];
+        const hashedInputPassword = hashPassword(contrasena); 
 
-        // Commenting out bcrypt comparison since passwords are plain text
-        // let passwordMatch = false;
-        // try {
-        //   passwordMatch = await bcrypt.compare(contrasena, user.contrasena);
-        // } catch (bcryptError) {
-        //   console.error("Error comparing passwords:", bcryptError);
-        //   return res.status(500).json({ error: "Error comparing passwords" });
-        // }
+        console.log("Hashed Input Password:", hashedInputPassword);
+        console.log("Stored Password Hash:", user.contrasena);
 
-        // Plain text password comparison
-        if (contrasena !== user.contrasena) {
+        
+        if (hashedInputPassword !== user.contrasena) {
           return res.status(401).json({ message: "Contraseña incorrecta" });
         }
 
@@ -55,16 +55,16 @@ const login = async (req, res) => {
           console.error("SECRET_KEY is not defined in .env");
           return res.status(500).json({ message: "Secret key not defined" });
         }
-        
+
         console.log("SECRET_KEY:", secretKey);
 
         const token = jwt.sign(
-          { idUsuario: user.idUsuario, correo: user.correo, rol: user.rol  },
+          { idUsuario: user.idUsuario, correo: user.correo, rol: user.rol },
           secretKey,
           { expiresIn: "1h" }
         );
 
-        res.json({ token,rol: user.rol  });
+        res.json({ token, rol: user.rol });
       });
     });
   } catch (error) {
