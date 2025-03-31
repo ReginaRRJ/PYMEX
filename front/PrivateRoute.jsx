@@ -1,16 +1,19 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
 
-const PrivateRoute = ({ children }) => {
-  const isAuthenticated = localStorage.getItem("token");
+const PrivateRoute = ({ allowedRoles }) => {
+  const token = localStorage.getItem("token");
+  const userRole = localStorage.getItem("rol");
 
-  // If not authenticated, redirect to login
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+  if (!token) {
+    return <Navigate to="/" />;
   }
 
-  // Otherwise, render the children (the wrapped component)
-  return children;
+  if (!allowedRoles.includes(userRole)) {
+    return <Navigate to={`/${userRole.toLowerCase()}`} />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoute;

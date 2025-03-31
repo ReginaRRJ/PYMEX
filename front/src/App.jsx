@@ -4,7 +4,9 @@ import Login from "./Login";
 import Home from "./Home";
 import About from "./About";
 import ClientMain from "./pages/Client/ClientMain";
-import PrivateRoute from "../PrivateRoute"; // Corrected the import path
+import AdminMain from "./pages/Admin/AdminMain";
+import SucursalMain from "./pages/Sucursal/SucursalMain";
+import PrivateRoute from "../PrivateRoute";
 
 function App() {
   return (
@@ -12,34 +14,17 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
-        
-        {/* Wrap protected routes with PrivateRoute */}
-        <Route
-          path="/home"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
-        
-        <Route
-          path="/about"
-          element={
-            <PrivateRoute>
-              <About />
-            </PrivateRoute>
-          }
-        />
-        
-        <Route
-          path="/client"
-          element={
-            <PrivateRoute>
-              <ClientMain />
-            </PrivateRoute>
-          }
-        />
+        <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
+          <Route path="/admin" element={<AdminMain />} />
+        </Route>
+
+        <Route element={<PrivateRoute allowedRoles={["Cliente"]} />}>
+          <Route path="/client" element={<ClientMain />} />
+        </Route>
+
+        <Route element={<PrivateRoute allowedRoles={["Sucursal"]} />}>
+          <Route path="/sucursal" element={<SucursalMain />} />
+        </Route>
       </Routes>
     </Router>
   );

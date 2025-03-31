@@ -59,12 +59,12 @@ const login = async (req, res) => {
         console.log("SECRET_KEY:", secretKey);
 
         const token = jwt.sign(
-          { idUsuario: user.idUsuario, correo: user.correo },
+          { idUsuario: user.idUsuario, correo: user.correo, rol: user.rol  },
           secretKey,
           { expiresIn: "1h" }
         );
 
-        res.json({ token });
+        res.json({ token,rol: user.rol  });
       });
     });
   } catch (error) {

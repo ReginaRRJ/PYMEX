@@ -9,31 +9,35 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await axios.post(
-        "http://localhost:3000/login",
-        {
-          correo: correo,
-          contrasena: contrasena,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      // Store the token in localStorage
-      localStorage.setItem("token", response.data.token);
-
-      // Redirect to home or another page after successful login
-      navigate("/home");
+      const response = await axios.post("http://localhost:3000/login", {
+        correo: correo,
+        contrasena: contrasena,
+      });
+  
+      const { token, rol } = response.data;
+  
+      // Store token and role in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("rol", rol);
+  
+      // Redirect based on role
+      if (rol === "Admin") {
+        navigate("/admin");
+      } else if (rol === "Cliente") {
+        navigate("/client");
+      } else if (rol === "Sucursal") {
+        navigate("/sucursal");
+      } else {
+        alert("Unknown role");
+      }
     } catch (error) {
       console.error("Login failed:", error);
       alert("Login failed. Please check your credentials.");
     }
   };
-
+  
   return (
     <div className="flex h-screen w-screen bg-white">
       <div className="w-3/5 h-full bg-blue-700">

@@ -1,15 +1,15 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import PedidosDist from "./PedidosDist";
 
 function ClientMain() {
   const [activeScreenClient, setActiveScreenClient] = useState("pedidosDist");
-  
+
   const fetchProtectedData = async () => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      // Redirect to login if no token is available
-      window.location.href = "/login";
+      window.location.href = "/"; // Redirect if no token
       return;
     }
 
@@ -17,7 +17,7 @@ function ClientMain() {
       const response = await fetch("http://localhost:3000/protectedRoute", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`, // Send token in Authorization header
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -36,6 +36,12 @@ function ClientMain() {
     fetchProtectedData();
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("rol");
+    window.location.href = "/"; // Redirect to login page
+  };
+
   const renderScreen = () => {
     switch (activeScreenClient) {
       case "pedidosDist":
@@ -47,6 +53,21 @@ function ClientMain() {
 
   return (
     <div>
+      <button
+        onClick={handleLogout}
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          padding: "10px",
+          backgroundColor: "red",
+          color: "white",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        Sign Out
+      </button>
       {renderScreen()}
     </div>
   );
