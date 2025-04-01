@@ -7,6 +7,7 @@ import Home from "./Home";
 import ClientMain from "./pages/Client/ClientMain";
 import AdminMain from "./pages/Admin/AdminMain";
 import SucursalMain from "./pages/Sucursal/SucursalMain";
+import VendedorMain from "./pages/Vendedor/VendedorMain";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="/client" element={<ClientMain />} />
         <Route path="/admin" element={<AdminMain />} />
         <Route path="/sucursal" element={<SucursalMain />} />
+        <Route path="/vendedor" element={<VendedorMain />} />
       </Routes>
     </Router>
   )
