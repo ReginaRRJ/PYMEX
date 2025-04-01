@@ -3,8 +3,10 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto"); 
 require("dotenv").config();
 
+
 const hashPassword = (password) => {
-  return crypto.createHash("sha256").update(password).digest("hex"); 
+  return crypto.createHash("sha256").update(Buffer.from(password, "utf8")).digest("hex").toUpperCase(); 
+
 };
 
 const login = async (req, res) => {
@@ -40,10 +42,11 @@ const login = async (req, res) => {
         }
 
         const user = result[0];
-        const hashedInputPassword = hashPassword(contrasena); 
-
+        //const hashedInputPassword = hashPassword(contrasena); 
+        const hashedInputPassword = contrasena;
+        //console.log("Hashed Input Password:", hashedInputPassword);
         console.log("Hashed Input Password:", hashedInputPassword);
-        console.log("Stored Password Hash:", user.contrasena);
+        //console.log("Stored Password Hash:", user.contrasena);
 
         
         if (hashedInputPassword !== user.contrasena) {
