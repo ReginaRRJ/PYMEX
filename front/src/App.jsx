@@ -1,0 +1,33 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./Login";
+import Home from "./Home";
+import About from "./About";
+import ClientMain from "./pages/Client/ClientMain";
+import AdminMain from "./pages/Admin/AdminMain";
+import SucursalMain from "./pages/Sucursal/SucursalMain";
+import PrivateRoute from "../PrivateRoute";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
+          <Route path="/admin" element={<AdminMain />} />
+        </Route>
+
+        <Route element={<PrivateRoute allowedRoles={["Cliente"]} />}>
+          <Route path="/client" element={<ClientMain />} />
+        </Route>
+
+        <Route element={<PrivateRoute allowedRoles={["Sucursal"]} />}>
+          <Route path="/sucursal" element={<SucursalMain />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
