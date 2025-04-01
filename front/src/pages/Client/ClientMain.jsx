@@ -66,7 +66,7 @@ function ClientMain() {
           cursor: "pointer",
         }}
       >
-        Sign Out
+       Cerrar sesión
       </button>
       {renderScreen()}
     </div>

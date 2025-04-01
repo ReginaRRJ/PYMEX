@@ -23,7 +23,7 @@ function SucursalMain() {
     return (
         <div>
             <button onClick={handleLogout} style={{ position: "absolute", top: 10, right: 10, padding: "10px", backgroundColor: "red", color: "white", border: "none", cursor: "pointer" }}>
-                Sign Out
+                Cerrar sesión
             </button>
             {renderScreen()}
         </div>
