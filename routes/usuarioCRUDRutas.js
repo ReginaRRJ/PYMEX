@@ -1,5 +1,6 @@
-const express = require("express");
-const { createUsuario, getUsuario, updateUsuario, deleteUsuario } = require("../controllers/adminCrud");
+// adminCrudRoutes.js
+import express from "express"; // Use ES Module import syntax
+import { createUsuario, getUsuario, updateUsuario, deleteUsuario } from "../controllers/adminCrud.js"; // Update path to use ESM style imports
 
 const router = express.Router();
 
@@ -48,4 +49,4 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router; // Use export default to export the router

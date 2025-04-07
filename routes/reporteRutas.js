@@ -1,5 +1,6 @@
-const express = require("express");
-const { createReporte, getReporte, updateReporte, deleteReporte } = require("../controllers/adminReport");
+// reportRoutes.js
+import express from "express"; // Using import for express
+import { createReporte, getReporte, updateReporte, deleteReporte } from "../controllers/adminReport.js"; // Named imports for controller methods
 
 const router = express.Router();
 
@@ -48,4 +49,4 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router; // Using export default for the router

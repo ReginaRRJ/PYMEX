@@ -1,6 +1,8 @@
-const express = require("express");
+// userRoutes.js
+import express from "express"; // Import express using ESM syntax
+import { getUsers, createUser, updateUser, deleteUser } from "../controllers/userController.js"; // Use named imports for controller functions
+
 const router = express.Router();
-const { getUsers, createUser, updateUser, deleteUser } = require("../controllers/userController");
 
 /**
  * @swagger
@@ -183,4 +185,4 @@ router.put("/:id", updateUser);
 // Eliminar usuario
 router.delete("/:id", deleteUser);
 
-module.exports = router;
+export default router; // Use export default for the router
