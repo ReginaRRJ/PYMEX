@@ -1,5 +1,5 @@
 import sql from "mssql";
-import config from "../dbConfig";  // Import your db config here
+import config from "../config/db.js";  // Import your db config here
 
 // Get Reporte by id
 async function getReporte(id) {

@@ -5,8 +5,8 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
 import loginRoutes from "./routes/loginRoutes.js";
-import swaggerUI from "swagger-ui-express";
-import swaggerDocs from "./docs/swagger.js";
+{/*import swaggerUI from "swagger-ui-express";*/}
+{/*import swaggerDocs from "./docs/swagger.js";*/}
 import reporteRoutes from "./routes/reporteRutas.js";
 import path from "path";
 
@@ -25,7 +25,7 @@ app.use("/usersAdmin", userRoutes);
 app.use("/reportes", reporteRoutes);
 
 // Swagger Documentation
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+{/*app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));*/}
 
 // Serve the React app in production mode
 if (process.env.NODE_ENV === "production") {
