@@ -40,6 +40,7 @@ function Report({ reporte, index }) {
                 </div>
                 <div className="w-[20%] h-full flex justify-center items-center">
                     <ReportButton reporte={reporte} />
+                 
                 </div>
             </div>
             <div className="w-full h-[50%] pl-[3%] pr-[25px]">
