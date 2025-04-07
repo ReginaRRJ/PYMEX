@@ -1,39 +1,42 @@
-const { createUsuario, getUsuario, updateUsuario, deleteUsuario } = require("../controllers/adminCrud");
+// Importing the necessary functions using ES Module syntax
+import { createUsuario as createUsuarioService, getUsuario as getUsuarioService, updateUsuario as updateUsuarioService, deleteUsuario as deleteUsuarioService } from "../controllers/adminCrud.js";
 
-async function createUsuario(usuario) {
+// Function to create a user
+export const createUsuario = async (usuario) => {
   try {
-    const result = await createUsuario(usuario); // Calls the service for DB interaction
+    const result = await createUsuarioService(usuario); // Calls the service for DB interaction
     return result;
   } catch (err) {
     throw new Error(err.message);
   }
-}
+};
 
-async function getUsuario(id) {
+// Function to get a user by id
+export const getUsuario = async (id) => {
   try {
-    const usuario = await getUsuario(id); // Calls the service for DB interaction
+    const usuario = await getUsuarioService(id); // Calls the service for DB interaction
     return usuario;
   } catch (err) {
     throw new Error(err.message);
   }
-}
+};
 
-async function updateUsuario(id, usuario) {
+// Function to update a user by id
+export const updateUsuario = async (id, usuario) => {
   try {
-    const result = await updateUsuario(id, usuario); // Calls the service for DB interaction
+    const result = await updateUsuarioService(id, usuario); // Calls the service for DB interaction
     return result;
   } catch (err) {
     throw new Error(err.message);
   }
-}
+};
 
-async function deleteUsuario(id) {
+// Function to delete a user by id
+export const deleteUsuario = async (id) => {
   try {
-    const result = await deleteUsuario(id); // Calls the service for DB interaction
+    const result = await deleteUsuarioService(id); // Calls the service for DB interaction
     return result;
   } catch (err) {
     throw new Error(err.message);
   }
-}
-
-module.exports = { createUsuario, getUsuario, updateUsuario, deleteUsuario };
+};

@@ -1,7 +1,7 @@
 import ReportButton from "./ReportButton";
 
-function Report({reporte, index}) {
-
+function Report({ reporte, index }) {
+    // Helper function to get urgency level and color
     const getImportancia = (urgencia) => {
         let importancia = '!'.repeat(urgencia);
         let color;
@@ -36,10 +36,11 @@ function Report({reporte, index}) {
                 </div>
                 <div className="w-[30%] h-full">
                     <div className="w-full h-[50%] flex flex-col justify-end text-[16px] font-bold">Fecha:</div>
-                    <div className="w-full h-[50%] text-[12px] ">{reporte.fechaReporte}</div>
+                    <div className="w-full h-[50%] text-[12px]">{new Date(reporte.fechaReporte).toLocaleDateString()}</div>
                 </div>
                 <div className="w-[20%] h-full flex justify-center items-center">
-                    <ReportButton reporte={reporte}></ReportButton>
+                    <ReportButton reporte={reporte} />
+                 
                 </div>
             </div>
             <div className="w-full h-[50%] pl-[3%] pr-[25px]">
@@ -47,7 +48,7 @@ function Report({reporte, index}) {
                 <div className="w-full h-[70%] flex flex-col justify-baseline text-[12px] pl-[10px]">{reporte.descripcion}</div>
             </div>
         </div>
-    )
+    );
 }
 
-export default Report
+export default Report;

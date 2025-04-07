@@ -1,5 +1,9 @@
-const hana = require("@sap/hana-client");
-require("dotenv").config();
+// Import necessary modules using ES Module syntax
+import hana from "@sap/hana-client";
+import dotenv from "dotenv";
+
+// Configure dotenv to load environment variables
+dotenv.config();
 
 const connParams = {
   serverNode: process.env.DB_HOST,
@@ -19,4 +23,5 @@ connection.connect(connParams, (err) => {
   }
 });
 
-module.exports = connection;
+// Export the connection object
+export default connection;

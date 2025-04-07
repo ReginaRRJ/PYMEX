@@ -1,9 +1,8 @@
-const Reporte = require("../Classes/ReportFollowUpClass"); 
+// Import necessary modules using ES Module syntax
+import Reporte from "../Classes/ReportFollowUpClass.js"; 
+import sql from 'mssql';
 
-
-const sql = require('mssql');
-
-
+// Create a Reporte
 async function createReporte(reporte) {
     try {
         const pool = await sql.connect(config);
@@ -21,3 +20,6 @@ async function createReporte(reporte) {
         console.error('Error creating Reporte:', error);
     }
 }
+
+// Export the function using ES Module export
+export { createReporte };

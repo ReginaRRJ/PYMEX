@@ -1,26 +1,5 @@
-const Reporte = require("../Classes/ReportFollowUpClass"); 
-
-
-const sql = require('mssql');
-
-
-// async function createReporte(reporte) {
-//     try {
-//         const pool = await sql.connect(config);
-//         const result = await pool.request()
-//             .input('titulo', sql.NVarChar, reporte.titulo)
-//             .input('descripcion', sql.NVarChar, reporte.descripcion)
-//             .input('urgencia', sql.NVarChar, reporte.urgencia)
-//             .input('resuelto', sql.Bit, reporte.resuelto)
-//             .input('detallesResolucion', sql.NVarChar, reporte.detallesResolucion)
-//             .input('fechaReporte', sql.DateTime, reporte.fechaReporte)
-//             .input('fechaResolucion', sql.DateTime, reporte.fechaResolucion)
-//             .query('INSERT INTO Reportes (titulo, descripcion, urgencia, resuelto, detallesResolucion, fechaReporte, fechaResolucion) VALUES (@titulo, @descripcion, @urgencia, @resuelto, @detallesResolucion, @fechaReporte, @fechaResolucion)');
-//         return result;
-//     } catch (error) {
-//         console.error('Error creating Reporte:', error);
-//     }
-// }
+import sql from "mssql";
+import config from "../dbConfig";  // Import your db config here
 
 // Get Reporte by id
 async function getReporte(id) {
@@ -29,9 +8,15 @@ async function getReporte(id) {
         const result = await pool.request()
             .input('id', sql.Int, id)
             .query('SELECT * FROM Reportes WHERE idReporte = @id');
+        
+        if (result.recordset.length === 0) {
+            throw new Error('Report not found');
+        }
+        
         return result.recordset[0]; // Return the first (and presumably only) report
     } catch (error) {
         console.error('Error getting Reporte:', error);
+        throw error; // Re-throw the error so it can be caught in the calling function
     }
 }
 
@@ -52,20 +37,9 @@ async function updateReporte(id, reporte) {
         return result;
     } catch (error) {
         console.error('Error updating Reporte:', error);
+        throw error;
     }
 }
 
-// // Delete a Reporte
-// async function deleteReporte(id) {
-//     try {
-//         const pool = await sql.connect(config);
-//         const result = await pool.request()
-//             .input('id', sql.Int, id)
-//             .query('DELETE FROM Reportes WHERE idReporte = @id');
-//         return result;
-//     } catch (error) {
-//         console.error('Error deleting Reporte:', error);
-//     }
-// }
-
-module.exports = {getReporte, updateReporte};
+// Export the functions using ES Module export
+export { getReporte, updateReporte };
