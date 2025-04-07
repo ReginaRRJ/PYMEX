@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import Header from "../../components/Header";
 
 import React from "react";
-import { useState } from "react";
 
 import PermisosUsuarios from "./PermisosUsuarios";
 import ReportesUsuarios from "./ReportesUsuarios";
@@ -81,6 +80,8 @@ function AdminMain() {
             </button>
             {renderScreen()}
 
+        </div>
+        {/*Maybe div is in wrong place...*/}
         </div>
     );
 }
