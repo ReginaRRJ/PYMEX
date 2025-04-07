@@ -7,6 +7,8 @@ const userRoutes = require("./routes/userRoutes");
 const loginRoutes = require("./routes/loginRoutes");
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocs = require("./docs/swagger");
+//const userRoutes = require("./routes/usuarioCRUDRutas");
+const reporteRoutes = require("./routes/reporteRutas");
 
 const path = require("path");
 
@@ -17,6 +19,8 @@ app.use(morgan("dev"));
 
 app.use("/users", userRoutes);
 app.use("/login", loginRoutes);
+app.use("/usersAdmin", userRoutes);
+app.use("/reportes", reporteRoutes);
 
 // Swagger Documentation
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
