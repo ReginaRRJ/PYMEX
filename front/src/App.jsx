@@ -1,29 +1,45 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from 'react'
-import './App.css'
 import Login from "./Login";
-import About from "./About";
 import Home from "./Home";
+import About from "./About";
 import ClientMain from "./pages/Client/ClientMain";
 import AdminMain from "./pages/Admin/AdminMain";
 import SucursalMain from "./pages/Sucursal/SucursalMain";
+
 import VendedorMain from "./pages/Vendedor/VendedorMain";
 
-function App() {
+import PrivateRoute from "../PrivateRoute";
 
+
+function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
+
         <Route path="/about" element={<About />} />
         <Route path="/client" element={<ClientMain />} />
         <Route path="/admin" element={<AdminMain />} />
         <Route path="/sucursal" element={<SucursalMain />} />
         <Route path="/vendedor" element={<VendedorMain />} />
+
+        <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
+          <Route path="/admin" element={<AdminMain />} />
+        </Route>
+
+        <Route element={<PrivateRoute allowedRoles={["Cliente"]} />}>
+          <Route path="/client" element={<ClientMain />} />
+        </Route>
+
+        <Route element={<PrivateRoute allowedRoles={["Sucursal"]} />}>
+          <Route path="/sucursal" element={<SucursalMain />} />
+        </Route>
+
       </Routes>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

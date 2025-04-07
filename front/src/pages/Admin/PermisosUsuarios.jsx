@@ -1,5 +1,9 @@
+
 import usuarios from '../Admin/usuarios'
 import { motion } from 'framer-motion'
+
+
+import React from "react";
 
 function PermisosUsuarios() {
     return (
