@@ -13,7 +13,7 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:3000/login", {
         correo: correo,
-        contrasena: contrasena,
+        hashContrasena: contrasena,
       });
   
       const { token, rol } = response.data;
