@@ -6,7 +6,11 @@ import About from "./About";
 import ClientMain from "./pages/Client/ClientMain";
 import AdminMain from "./pages/Admin/AdminMain";
 import SucursalMain from "./pages/Sucursal/SucursalMain";
+
+import VendedorMain from "./pages/Vendedor/VendedorMain";
+
 import PrivateRoute from "../PrivateRoute";
+
 
 function App() {
   return (
@@ -14,6 +18,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
+
+        <Route path="/about" element={<About />} />
+        <Route path="/client" element={<ClientMain />} />
+        <Route path="/admin" element={<AdminMain />} />
+        <Route path="/sucursal" element={<SucursalMain />} />
+        <Route path="/vendedor" element={<VendedorMain />} />
+
         <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
           <Route path="/admin" element={<AdminMain />} />
         </Route>
@@ -25,6 +36,7 @@ function App() {
         <Route element={<PrivateRoute allowedRoles={["Sucursal"]} />}>
           <Route path="/sucursal" element={<SucursalMain />} />
         </Route>
+
       </Routes>
     </Router>
   );
