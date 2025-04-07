@@ -44,6 +44,7 @@ function AdminMain() {
             <div className="w-full h-[90%] flex">
                 <div className="w-[25%] h-full">
                     <div className="w-full h-[80%] flex flex-col items-center pt-[8vh]">
+                       {/* Botones de izquierda */}
                         <NavbarIcon icon={userImg} 
                                     text={"Usuarios"} 
                                     onClick={() => setActiveScreenAdmin("permisosUsuarios")} 
