@@ -78,7 +78,7 @@ function AdminMain() {
             >
                 Cerrar sesión
             </button>
-            {renderScreen()}
+            
 
         </div>
         {/*Maybe div is in wrong place...*/}

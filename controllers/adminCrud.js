@@ -1,109 +1,149 @@
-// Import necessary modules using ES Modules syntax
-import Usuario from "../Classes/UserClass.js"; 
-import connection from "../config/db.js"; 
-import crypto from "crypto"; 
-import sql from 'mssql';
+import hana from "@sap/hana-client";
+import dotenv from "dotenv";
 
-// Hashing the password using SHA256
-const hashPassword = (password) => {
-    return crypto.createHash("sha256").update(Buffer.from(password, "utf8")).digest("hex").toUpperCase(); 
+dotenv.config();
+
+const connParams = {
+  serverNode: process.env.DB_HOST,
+  uid: process.env.DB_USER,
+  pwd: process.env.DB_PASSWORD,
+  encrypt: "true",
+  sslValidateCertificate: "false"
 };
 
-// Function to create a new Usuario
+// Obtener todos los usuarios
+async function getUsuarios() {
+  return new Promise((resolve, reject) => {
+    const conn = hana.createConnection();
+    conn.connect(connParams, (err) => {
+      if (err) return reject("Error conectando a SAP HANA: " + err);
+
+      const query = `SELECT * FROM "DBADMIN"."Usuario"`;
+      conn.exec(query, (err, result) => {
+        conn.disconnect();
+        if (err) return reject("Error al obtener usuarios: " + err);
+        resolve(result);
+      });
+    });
+  });
+}
+
+// Crear un nuevo usuario
 async function createUsuario(usuario) {
-    try {
-        const pool = await sql.connect(connection);
-        const result = await pool.request()
-            .input('nombreUsuario', sql.NVarChar, usuario.nombreUsuario)
-            .input('apellidoUsuario', sql.NVarChar, usuario.apellidoUsuario)
-            .input('rol', sql.NVarChar, usuario.rol)
-            .input('correo', sql.NVarChar, usuario.correo)
-            .input('contrasena', sql.NVarChar, usuario.contrasena)
-            .input('hashContrasena', sql.NVarChar, usuario.hashContrasena)
-            .input('idPyme', sql.Int, usuario.idPyme)
-            .query('INSERT INTO Usuarios (nombreUsuario, apellidoUsuario, rol, correo, contrasena, hashContrasena, idPyme) VALUES (@nombreUsuario, @apellidoUsuario, @rol, @correo, @contrasena, @hashContrasena, @idPyme)');
-        return result;
-    } catch (error) {
-        console.error('Error creating Usuario:', error);
-    }
-}
+  return new Promise((resolve, reject) => {
+    const conn = hana.createConnection();
+    conn.connect(connParams, (err) => {
+      if (err) return reject("Error conectando a SAP HANA: " + err);
 
-// Function to get Usuario by id
-async function getUsuario(id) {
-    try {
-        const pool = await sql.connect(connection);
-        const result = await pool.request()
-            .input('id', sql.Int, id)
-            .query('SELECT * FROM Usuarios WHERE idUsuario = @id');
-        return result.recordset[0]; 
-    } catch (error) {
-        console.error('Error getting Usuario:', error);
-    }
-}
+      const query = `
+        INSERT INTO "DBADMIN"."Usuario" 
+        ("nombreUsuario", "apellidoUsuario", "rol", "correo", "contrasena", "hashContrasena", "idPyme")
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `;
 
-// Function to update Usuario by id
-async function updateUsuario(id, usuario) {
-    try {
-        const pool = await sql.connect(connection);
-        const result = await pool.request()
-            .input('id', sql.Int, id)
-            .input('nombreUsuario', sql.NVarChar, usuario.nombreUsuario)
-            .input('apellidoUsuario', sql.NVarChar, usuario.apellidoUsuario)
-            .input('rol', sql.NVarChar, usuario.rol)
-            .input('correo', sql.NVarChar, usuario.correo)
-            .input('contrasena', sql.NVarChar, usuario.contrasena)
-            .input('hashContrasena', sql.NVarChar, usuario.hashContrasena)
-            .input('idPyme', sql.Int, usuario.idPyme)
-            .query('UPDATE Usuarios SET nombreUsuario = @nombreUsuario, apellidoUsuario = @apellidoUsuario, rol = @rol, correo = @correo, contrasena = @contrasena, hashContrasena = @hashContrasena, idPyme = @idPyme WHERE idUsuario = @id');
-        return result;
-    } catch (error) {
-        console.error('Error updating Usuario:', error);
-    }
-}
+      const values = [
+        usuario.nombreUsuario,
+        usuario.apellidoUsuario,
+        usuario.rol,
+        usuario.correo,
+        usuario.contrasena,
+        Buffer.from(usuario.hashContrasena, 'hex'),
+        usuario.idPyme
+      ];
 
-// Function to delete Usuario by id
-async function deleteUsuario(id) {
-    try {
-        const pool = await sql.connect(connection);
-        const result = await pool.request()
-            .input('id', sql.Int, id)
-            .query('DELETE FROM Usuarios WHERE idUsuario = @id');
-        return result;
-    } catch (error) {
-        console.error('Error deleting Usuario:', error);
-    }
-}
-
-// Export the functions using ES Module export
-export { createUsuario, getUsuario, updateUsuario, deleteUsuario, hashPassword };
-/*import Usuario from "../Classes/UserClass.js";  // Make sure to import the Usuario class
-
-async function getUsuario(id) {
-    try {
-        const pool = await sql.connect(connection);
-        const result = await pool.request()
-            .input('id', sql.Int, id)
-            .query('SELECT * FROM Usuarios WHERE idUsuario = @id');
-        
-        // If a user is found, create an instance of the Usuario class
-        if (result.recordset.length > 0) {
-            const userData = result.recordset[0];
-            // Create a new instance of the Usuario class with the user data
-            const user = new Usuario(
-                userData.nombreUsuario,
-                userData.apellidoUsuario,
-                userData.rol,
-                userData.correo,
-                userData.contrasena,
-                userData.hashContrasena,
-                userData.idPyme
-            );
-            return user;  // Return the instance of Usuario
-        } else {
-            return null;  // Return null if no user is found
+      conn.prepare(query, (err, statement) => {
+        if (err) {
+          conn.disconnect();
+          return reject("Error preparando la consulta: " + err);
         }
-    } catch (error) {
-        console.error('Error getting Usuario:', error);
-    }
+
+        statement.exec(values, (err, result) => {
+          statement.drop();
+          conn.disconnect();
+          if (err) return reject("Error ejecutando inserción: " + err);
+          resolve(result);
+        });
+      });
+    });
+  });
 }
-*/ 
+
+// Actualizar un usuario por ID
+async function updateUsuario(id, usuario) {
+  return new Promise((resolve, reject) => {
+    const conn = hana.createConnection();
+    conn.connect(connParams, (err) => {
+      if (err) return reject("Error conectando a SAP HANA: " + err);
+
+      const query = `
+        UPDATE "DBADMIN"."Usuario"
+        SET "nombreUsuario" = ?, 
+            "apellidoUsuario" = ?, 
+            "rol" = ?, 
+            "correo" = ?, 
+            "contrasena" = ?, 
+            "hashContrasena" = ?, 
+            "idPyme" = ?
+        WHERE "idUsuario" = ?
+      `;
+
+      const values = [
+        usuario.nombreUsuario,
+        usuario.apellidoUsuario,
+        usuario.rol,
+        usuario.correo,
+        usuario.contrasena,
+        Buffer.from(usuario.hashContrasena, 'hex'),
+        usuario.idPyme,
+        id
+      ];
+
+      conn.prepare(query, (err, statement) => {
+        if (err) {
+          conn.disconnect();
+          return reject("Error preparando consulta de actualización: " + err);
+        }
+
+        statement.exec(values, (err, result) => {
+          statement.drop();
+          conn.disconnect();
+          if (err) return reject("Error ejecutando actualización: " + err);
+          resolve(result);
+        });
+      });
+    });
+  });
+}
+
+// Eliminar un usuario por ID
+async function deleteUsuario(id) {
+  return new Promise((resolve, reject) => {
+    const conn = hana.createConnection();
+    conn.connect(connParams, (err) => {
+      if (err) return reject("Error conectando a SAP HANA: " + err);
+
+      const query = `DELETE FROM "DBADMIN"."Usuario" WHERE "idUsuario" = ?`;
+
+      conn.prepare(query, (err, statement) => {
+        if (err) {
+          conn.disconnect();
+          return reject("Error preparando consulta de borrado: " + err);
+        }
+
+        statement.exec([id], (err, result) => {
+          statement.drop();
+          conn.disconnect();
+          if (err) return reject("Error ejecutando borrado: " + err);
+          resolve(result);
+        });
+      });
+    });
+  });
+}
+
+export {
+  getUsuarios,
+  createUsuario,
+  updateUsuario,
+  deleteUsuario
+};
