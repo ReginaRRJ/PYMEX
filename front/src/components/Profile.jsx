@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getUsuario } from "../path-to-your-function";  // Import the getUsuario function
+import { getUsuario } from "../../../controllers/adminCrud";  // Import the getUsuario function
 import pic from '../assets/user.png';
 
 function Profile() {

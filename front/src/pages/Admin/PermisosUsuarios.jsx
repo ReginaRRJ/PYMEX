@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
-import { getUsuario } from "../path-to-your-function";  // Make sure to import your getUsuario function
+import { getUsuario } from "../../../../controllers/adminCrud";  // Make sure to import your getUsuario function
 
 function PermisosUsuarios() {
     const [usuarios, setUsuarios] = useState([]); // State to store users

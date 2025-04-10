@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getReporte } from "../services/adminReport";  // Adjust the import path based on where your file is located
+import { getReporte } from "../../../../controllers/adminReport";  // Adjust the import path based on where your file is located
 import Report from '../../components/Report';
 import { motion } from 'framer-motion';
 
