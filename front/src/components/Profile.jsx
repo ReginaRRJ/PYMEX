@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getUsuario } from "../path-to-your-function";  // Import the getUsuario function
+//import { getUsuario } from "../../../controllers/adminCrud";  
+import axios from "axios";
 import pic from '../assets/user.png';
+import process from 'process';
 
 function Profile() {
     const [user, setUser] = useState(null); // State to store the fetched user data
@@ -9,16 +11,29 @@ function Profile() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const userId = 1; // Replace with the actual user ID (for example, from session or state)
-                const fetchedUser = await getUsuario(userId);
-                setUser(fetchedUser); // Set the user data in state
+                const userId = 1;
+                const res = await axios.get("http://localhost:3001/admin");
+                setUser(res.data); 
             } catch (error) {
                 console.error("Error fetching user:", error);
             }
         };
 
         fetchUser();
-    }, []); // Empty dependency array ensures this runs once when the component mounts
+    }, []);
+    // useEffect(() => {
+    //     const fetchUser = async () => {
+    //         try {
+    //             const userId = 1; // Replace with the actual user ID (for example, from session or state)
+    //             const fetchedUser = await getUsuario(userId);
+    //             setUser(fetchedUser); // Set the user data in state
+    //         } catch (error) {
+    //             console.error("Error fetching user:", error);
+    //         }
+    //     };
+
+    //     fetchUser();
+    // }, []); // Empty dependency array ensures this runs once when the component mounts
 
     if (!user) {
         return <div>Loading...</div>; // Display a loading message while fetching the user

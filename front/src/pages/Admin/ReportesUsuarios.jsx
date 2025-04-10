@@ -1,23 +1,39 @@
 import { useState, useEffect } from "react";
-import { getReporte } from "../services/adminReport";  // Adjust the import path based on where your file is located
+//import { getReporte } from "../../../../controllers/adminReport";  // Adjust the import path based on where your file is located
 import Report from '../../components/Report';
 import { motion } from 'framer-motion';
+import process from 'process';
+
 
 function ReportesUsuarios() {
     // State to hold the reports data
     const [reportes, setReportes] = useState([]);
-
-    // Function to fetch reports
     const fetchReportes = async () => {
         try {
-            // Example: Assume you have a list of report IDs you want to fetch
-            const reportIds = [1, 2, 3]; // Example IDs
-            const fetchedReportes = await Promise.all(reportIds.map(id => getReporte(id)));
-            setReportes(fetchedReportes);
+          const reportIds = [1, 2, 3]; // o ids dinámicos si los tienes
+      
+          const fetchedReportes = await Promise.all(
+            reportIds.map(id =>
+              fetch("http://localhost:3001/reportes").then(res => res.json())
+            )
+          );
+      
+          setReportes(fetchedReportes);
         } catch (error) {
-            console.error("Error fetching reports:", error);
+          console.error("Error fetching reports:", error);
         }
-    };
+      };
+    // // Function to fetch reports
+    // const fetchReportes = async () => {
+    //     try {
+    //         // Example: Assume you have a list of report IDs you want to fetch
+    //         const reportIds = [1, 2, 3]; // Example IDs
+    //         const fetchedReportes = await Promise.all(reportIds.map(id => getReporte(id)));
+    //         setReportes(fetchedReportes);
+    //     } catch (error) {
+    //         console.error("Error fetching reports:", error);
+    //     }
+    // };
 
     useEffect(() => {
         fetchReportes();
