@@ -1,26 +1,24 @@
-// adminCrudRoutes.js
-import express from "express"; // Use ES Module import syntax
-import { createUsuario, getUsuario, updateUsuario, deleteUsuario } from "../controllers/adminCrud.js"; // Update path to use ESM style imports
+import express from "express";
+import { createUsuario, getUsuarios, updateUsuario, deleteUsuario } from "../controllers/adminCrud.js"; 
 
 const router = express.Router();
 
-// Create a new Usuario
-router.post("/", async (req, res) => {
+// Get all Usuarios
+router.get("/", async (req, res) => {
   try {
-    const usuario = req.body;
-    const result = await createUsuario(usuario);
-    res.status(201).json(result);
+    const usuarios = await getUsuarios(); // Fetch all users
+    res.json(usuarios);  // Return the list of users
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Get Usuario by ID
-router.get("/:id", async (req, res) => {
+// Create a new Usuario
+router.post("/admin", async (req, res) => {
   try {
-    const id = req.params.id;
-    const usuario = await getUsuario(id);
-    res.json(usuario);
+    const usuario = req.body;
+    const result = await createUsuario(usuario);
+    res.status(201).json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -49,4 +47,4 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-export default router; // Use export default to export the router
+export default router;
