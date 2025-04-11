@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
+<<<<<<< HEAD
+import { getReporte } from "../../../../controllers/adminReport";  // Adjust the import path based on where your file is located
+=======
 //import { getReporte } from "../../../../controllers/adminReport";  // Adjust the import path based on where your file is located
+>>>>>>> 099e93624c527696b6ba26f0e6621b2b3e1c3601
 import Report from '../../components/Report';
 import { motion } from 'framer-motion';
 import process from 'process';

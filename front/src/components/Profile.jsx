@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
+<<<<<<< HEAD
+import { getUsuario } from "../../../controllers/adminCrud";  // Import the getUsuario function
+=======
 //import { getUsuario } from "../../../controllers/adminCrud";  
 import axios from "axios";
+>>>>>>> 099e93624c527696b6ba26f0e6621b2b3e1c3601
 import pic from '../assets/user.png';
 import process from 'process';
 
