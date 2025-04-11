@@ -27,7 +27,7 @@ const Login = () => {
       // Redirect based on role
       if (rol === "Admin") {
         navigate("/admin");
-      } else if (rol === "Cliente") {
+      } else if (rol === "Cliente") { 
         navigate("/client");
       } else if (rol === "Sucursal") {
         navigate("/sucursal");
@@ -70,6 +70,7 @@ const Login = () => {
               </div>
               <br />
               <button
+                id ="login-button"
                 className="w-full h-[40px] bg-blue-800 rounded-xl text-white"
                 onClick={handleLogin}
               >
