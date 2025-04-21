@@ -17,7 +17,14 @@ const Login = () => {
         correo: correo,
         hashContrasena: contrasena,
       });
+      localStorage.setItem("usuario", JSON.stringify(response.data.usuario));
   
+      // try {
+      //   const response = await axios.post("http://localhost:3001/login", {
+      //     correo,hashContrasena})
+      //     .then(res=>{
+      //       localStorage.setItem("usuario", JSON.stringify(res.data.usuario))
+      //     });
       const { token, rol } = response.data;
   
       // Store token and role in localStorage

@@ -12,19 +12,21 @@ function Profile() {
     const [user, setUser] = useState(null); // State to store the fetched user data
 
     // Fetch user when the component mounts
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const userId = 1;
-                const res = await axios.get("http://localhost:3001/admin");
-                setUser(res.data); 
-            } catch (error) {
-                console.error("Error fetching user:", error);
-            }
-        };
-
-        fetchUser();
-    }, []);
+    // useEffect(() => {
+    //     const storedUser = localStorage.getItem("usuario");
+    //      if (storedUser) {
+    //     setUser(JSON.parse(storedUser));
+    // }
+    // }, []);
+    useEffect(()=> {
+        const storedUser=localStorage.getItem("usuario");
+        if (storedUser){
+            setUser(JSON.parse(storedUser));
+        }
+    },[]);
+    if (!user){
+        return <div>Loading...</div>
+    }
     // useEffect(() => {
     //     const fetchUser = async () => {
     //         try {
@@ -39,9 +41,9 @@ function Profile() {
     //     fetchUser();
     // }, []); // Empty dependency array ensures this runs once when the component mounts
 
-    if (!user) {
-        return <div>Loading...</div>; // Display a loading message while fetching the user
-    }
+    // if (!user) {
+    //     return <div>Loading...</div>; // Display a loading message while fetching the user
+    // }
 
     return (
         <div className="w-full h-full flex justify-center pt-[20px]">
@@ -51,10 +53,10 @@ function Profile() {
                 </div>
                 <div className="w-[80%] h-full">
                     <div className='w-full h-[50%] flex flex-col justify-end'>
-                        <h1 className='text-[15px]'>{user.nombreUsuario} {user.apellidoUsuario}</h1>
+                        <h1 className='text-[15px]'>{user.nombreCompleto}</h1>
                     </div>
                     <div className='w-full h-[50%]'>
-                        <h1 className='text-[15px]'>ID Pyme: {user.idPyme}</h1>
+                        <h1 className='text-[15px]'>{user.correo}</h1>
                     </div>
                 </div>
             </div>
