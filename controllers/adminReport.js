@@ -1,25 +1,34 @@
-import sql from "mssql";
-import config from "../config/db.js";  // Import your db config here
+import hana from '@sap/hana-client';
+import dotenv from 'dotenv';
+dotenv.config();
 
-// Get Reporte by id
-async function getReporte(id) {
-    try {
-        const pool = await sql.connect(config);
-        const result = await pool.request()
-            .input('id', sql.Int, id)
-            .query('SELECT * FROM Reportes WHERE idReporte = @id');
-        
-        if (result.recordset.length === 0) {
-            throw new Error('Report not found');
+const connParams = {
+  serverNode: process.env.DB_HOST,  // Ejemplo: 'host:port'
+  uid: process.env.DB_USER,
+  pwd: process.env.DB_PASSWORD
+};
+
+// Obtener todos los reportes
+export const getAllReportes = () => {
+  return new Promise((resolve, reject) => {
+    const conn = hana.createConnection();
+    conn.connect(connParams, (err) => {
+      if (err) {
+        console.error('Error al conectar a SAP HANA:', err);
+        return reject(err);
+      }
+
+      conn.exec('SELECT * FROM "DBADMIN"."Reporte"', (err, rows) => {
+        conn.disconnect();
+        if (err) {
+          console.error(' Error al obtener los reportes:', err);
+          return reject(err);
         }
-        
-        return result.recordset[0]; // Return the first (and presumably only) report
-    } catch (error) {
-        console.error('Error getting Reporte:', error);
-        throw error; // Re-throw the error so it can be caught in the calling function
-    }
-}
-
+        resolve(rows);
+      });
+    });
+  });
+};
 // Update a Reporte
 async function updateReporte(id, reporte) {
     try {
@@ -42,4 +51,4 @@ async function updateReporte(id, reporte) {
 }
 
 // Export the functions using ES Module export
-export { getReporte, updateReporte };
+

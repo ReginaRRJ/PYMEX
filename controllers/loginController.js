@@ -65,7 +65,15 @@ export const login = (req, res) => {
               conn.disconnect();
               return res.status(200).json({
                   token: "fake-token",
-                  rol: resultJSON.rol
+                  rol: resultJSON.rol,
+                  usuario: {
+                    idUsuario: resultJSON.idUsuario,
+                    correo: resultJSON.correo,
+                    nombreCompleto: resultJSON.nombreCompleto,
+                    rol: resultJSON.rol,
+                    idPyme: resultJSON.idPyme,
+                    nombrePyme: resultJSON.nombrePyme
+                }
               });
           });
       });
