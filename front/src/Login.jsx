@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import process from 'process';
+
 
 const Login = () => {
   const [correo, setCorreo] = useState("");
@@ -11,11 +13,18 @@ const Login = () => {
     e.preventDefault();
   
     try {
-      const response = await axios.post("http://localhost:3000/login", {
+      const response = await axios.post("http://localhost:3001/login", {
         correo: correo,
-        contrasena: contrasena,
+        hashContrasena: contrasena,
       });
+      localStorage.setItem("usuario", JSON.stringify(response.data.usuario));
   
+      // try {
+      //   const response = await axios.post("http://localhost:3001/login", {
+      //     correo,hashContrasena})
+      //     .then(res=>{
+      //       localStorage.setItem("usuario", JSON.stringify(res.data.usuario))
+      //     });
       const { token, rol } = response.data;
   
       // Store token and role in localStorage
@@ -25,7 +34,7 @@ const Login = () => {
       // Redirect based on role
       if (rol === "Admin") {
         navigate("/admin");
-      } else if (rol === "Cliente") {
+      } else if (rol === "Cliente") { 
         navigate("/client");
       } else if (rol === "Sucursal") {
         navigate("/sucursal");
@@ -68,6 +77,7 @@ const Login = () => {
               </div>
               <br />
               <button
+                id ="login-button"
                 className="w-full h-[40px] bg-blue-800 rounded-xl text-white"
                 onClick={handleLogin}
               >
