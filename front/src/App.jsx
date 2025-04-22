@@ -8,6 +8,7 @@ import ClientMain from "./pages/Client/ClientMain";
 import AdminMain from "./pages/Admin/AdminMain";
 import SucursalMain from "./pages/Sucursal/SucursalMain";
 import VendedorMain from "./pages/Vendedor/VendedorMain";
+import DistribuidorMain from "./pages/Distribuidor/DistribuidorMain"
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/admin" element={<AdminMain />} />
         <Route path="/sucursal" element={<SucursalMain />} />
         <Route path="/vendedor" element={<VendedorMain />} />
+        <Route path="/dist" element={<DistribuidorMain />} />
       </Routes>
     </Router>
   )

@@ -12,7 +12,9 @@ function ReportesUsuarios() {
                 </div>
             </div>
             <div className="h-[70%] w-full overflow-y-auto">
-                {reportes.map((reporte, index) => (
+                {reportes
+                .sort((a, b) => a.resuelto - b.resuelto) // Primero "resuelto = false"
+                .map((reporte, index) => (
                     <Report reporte={reporte} key={index}></Report>
                 ))}
             </div>

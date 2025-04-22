@@ -1,14 +1,17 @@
 import usuarios from '../Admin/usuarios'
 import { motion } from 'framer-motion'
+import { useState } from "react"
 
-function PermisosUsuarios() {
+function PermisosUsuarios({addUserModal, setAddUserModal, editUserModal, setEditUserModal}) {
+
     return (
         <motion.div className="h-full w-[75%] flex flex-col pt-[6vh] pr-[50px]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}> 
             <div className='h-[20%] w-full'>
                 <h1 className="text-[40px]">Usuarios</h1> 
                 <div className="h-[50px] w-full flex justify-between items-center">
                     <h1>Manejo de los perfiles de usuario</h1>  
-                    <button className="w-[18%] h-full bg-slate-900 rounded-2xl text-white">+ Agregar usuario</button>
+                    <button className="w-[18%] h-full bg-slate-900 rounded-2xl text-white" 
+                    onClick={() => (setAddUserModal(!addUserModal))}>+ Agregar usuario</button>
                 </div>
             </div>
 
@@ -23,10 +26,10 @@ function PermisosUsuarios() {
                     </thead>
                     <tbody className="block w-full overflow-y-auto max-h-[55vh]">
                     {usuarios.map((user, index) => (
-                        <tr key={index} className="flex w-full">
-                        <td className="w-1/3 px-4 py-2">{user.nombreUsuario}</td>
-                        <td className="w-1/3 px-4 py-2">{user.correo}</td>
-                        <td className="w-1/3 px-4 py-2">{user.rol}</td>
+                        <tr key={index} className="flex w-full rounded-md hover:bg-slate-300 hover:cursor-pointer duration-300" onClick={() => setEditUserModal(!editUserModal)}>
+                            <td className="w-1/3 px-4 py-2">{user.nombreUsuario}</td>
+                            <td className="w-1/3 px-4 py-2">{user.correo}</td>
+                            <td className="w-1/3 px-4 py-2">{user.rol}</td>
                         </tr>
                     ))}
                     </tbody>
