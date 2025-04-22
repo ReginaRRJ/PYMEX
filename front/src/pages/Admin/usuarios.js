@@ -2,72 +2,72 @@ const usuarios = [
     {
       nombreUsuario: "juanperez",
       correo: "juan.perez@example.com",
-      rol: "admin"
+      rol: "Cliente"
     },
     {
       nombreUsuario: "maria_gomez",
       correo: "maria.gomez@example.com",
-      rol: "usuario"
+      rol: "Cliente"
     },
     {
       nombreUsuario: "carlos_lopez",
       correo: "carlos.lopez@example.com",
-      rol: "moderador"
+      rol: "Distibuidor"
     },
     {
       nombreUsuario: "ana_ramirez",
       correo: "ana.ramirez@example.com",
-      rol: "usuario"
+      rol: "Sucursal"
     },
     {
       nombreUsuario: "pedro_sanchez",
       correo: "pedro.sanchez@example.com",
-      rol: "admin"
+      rol: "Vendedor"
     },
     {
       nombreUsuario: "sofia_fernandez",
       correo: "sofia.fernandez@example.com",
-      rol: "usuario"
+      rol: "Sucursal"
     },
     {
       nombreUsuario: "luis_martinez",
       correo: "luis.martinez@example.com",
-      rol: "moderador"
+      rol: "Sucursal"
     },
     {
       nombreUsuario: "elena_diaz",
       correo: "elena.diaz@example.com",
-      rol: "usuario"
+      rol: "Distibuidor"
     },
     {
       nombreUsuario: "luis_martinez",
       correo: "luis.martinez@example.com",
-      rol: "moderador"
+      rol: "Cliente"
     },
     {
       nombreUsuario: "elena_diaz",
       correo: "elena.diaz@example.com",
-      rol: "usuario"
+      rol: "Distibuidor"
     },
     {
       nombreUsuario: "luis_martinez",
       correo: "luis.martinez@example.com",
-      rol: "moderador"
+      rol: "Vendedor"
     },
     {
       nombreUsuario: "elena_diaz",
       correo: "elena.diaz@example.com",
-      rol: "usuario"
+      rol: "Cliente"
     },
     {
       nombreUsuario: "luis_martinez",
       correo: "luis.martinez@example.com",
-      rol: "moderador"
+      rol: "Sucursal"
     },
     {
       nombreUsuario: "elena_diaz",
       correo: "elena.diaz@example.com",
-      rol: "usuario"
+      rol: "Cliente"
     },
     
   ];
