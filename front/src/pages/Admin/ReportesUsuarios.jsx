@@ -11,10 +11,10 @@ function ReportesUsuarios() {
             try {
                 const response = await fetch("http://localhost:3001/reportes");
                 const data = await response.json();
-                console.log("📦 Reportes recibidos:", data);
+                console.log("Reportes recibidos:", data);
                 setReportes(data);
             } catch (error) {
-                console.error("❌ Error al obtener reportes:", error);
+                console.error("Error al obtener reportes:", error);
             }
         };
 
