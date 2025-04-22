@@ -1,5 +1,10 @@
+
 import { useState } from "react"
 import Header from "../../components/Header";
+
+import React from "react";
+import { useState } from "react";
+
 import PermisosUsuarios from "./PermisosUsuarios";
 import ReportesUsuarios from "./ReportesUsuarios";
 import NavbarIcon from "../../components/NavbarIcon";
@@ -36,7 +41,7 @@ function AdminMain() {
             default:
                 return <h2>Screen not found</h2>;
         }
-    }
+    };
 
     return (
         <>
@@ -76,4 +81,4 @@ function AdminMain() {
     )
 }
 
-export default AdminMain
+export default AdminMain;
