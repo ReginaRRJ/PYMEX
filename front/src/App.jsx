@@ -8,7 +8,9 @@ import AdminMain from "./pages/Admin/AdminMain";
 import SucursalMain from "./pages/Sucursal/SucursalMain";
 
 import VendedorMain from "./pages/Vendedor/VendedorMain";
-import DistribuidorMain from "./pages/Distribuidor/DistribuidorMain"
+
+import PrivateRoute from "../PrivateRoute";
+
 
 function App() {
   return (
@@ -22,7 +24,19 @@ function App() {
        <Route path="/admin" element={<AdminMain />} />
         <Route path="/sucursal" element={<SucursalMain />} /> */}
         <Route path="/vendedor" element={<VendedorMain />} />
-        <Route path="/dist" element={<DistribuidorMain />} />
+
+        <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
+          <Route path="/admin" element={<AdminMain />} />
+        </Route>
+
+        <Route element={<PrivateRoute allowedRoles={["Cliente"]} />}>
+          <Route path="/client" element={<ClientMain />} />
+        </Route>
+
+        <Route element={<PrivateRoute allowedRoles={["Sucursal"]} />}>
+          <Route path="/sucursal" element={<SucursalMain />} />
+        </Route>
+
       </Routes>
     </Router>
   );
