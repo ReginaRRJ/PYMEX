@@ -36,6 +36,13 @@ function ReportesUsuarios() {
             </div>
 
             <div className="h-[70%] w-full overflow-y-auto">
+
+                {reportes
+                .sort((a, b) => a.resuelto - b.resuelto) // Primero "resuelto = false"
+                .map((reporte, index) => (
+                    <Report reporte={reporte} key={index}></Report>
+                ))}
+
                 {Array.isArray(reportes) && reportes.length > 0 ? (
                     reportes.map((reporte, index) => (
                         <Report key={reporte.idReporte || index} reporte={reporte} index={index} />
@@ -43,6 +50,7 @@ function ReportesUsuarios() {
                 ) : (
                     <p>No hay reportes disponibles.</p>
                 )}
+
             </div>
         </motion.div>
     );
