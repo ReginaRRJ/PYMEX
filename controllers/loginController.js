@@ -1,79 +1,81 @@
-const connection = require("../config/db");
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto"); 
-require("dotenv").config();
+// Import necessary modules using ES Module syntax
+import hana from '@sap/hana-client';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
-const hashPassword = (password) => {
-  return crypto.createHash("sha256").update(Buffer.from(password, "utf8")).digest("hex").toUpperCase(); 
-
+const connParams = {
+    serverNode: process.env.DB_HOST,
+    uid: process.env.DB_USER,
+    pwd: process.env.DB_PASSWORD
 };
 
-const login = async (req, res) => {
-  try {
-    const { correo, contrasena } = req.body;
+export const login = (req, res) => {
+    const { correo, hashContrasena } = req.body;
 
-    if (!correo || !contrasena) {
-      return res.status(400).json({ message: "Correo and Contraseña are required" });
-    }
+    const conn = hana.createConnection();
 
-    if (!connection) {
-      console.error("Database connection is not established.");
-      return res.status(500).json({ error: "Database connection failed" });
-    }
-
-    const query = 'SELECT * FROM "Usuario" WHERE "correo" = ?';
-    console.log("Running query:", query, correo);
-
-    connection.prepare(query, (err, statement) => {
+    // PASO 1: conectar solo si no está conectado
+    conn.connect(connParams, (err) => {
       if (err) {
-        console.error("Error preparing statement:", err);
-        return res.status(500).json({ error: "Database preparation error", details: err.message });
+          console.error("Error al conectar a SAP HANA:", err);
+          return res.status(500).send("Error conectando a SAP HANA");
       }
 
-      statement.exec([correo], async (err, result) => {
-        if (err) {
-          console.error("Database query execution error:", err);
-          return res.status(500).json({ error: "Database query error", details: err.message });
-        }
+      console.log("Conectado a SAP HANA Cloud");
 
-        if (!result || result.length === 0) {
-          return res.status(401).json({ message: "Usuario no encontrado" });
-        }
+      // PASO 2: preparar SP de forma segura
+      const spQuery = 'CALL "DBADMIN"."loginHash"(?, ?)';
+      conn.prepare(spQuery, (err, statement) => {
+          if (err) {
+              console.error("Error preparando SP:", err);
+              conn.disconnect();
+              return res.status(500).send("Error preparando procedimiento");
+          }
 
-        const user = result[0];
-        //const hashedInputPassword = hashPassword(contrasena); 
-        const hashedInputPassword = contrasena;
-        //console.log("Hashed Input Password:", hashedInputPassword);
-        console.log("Hashed Input Password:", hashedInputPassword);
-        //console.log("Stored Password Hash:", user.contrasena);
+          // PASO 4: ejecutar
+          statement.exec([correo, hashContrasena], (err, results) => {
+              if (err) {
+                  console.error("Error ejecutando SP:", err);
+                  console.error("Parametros enviados:", correo, hashContrasena);
+                  statement.drop();
+                  conn.disconnect();
+                  return res.status(500).send("Error ejecutando procedimiento");
+              }
 
-        
-        if (hashedInputPassword !== user.contrasena) {
-          return res.status(401).json({ message: "Contraseña incorrecta" });
-        }
+              console.log("Results:", results);
 
-        const secretKey = process.env.SECRET_KEY;
-        if (!secretKey) {
-          console.error("SECRET_KEY is not defined in .env");
-          return res.status(500).json({ message: "Secret key not defined" });
-        }
+              if (!results || !results[0]) {
+                statement.drop();
+                conn.disconnect();
+                return res.status(500).send("No se recibió respuesta del SP");
+              }
 
-        console.log("SECRET_KEY:", secretKey);
+              const resultRow = results[0];
+              const resultJSON = JSON.parse(resultRow.RESULTADO);
 
-        const token = jwt.sign(
-          { idUsuario: user.idUsuario, correo: user.correo, rol: user.rol },
-          secretKey,
-          { expiresIn: "1h" }
-        );
+              if (resultJSON.resultado === "Sin acceso") {
+                  statement.drop();
+                  conn.disconnect();
+                  return res.status(401).json({ message: "Credenciales incorrectas" });
+              }
 
-        res.json({ token, rol: user.rol });
+              // Login correcto
+              statement.drop();
+              conn.disconnect();
+              return res.status(200).json({
+                  token: "fake-token",
+                  rol: resultJSON.rol,
+                  usuario: {
+                    idUsuario: resultJSON.idUsuario,
+                    correo: resultJSON.correo,
+                    nombreCompleto: resultJSON.nombreCompleto,
+                    rol: resultJSON.rol,
+                    idPyme: resultJSON.idPyme,
+                    nombrePyme: resultJSON.nombrePyme
+                }
+              });
+          });
       });
-    });
-  } catch (error) {
-    console.error("Unexpected error:", error);
-    res.status(500).json({ error: error.message });
-  }
+  });
 };
-
-module.exports = { login };

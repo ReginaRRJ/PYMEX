@@ -1,9 +1,10 @@
 // loginRoutes.js
-const express = require("express");
+import express from "express";
+import { login } from "../controllers/loginController.js"; // Using named import for the login function
+
 const router = express.Router();
-const loginController = require('../controllers/loginController');
 
 // Login route
-router.post("/", loginController.login);  // This POST route is for logging in
+router.post("/", login); // This POST route is for logging in
 
-module.exports = router;
+export default router; // Exporting the router using ES Module syntax

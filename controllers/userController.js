@@ -1,7 +1,9 @@
-const connection = require("../config/db");
-const bcrypt = require("bcryptjs");
+// Importing necessary modules using ES Module syntax
+import connection from "../config/db.js"; // Make sure to add .js extension to local imports
+import bcrypt from "bcryptjs";
 
-const getUsers = async (req, res) => {
+// Controller to get all users
+export const getUsers = async (req, res) => {
   try {
     const query = `SELECT * FROM Usuario`;
     connection.exec(query, [], (err, result) => {
@@ -15,11 +17,12 @@ const getUsers = async (req, res) => {
   }
 };
 
-const createUser = async (req, res) => {
+// Controller to create a new user
+export const createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    // Hashear la contraseña antes de guardarla
+    // Hash the password before saving it
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const query = `INSERT INTO Usuario (nombreUsuario, correo, contrasena) VALUES (?, ?, ?)`;
@@ -34,12 +37,13 @@ const createUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+// Controller to update a user
+export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { username, email, password } = req.body;
 
-    // Verificar si hay campos para actualizar
+    // Check if there is something to update
     if (!username && !email && !password) {
       return res.status(400).json({ message: "Nada que actualizar" });
     }
@@ -81,7 +85,8 @@ const updateUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+// Controller to delete a user
+export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -97,7 +102,7 @@ const deleteUser = async (req, res) => {
           return res.status(500).json({ error: err.message });
         }
 
-        //En SAP HANA, `result` es un array, y debemos revisar si eliminó algo.
+        // In SAP HANA, `result` is an array, and we need to check if something was deleted.
         if (!result || result.length === 0) {
           return res.status(404).json({ message: "Usuario no encontrado" });
         }
@@ -108,6 +113,4 @@ const deleteUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
-
-module.exports = { getUsers, createUser, updateUser, deleteUser };
+}
