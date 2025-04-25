@@ -18,9 +18,9 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/about" element={<About />} />
-        {/* <Route path="/client" element={<ClientMain />} />
+        <Route path="/client" element={<ClientMain />} />
        <Route path="/admin" element={<AdminMain />} />
-        <Route path="/sucursal" element={<SucursalMain />} /> */}
+        <Route path="/sucursal" element={<SucursalMain />} /> 
         <Route path="/vendedor" element={<VendedorMain />} />
         <Route path="/dist" element={<DistribuidorMain />} />
       </Routes>
