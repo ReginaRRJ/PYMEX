@@ -1,0 +1,57 @@
+{
+    "name": "rest_api_project",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js",
+        "dev": "concurrently \"npm run dev:backend\" \"npm run dev:front\"",
+        "dev:backend": "nodemon server.js",
+        "dev:front": "cd front && npm run dev",
+        "all": "concurrently \"npm run dev:backend\" \"npm run dev:front\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "@fontsource/poppins": "^5.2.5",
+        "@sap/hana-client": "^2.24.24",
+        "@vitejs/plugin-legacy": "^6.0.2",
+        "autoprefixer": "^10.4.21",
+        "axios": "^1.8.4",
+        "base": "^3.0.0",
+        "bcryptjs": "^3.0.2",
+        "bl": "^6.1.0",
+        "components": "^0.1.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.7",
+        "express": "^4.21.2",
+        "framer-motion": "^12.6.3",
+        "jsonwebtoken": "^9.0.2",
+        "morgan": "^1.10.0",
+        "mssql": "^11.0.1",
+        "pg": "^8.13.3",
+        "process": "^0.11.10",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "react-router-dom": "^7.4.1",
+        "readable-stream": "^4.7.0",
+        "sap": "^0.0.2",
+        "stream-browserify": "^3.0.0",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.1",
+        "utilities": "^1.0.6",
+        "vite": "^6.2.5"
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.2",
+        "nodemon": "^3.1.9",
+        "tailwindcss": "^3.4.17"
+    },
+    "resolutions": {
+        "readable-stream": "^4.7.0",
+        "process": "^0.11.10"
+    }
+}
