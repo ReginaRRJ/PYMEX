@@ -10,7 +10,7 @@ import loginRoutes from "./routes/loginRoutes.js";  // Importing the login route
 import reporteRoutes from "./routes/reporteRutas.js";  // Importing the reporte routes
 import path from "path";
 import adminCrudRoutes from "./routes/usuarioCRUDRutas.js";  // Import the admin routes to handle users
-
+import pedidosRouter from "./routes/pedidos.js";
 // Initialize dotenv configuration
 dotenv.config();
 
@@ -24,7 +24,7 @@ app.use("/users", userRoutes);  // Existing user routes
 app.use("/login", loginRoutes);  // Existing login routes
 app.use("/api/usuarios", adminCrudRoutes);  // New admin route to manage users
 app.use("/reportes", reporteRoutes);  // Existing report routes
-
+app.use("/api/pedidos", pedidosRouter);
 // Swagger Documentation
 {/*app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));*/}
 
