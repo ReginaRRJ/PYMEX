@@ -68,7 +68,7 @@ function EditUser({onClose}) {
                         </div>
                     </div>
                     <div className='h-[15%] w-full flex justify-center items-center'>
-                        <button className='h-[40px] w-[150px] rounded-2xl text-white bg-black hover:bg'>Actualizar</button>
+                        <button id="update-button" className='h-[40px] w-[150px] rounded-2xl text-white bg-black hover:bg'>Actualizar</button>
                     </div>
                 
                 </motion.div>

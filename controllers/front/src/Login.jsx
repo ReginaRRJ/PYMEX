@@ -76,10 +76,7 @@ const Login = () => {
                 />
               </div>
               <br />
-
-              {/* ID para Pruebas */}
               <button
-                id ="login-button"
                 className="w-full h-[40px] bg-blue-800 rounded-xl text-white"
                 onClick={handleLogin}
               >

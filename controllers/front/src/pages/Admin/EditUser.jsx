@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import roles from './roles';
 import { useState } from 'react';
 
-function AddUser({onClose}) {
+function EditUser({onClose}) {
     const handleContentClick = (e) => {
         e.stopPropagation();
     };
@@ -16,8 +16,7 @@ function AddUser({onClose}) {
 
     return (
         <AnimatePresence>
-            {/* ID para Pruebas */}
-            <motion.div data-testid="x" className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" onClick={onClose}
+            <motion.div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" onClick={onClose}
             initial={{ opacity: 0}}
             animate={{opacity: 1}}
             transition={{ duration: 0.2 }}>
@@ -29,23 +28,20 @@ function AddUser({onClose}) {
                     <div className='h-[5%] w-full bg-white rounded-2xl flex justify-end pr-5 pt-3'>
                         <h1 className='cursor-pointer text-[20px]' onClick={onClose}>x</h1>
                     </div>
-                    <div className='h-[15%] w-full flex justify-center items-center text-[2rem]'>Crear nuevo usuario</div>
+                    <div className='h-[15%] w-full flex justify-center items-center text-[2rem]'>Editar usuario</div>
                     <div className='h-[60%] w-full flex'>
                         <div className='h-full w-[50%] flex flex-col justify-between pl-14 pr-5 pt-3 pb-5'>
                             <div className='h-20%'>
                                 <h1>Nombre</h1>
-                                {/* ID para Pruebas */}
-                                <input data-testid="input-nombre" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
+                                <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
                             </div>
                             <div className='h-20%'>
-                                {/* ID para Pruebas */}
                                 <h1>Correo</h1>
-                                <input data-testid="input-correo" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
+                                <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
                             </div>
                             <div className='h-20%'>
                                 <h1>Rol</h1>
-                                {/* ID para Pruebas */}
-                                <select data-testid="select-rol" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" 
+                                <select className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" 
                                 value={selectedRole} // Binding the state to the select value
                                 onChange={handleChange}> // Update state when selection changes
                                     {roles.map((role, index) => (
@@ -59,13 +55,11 @@ function AddUser({onClose}) {
                         <div className='h-full w-[50%] flex flex-col justify-between pl-5 pr-14 pt-3 pb-5'>
                             <div className='h-20%'>
                                 <h1>Apellido</h1>
-                                {/* ID para Pruebas */}
-                                <input data-testid="input-apellido" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
+                                <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
                             </div>
                             <div className='h-20%'>
                                 <h1>Contraseña</h1>
-                                {/* ID para Pruebas */}
-                                <input data-testid="input-contraseña" type="password" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
+                                <input type="password" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
                             </div>
                             <div className='h-20% relative'>
                                 <h1 className={`${selectedRole === "Sucursal" ? "" : "text-gray-300"}`}>Sucursal</h1>
@@ -74,9 +68,7 @@ function AddUser({onClose}) {
                         </div>
                     </div>
                     <div className='h-[15%] w-full flex justify-center items-center'>
-                       
-                        {/* ID para Pruebas */} 
-                        <button id='crearUsuario_button' className='h-[40px] w-[100px] rounded-2xl text-white bg-black hover:bg'>Crear</button>
+                        <button className='h-[40px] w-[150px] rounded-2xl text-white bg-black hover:bg'>Actualizar</button>
                     </div>
                 
                 </motion.div>
@@ -85,4 +77,4 @@ function AddUser({onClose}) {
     )
 }
 
-export default AddUser
+export default EditUser
