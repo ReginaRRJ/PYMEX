@@ -10,7 +10,7 @@ router.get('/general', (req, res) => {
       p."idPedido" AS "id",  --  ID incluido aquí
       s."nombreSucursal" AS "Cliente",
       s."ubicacionSucursal" AS "Ubicación",
-      CASE p."estatusProveedor"
+      CASE p."estatusPedido"
           WHEN 1 THEN 'Pendiente'
           WHEN 2 THEN 'Autorizado'
           WHEN 3 THEN 'Curso'
@@ -51,7 +51,7 @@ router.get('/detalle/:idPedido', (req, res) => {
       s."ubicacionSucursal" AS "Ubicación",
       s."telefonoSucursal" AS "Teléfono",
       u."correo" AS "Correo",
-      CASE p."estatusProveedor"
+      CASE p."estatusPedido"
           WHEN 1 THEN 'Pendiente'
           WHEN 2 THEN 'Autorizado'
           WHEN 3 THEN 'Curso'
@@ -89,29 +89,29 @@ router.get('/detalle/:idPedido', (req, res) => {
 // Correcting the backend to expect `estatusPedido`
 router.put('/estatus/:idPedido', (req, res) => {
   const { idPedido } = req.params; // Get the order ID from the URL
-  const { estatusProveedor } = req.body; // Expect `estatusPedido` here
+  const { estatusPedido } = req.body; // Expect `estatusPedido` here
 
   // Log to check if we are receiving the estatus value
   console.log('Request body:', req.body);
-  console.log('Valor recibido para estatus:', estatusProveedor);
+  console.log('Valor recibido para estatus:', estatusPedido);
 
   // Validate the estatus to ensure it's a valid number (1, 2, 3, or 4)
-  if (![1, 2, 3, 4].includes(estatusProveedor)) {
+  if (![1, 2, 3, 4].includes(estatusPedido)) {
     return res.status(400).json({
       error: 'Estatus inválido.',
-      message: `El valor recibido para el estatus es '${estatusProveedor}', pero debe ser 1, 2, 3 o 4.`
+      message: `El valor recibido para el estatus es '${estatusPedido}', pero debe ser 1, 2, 3 o 4.`
     });
   }
 
   // SQL query to update the status of the order
   const sql = `
     UPDATE "Pedido"
-    SET "estatusProveedor" = ?
+    SET "estatusPedido" = ?
     WHERE "idPedido" = ?
   `;
 
   // Execute the query to update the order status
-  connection.exec(sql, [estatusProveedor, idPedido], (err, result) => {
+  connection.exec(sql, [estatusPedido, idPedido], (err, result) => {
     if (err) {
       console.error('Error actualizando el estatus:', err);
       return res.status(500).json({ error: 'Error actualizando el estatus del pedido' });

@@ -19,8 +19,9 @@ import reportImg from '../../assets/report.png'
 function AdminMain() {
     const [activeScreenAdmin, setActiveScreenAdmin] = useState("permisosUsuarios");
 
-    const [addUserModal, setAddUserModal] = useState(false);
+    const [addUserModal, setAddUserModal] = useState(false); 
     const [editUserModal, setEditUserModal] = useState(false);
+    const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
     const [newUserData, setNewUserData] = useState({
         nombres: '',
         apellidos: '',
@@ -34,7 +35,9 @@ function AdminMain() {
         switch (activeScreenAdmin) {
             case "permisosUsuarios": 
                 return <PermisosUsuarios addUserModal={addUserModal} setAddUserModal={setAddUserModal}
-                                        editUserModal={editUserModal} setEditUserModal={setEditUserModal}/>;
+                                        editUserModal={editUserModal} setEditUserModal={setEditUserModal} 
+                                        //usuarioSeleccionado={usuarioSeleccionado} 
+                                        setUsuarioSeleccionado={setUsuarioSeleccionado}/>;
             case "reportesUsuarios":
                 return <ReportesUsuarios />;
             default:
@@ -49,7 +52,10 @@ function AdminMain() {
             )}
 
             {editUserModal && (
-                <EditUser onClose={() => setEditUserModal(false)}></EditUser>
+                <EditUser user={usuarioSeleccionado} onClose={() => {
+                    setEditUserModal(false);
+                    setUsuarioSeleccionado(null);
+                  }}></EditUser>
             )}
 
 <div className="w-screen h-screen flex flex-col items-center">
