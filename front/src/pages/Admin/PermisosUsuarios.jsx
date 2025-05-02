@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import axios from "axios";
+import { motion } from "framer-motion";
 
-function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEditUserModal }) {
+function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEditUserModal, setUsuarioSeleccionado }) {
   const [usuarios, setUsuarios] = useState([]);
   const [error, setError] = useState("");
 
@@ -81,7 +81,7 @@ function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEdi
                   <tr
                     key={index}
                     className="flex w-full hover:bg-slate-300 cursor-pointer duration-300"
-                    onClick={() => setEditUserModal(!editUserModal)}
+                    onClick={() => {setEditUserModal(!editUserModal); setUsuarioSeleccionado(user)}}
                   >
                     <td className="w-1/3 px-4 py-2">{user.nombreUsuario}</td>
                     <td className="w-1/3 px-4 py-2">{user.correo}</td>

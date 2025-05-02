@@ -1,18 +1,58 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import roles from './roles';
 import { useState } from 'react';
+import axios from 'axios';
+
+async function generarHash(contrasena) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(contrasena);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
 
 function AddUser({onClose}) {
     const handleContentClick = (e) => {
         e.stopPropagation();
     };
 
+    const [nombre, setNombre] = useState("");
+    const [correo, setCorreo] = useState("");
+    const [apellido, setApellido] = useState("");
+    const [contraseña, setContraseña] = useState("");
+    const [sucursal, setSucursal] = useState("");
+    const [idPyme, setIdPyme] = useState("1");
     const [selectedRole, setSelectedRole] = useState('Admin');
 
     // Handle change event to update the selected role
     const handleChange = (e) => {
         setSelectedRole(e.target.value);
     };
+
+    const crearUsuario = async () => {
+        try {
+            const hash = await generarHash(contraseña);
+            const datos = {
+                nombreUsuario: nombre,
+                correo,
+                apellidoUsuario: apellido,
+                contrasena: contraseña, // solo si la manejas
+                hashContrasena: hash,
+                rol: selectedRole,
+                idPyme: idPyme
+            };
+            if (selectedRole === "Sucursal") {
+                datos.sucursal = sucursal;
+            }
+        
+            const res = await axios.post(`http://localhost:3001/api/usuarios/admin`, datos);
+            console.log("Usuario creado:", res.data);
+            onClose(); // cerrar modal si todo sale bien
+        } catch (error) {
+            console.error("Error al crear usuario:", error);
+        }
+    }
 
     return (
         <AnimatePresence>
@@ -34,13 +74,18 @@ function AddUser({onClose}) {
                         <div className='h-full w-[50%] flex flex-col justify-between pl-14 pr-5 pt-3 pb-5'>
                             <div className='h-20%'>
                                 <h1>Nombre</h1>
+
                                 {/* ID para Pruebas */}
-                                <input data-testid="input-nombre" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
+                                <input data-testid="input-nombre" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={nombre}
+  onChange={(e) => setNombre(e.target.value)}/>
+
                             </div>
                             <div className='h-20%'>
                                 {/* ID para Pruebas */}
                                 <h1>Correo</h1>
-                                <input data-testid="input-correo" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
+                                <input data-testid="input-correo" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={correo}
+  onChange={(e) => setCorreo(e.target.value)}/>
+
                             </div>
                             <div className='h-20%'>
                                 <h1>Rol</h1>
@@ -59,24 +104,30 @@ function AddUser({onClose}) {
                         <div className='h-full w-[50%] flex flex-col justify-between pl-5 pr-14 pt-3 pb-5'>
                             <div className='h-20%'>
                                 <h1>Apellido</h1>
+
                                 {/* ID para Pruebas */}
-                                <input data-testid="input-apellido" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
+                                <input data-testid="input-apellido" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={apellido}
+  onChange={(e) => setApellido(e.target.value)}/>
                             </div>
                             <div className='h-20%'>
                                 <h1>Contraseña</h1>
                                 {/* ID para Pruebas */}
-                                <input data-testid="input-contraseña" type="password" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"/>
+                                <input data-testid="input-contraseña" type="password" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={contraseña}
+  onChange={(e) => setContraseña(e.target.value)}/>
+
                             </div>
                             <div className='h-20% relative'>
                                 <h1 className={`${selectedRole === "Sucursal" ? "" : "text-gray-300"}`}>Sucursal</h1>
-                                <select type="text" className={`w-full h-[3rem] rounded-xl pl-2 ${selectedRole === "Sucursal" ? "bg-slate-200" : "bg-slate-400 cursor-not-allowed"}`} disabled={selectedRole !== "Sucursal"}/>
+                                <select type="text" value={sucursal}
+  onChange={(e) => setSucursal(e.target.value)} className={`w-full h-[3rem] rounded-xl pl-2 ${selectedRole === "Sucursal" ? "bg-slate-200" : "bg-slate-400 cursor-not-allowed"}`} disabled={selectedRole !== "Sucursal"}/>
                             </div>
                         </div>
                     </div>
                     <div className='h-[15%] w-full flex justify-center items-center'>
-                       
-                        {/* ID para Pruebas */} 
-                        <button id='crearUsuario_button' className='h-[40px] w-[100px] rounded-2xl text-white bg-black hover:bg'>Crear</button>
+                    
+                        {/* ID para Pruebas */}                  
+                        <button id='crearUsuario_button' className='h-[40px] w-[100px] rounded-2xl text-white bg-black hover:bg' onClick={crearUsuario} >Crear</button>
+
                     </div>
                 
                 </motion.div>
