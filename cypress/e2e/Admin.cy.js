@@ -31,7 +31,7 @@ describe('PA09001. LeerUsuario: CRUD', () => {
       cy.get('[data-testid="input-apellido"]').type('SeokJin')
       cy.get('[data-testid="input-correo"]').type('kim@seokjin.kr')
       cy.get('[data-testid="input-contraseña"]').type('WHYK')
-      cy.get('[data-testid="select-rol"]').select('vendedor')
+      cy.get('[data-testid="select-rol"]').select('Vendedor')
 
       cy.get('#crearUsuario_button').click()
       cy.logOut()
