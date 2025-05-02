@@ -136,11 +136,13 @@ function EditUser({user, onClose}) {
                             </div>
                         </div>
                     </div>
+
                     <div className='h-[15%] w-full flex justify-center items-center gap-4'>
-                        <button className='h-[40px] w-[150px] rounded-2xl text-white bg-black hover:bg' onClick={actualizarUsuario}
+                        <button id="update-button" className='h-[40px] w-[150px] rounded-2xl text-white bg-black hover:bg' onClick={actualizarUsuario}
                         >Actualizar</button>
-                        <button className='h-[40px] w-[150px] rounded-2xl text-white bg-red-500 hover:bg-red-700' onClick={eliminarUsuario}
+                        <button  id="delete-button" className='h-[40px] w-[150px] rounded-2xl text-white bg-red-500 hover:bg-red-700' onClick={eliminarUsuario}
                         >Eliminar</button>
+
                     </div>
                 
                 </motion.div>
