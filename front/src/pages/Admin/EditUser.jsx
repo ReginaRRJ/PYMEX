@@ -49,6 +49,7 @@ function EditUser({user, onClose}) {
       
           const res = await axios.put(`http://localhost:3001/api/usuarios/${user.idUsuario}`, datos);
           console.log("Usuario actualizado:", res.data);
+          window.location.reload(); //Nancy: Agregado para recargar la página después de la actualización.
           onClose(); // cerrar modal si todo sale bien
         } catch (error) {
           console.error("Error al actualizar usuario:", error);
@@ -73,10 +74,12 @@ function EditUser({user, onClose}) {
           }
       
           const res = await axios.delete(`http://localhost:3001/api/usuarios/${user.idUsuario}`);
-          console.log("Usuario actualizado:", res.data);
+          console.log("Usuario Eliminado:", res.data);
+          window.location.reload(); //Nancy: Agregado para recargar la página después de la actualización
           onClose(); // cerrar modal si todo sale bien
+
         } catch (error) {
-          console.error("Error al actualizar usuario:", error);
+          console.error("Error al eliminar usuario:", error);
         }
     };
 
@@ -99,17 +102,17 @@ function EditUser({user, onClose}) {
                         <div className='h-full w-[50%] flex flex-col justify-between pl-14 pr-5 pt-3 pb-5'>
                             <div className='h-20%'>
                                 <h1>Nombre</h1>
-                                <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.nombreUsuario} value={nombre}
+                                <input data-testid="inputActualizar-nombre" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.nombreUsuario} value={nombre}
   onChange={(e) => setNombre(e.target.value)} />
                             </div>
                             <div className='h-20%'>
                                 <h1>Correo</h1>
-                                <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.correo} value={correo}
+                                <input data-testid="inputActualizar-correo" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.correo} value={correo}
   onChange={(e) => setCorreo(e.target.value)}/>
                             </div>
                             <div className='h-20%'>
                                 <h1>Rol</h1>
-                                <select className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" 
+                                <select data-testid="selectActualizar-rol" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" 
                                 value={selectedRole} // Binding the state to the select value
                                 onChange={handleChange}> // Update state when selection changes
                                     {roles.map((role, index) => (
@@ -123,11 +126,11 @@ function EditUser({user, onClose}) {
                         <div className='h-full w-[50%] flex flex-col justify-between pl-5 pr-14 pt-3 pb-5'>
                             <div className='h-20%'>
                                 <h1>Apellido</h1>
-                                <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.apellidoUsuario} value={apellido}
+                                <input data-testid="inputActualizar-apellido" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.apellidoUsuario} value={apellido}
   onChange={(e) => setApellido(e.target.value)}/>
                             </div>
                             <div className='h-20%'>
-                                <h1>Contraseña</h1>
+                                <h1>Contraseña</h1> 
                                 <input type="password" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.hashContrasena} value={contraseña} readOnly />
                             </div>
                             <div className='h-20% relative'>
@@ -138,6 +141,7 @@ function EditUser({user, onClose}) {
                     </div>
 
                     <div className='h-[15%] w-full flex justify-center items-center gap-4'>
+                        {/* ID para Pruebas */}
                         <button id="update-button" className='h-[40px] w-[150px] rounded-2xl text-white bg-black hover:bg' onClick={actualizarUsuario}
                         >Actualizar</button>
                         <button  id="delete-button" className='h-[40px] w-[150px] rounded-2xl text-white bg-red-500 hover:bg-red-700' onClick={eliminarUsuario}

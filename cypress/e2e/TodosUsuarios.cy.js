@@ -21,7 +21,6 @@ describe('PA01001. Inicio sesión', () => {
     cy.url().should('include', '/client')
   })
 
-  /*
   it('Proveedor', () => {
     cy.contains('Iniciar sesión')
     cy.get('input').first().type('santiago@proveedor.com')
@@ -30,6 +29,7 @@ describe('PA01001. Inicio sesión', () => {
     //cy.url().should('include', '/Proveedor')
   })
   
+   /*
   it('Vendedor', () => {
     cy.contains('Iniciar sesión')
     cy.get('input').first().type('regina@vendedor.com')

@@ -4,8 +4,10 @@ import checkmark from '../assets/checkmark.png'
 function ReportButton({ reporte }) {
     const [isSelected, setIsSelected] = useState(reporte.resuelto === true); // Variable que ayuda a mantener el control de resuelto/no resuelto
 
+     {/* ID para Pruebas */}
     return (
-        <button
+        <button 
+            data-testid="UpdateEstadoReport-button"
             className={`relative group w-[70%] h-[50%] ${isSelected ? 'bg-slate-100' : 'bg-black'} 
             rounded-2xl font-sans text-white text-center overflow-hidden hover:bg-slate-100 duration-500`}
             onClick={() => !isSelected && setIsSelected(true)}

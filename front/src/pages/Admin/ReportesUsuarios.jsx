@@ -35,8 +35,21 @@ function ReportesUsuarios() {
                 </div>
             </div>
 
-            <div className="h-[70%] w-full overflow-y-auto">
+            {/* ID para Pruebas */}
+            <div id="info-reporte" className="h-[70%] w-full overflow-y-auto">
+                {Array.isArray(reportes) && reportes.length > 0 ? (
+                    reportes
+                    .sort((a, b) => a.resuelto - b.resuelto)
+                    .map((reporte, index) => (
+                        <Report key={reporte.idReporte || index} reporte={reporte} index={index} />
+                    ))
+                ) : (
+                    <p>No hay reportes disponibles.</p>
+                )}
+            </div>
 
+            {/*     Editado en el Brach de Pruebas debido a una doble renderización de reportes
+            <div id="info-reporte" className="h-[70%] w-full overflow-y-auto">
                 {reportes
                 .sort((a, b) => a.resuelto - b.resuelto) // Primero "resuelto = false"
                 .map((reporte, index) => (
@@ -52,6 +65,7 @@ function ReportesUsuarios() {
                 )}
 
             </div>
+            */}
         </motion.div>
     );
 }
