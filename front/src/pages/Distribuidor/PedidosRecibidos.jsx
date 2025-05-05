@@ -1,10 +1,10 @@
-
-
-
-
 import { motion } from 'framer-motion';
+import pedidosData from './pedidos';
+import { useState } from 'react';
 
-function PedidosRecibidos({ pedidoModal, setPedidoModal, pedidos, setPedido }) {
+function PedidosRecibidos({ pedidoModal, setPedidoModal, setPedido }) {
+  const [pedidos, setPedidos] = useState(pedidosData)
+
   return (
     <motion.div
       className="h-full w-[75%] flex flex-col pt-[6vh] pr-[50px]"
@@ -29,18 +29,18 @@ function PedidosRecibidos({ pedidoModal, setPedidoModal, pedidos, setPedido }) {
             </tr>
           </thead>
           <tbody className="block w-full overflow-y-auto max-h-[55vh]">
-            {pedidos.map((pedido, index) => (
+            {pedidosData.map((pedido, index) => (
               <tr
                 key={index}
                 className="flex w-full rounded-md hover:bg-slate-300 hover:cursor-pointer duration-300"
                 onClick={() => {
-                  setPedidoModal(true);
+                  setPedidoModal(!pedidoModal);
                   setPedido(pedido);
                 }}
               >
-                <td className="w-1/3 px-4 py-2">{pedido.Cliente}</td>
-                <td className="w-1/3 px-4 py-2">{pedido.Ubicación}</td>
-                <td className="w-1/3 px-4 py-2">{pedido.Estado}</td>
+                <td className="w-1/3 px-4 py-2">{pedido.cliente}</td>
+                <td className="w-1/3 px-4 py-2">{pedido.ubicacion}</td>
+                <td className="w-1/3 px-4 py-2">{pedido.estatus}</td>
               </tr>
             ))}
           </tbody>

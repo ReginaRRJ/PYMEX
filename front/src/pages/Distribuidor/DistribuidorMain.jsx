@@ -16,14 +16,13 @@ function DistribuidorMain() {
   const [activeScreenDist, setActiveScreenDist] = useState("pedidosRecibidos");
   const [pedidoModal, setPedidoModal] = useState(false);
   const [pedido, setPedido] = useState(null);
-  const [pedidos, setPedidos] = useState([]);
 
-  useEffect(() => {
-    fetch("http://localhost:3001/api/pedidos/general")
-      .then((res) => res.json())
-      .then((data) => setPedidos(data))
-      .catch((err) => console.error("Error fetching pedidos:", err));
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://localhost:3001/api/pedidos/general")
+  //     .then((res) => res.json())
+  //     .then((data) => setPedidos(data))
+  //     .catch((err) => console.error("Error fetching pedidos:", err));
+  // }, []);
 
   const renderScreen = () => {
     switch (activeScreenDist) {
@@ -32,7 +31,6 @@ function DistribuidorMain() {
           <PedidosRecibidos
             pedidoModal={pedidoModal}
             setPedidoModal={setPedidoModal}
-            pedidos={pedidos}
             setPedido={setPedido}
           />
         );
