@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
+import axios from "axios";
 
-function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEditUserModal, setUsuarioSeleccionado }) {
+function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEditUserModal }) {
   const [usuarios, setUsuarios] = useState([]);
   const [error, setError] = useState("");
 
@@ -48,10 +48,7 @@ function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEdi
         <h1 className="text-[40px]">Usuarios</h1>
         <div className="h-[50px] w-full flex justify-between items-center">
           <h1>Manejo de los perfiles de usuario</h1>  
-
-          {/* ID para Pruebas */}
           <button
-            id="add-user-button"
             className="w-[18%] h-full bg-slate-900 rounded-2xl text-white"
             onClick={() => setAddUserModal(!addUserModal)}
           >
@@ -72,16 +69,13 @@ function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEdi
                   <th className="w-1/3 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Rol</th>
               </tr>
             </thead>
-            <tbody 
-            // ID para Pruebas
-            id = "usuarios-list"
-            className="block w-full overflow-y-auto max-h-[55vh]">
+            <tbody className="block w-full overflow-y-auto max-h-[55vh]">
               {usuarios.length > 0 ? (
                 usuarios.map((user, index) => (
                   <tr
                     key={index}
                     className="flex w-full hover:bg-slate-300 cursor-pointer duration-300"
-                    onClick={() => {setEditUserModal(!editUserModal); setUsuarioSeleccionado(user)}}
+                    onClick={() => setEditUserModal(!editUserModal)}
                   >
                     <td className="w-1/3 px-4 py-2">{user.nombreUsuario}</td>
                     <td className="w-1/3 px-4 py-2">{user.correo}</td>

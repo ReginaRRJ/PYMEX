@@ -9,7 +9,8 @@
         "dev": "concurrently \"npm run dev:backend\" \"npm run dev:front\"",
         "dev:backend": "nodemon server.js",
         "dev:front": "cd front && npm run dev",
-        "all": "concurrently \"npm run dev:backend\" \"npm run dev:front\""
+        "all": "concurrently \"npm run dev:backend\" \"npm run dev:front\"",
+        "cypress:open": "cypress open"
     },
     "keywords": [],
     "author": "",
@@ -26,6 +27,7 @@
         "bl": "^6.1.0",
         "components": "^0.1.0",
         "cors": "^2.8.5",
+        "cypress": "^14.3.0",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "framer-motion": "^12.6.3",
@@ -48,7 +50,8 @@
     "devDependencies": {
         "concurrently": "^9.1.2",
         "nodemon": "^3.1.9",
-        "tailwindcss": "^3.4.17"
+        "tailwindcss": "^3.4.17",
+        "wait-on": "^8.0.3"
     },
     "resolutions": {
         "readable-stream": "^4.7.0",

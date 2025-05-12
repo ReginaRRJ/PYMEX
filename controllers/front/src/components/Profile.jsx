@@ -51,8 +51,7 @@ function Profile() {
                     <div className='w-full h-[50%] flex flex-col justify-end'>
                         <h1 className='text-[15px]'>{user.nombreCompleto}</h1>
                     </div>
-                    {/* ID para Pruebas */}
-                    <div id="perfil-info" className='w-full h-[50%]'> 
+                    <div className='w-full h-[50%]'>
                         <h1 className='text-[15px]'>{user.correo}</h1>
                     </div>
                 </div>
