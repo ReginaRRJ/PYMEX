@@ -52,8 +52,8 @@ const Login = () => {
   return (
     <div className="flex h-screen w-screen bg-white">
       <div className="w-3/5 h-full bg-blue-700">
-        <h1>Correo: {correo}</h1>
-        <h1>Contraseña: {contrasena}</h1>
+        {/* <h1>Correo: {correo}</h1>
+        <h1>Contraseña: {contrasena}</h1> */}
       </div>
       <div className="w-2/5 h-full bg-white flex items-center justify-center">
         <div className="w-4/5 h-[365px] flex flex-col items-start">
