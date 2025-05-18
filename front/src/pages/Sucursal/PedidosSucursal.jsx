@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import pedidosSuc from './pedidosSuc'
 
-function PedidosSucursal() {
+function PedidosSucursal({updateButton, setUpdateButton, newOrder, setNewOrder}) {
     return (
         <motion.div
       className="h-full w-[75%] flex flex-col pt-[6vh] pr-[50px]"
@@ -16,7 +16,7 @@ function PedidosSucursal() {
           <h1>Pedidos que se han hecho a distribuidor</h1>  
           <button
             className="w-[18%] h-full bg-slate-900 rounded-2xl text-white"
-            // onClick={() => setAddUserModal(!addUserModal)}
+            onClick={() => setNewOrder(!newOrder)}
           >
             + Agregar pedido
           </button>
@@ -39,7 +39,7 @@ function PedidosSucursal() {
                   <tr
                     key={index}
                     className="flex w-full rounded-md hover:bg-slate-300 cursor-pointer duration-300"
-                    // onClick={() => {setEditUserModal(!editUserModal); setUsuarioSeleccionado(user)}}
+                    onClick={() => {setUpdateButton(!updateButton), console.log("kkkk")}}
                   >
                     <td className="w-[40%] px-4 py-2">{pedido.nombre}</td>
                     <td className="w-[20%] px-4 py-2">${pedido.total} MXN</td>
