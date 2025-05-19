@@ -3,14 +3,16 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import userRoutes from "./routes/userRoutes.js";  // Importing the user routes
-import loginRoutes from "./routes/loginRoutes.js";  // Importing the login routes
+import userRoutes from "./routes/userRoutes.js"; 
+import loginRoutes from "./routes/loginRoutes.js"; 
 {/*import swaggerUI from "swagger-ui-express";*/}
 {/*import swaggerDocs from "./docs/swagger.js";*/}
-import reporteRoutes from "./routes/reporteRutas.js";  // Importing the reporte routes
+import reporteRoutes from "./routes/reporteRutas.js";  
 import path from "path";
-import adminCrudRoutes from "./routes/usuarioCRUDRutas.js";  // Import the admin routes to handle users
+import adminCrudRoutes from "./routes/usuarioCRUDRutas.js";  
 import pedidosRouter from "./routes/pedidos.js";
+import sucursalRouter from "./routes/sucursalRutas.js"
+import notifConfigRouter from "./routes/notifConfigRutas.js";
 // Initialize dotenv configuration
 dotenv.config();
 
@@ -25,6 +27,8 @@ app.use("/login", loginRoutes);  // Existing login routes
 app.use("/api/usuarios", adminCrudRoutes);  // New admin route to manage users
 app.use("/reportes", reporteRoutes);  // Existing report routes
 app.use("/api/pedidos", pedidosRouter);
+app.use("/api/sucursal", sucursalRouter);
+app.use("/api/notificaciones", notifConfigRouter);
 // Swagger Documentation
 {/*app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));*/}
 
