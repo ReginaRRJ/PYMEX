@@ -54,7 +54,8 @@ function DistribuidorMain() {
         <hr className="w-[95%]" />
         <div className="w-full h-[90%] flex">
           <div className="w-[25%] h-full">
-            <div className="w-full h-[80%] flex flex-col items-center pt-[8vh]">
+            {/* ID para Pruebas */}
+            <div id="Navbar" className="w-full h-[80%] flex flex-col items-center pt-[8vh]">
               <NavbarIcon
                 icon={carrito}
                 text={"Pedidos"}

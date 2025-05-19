@@ -26,7 +26,7 @@ describe('PA01001. Inicio sesión', () => {
     cy.get('input').first().type('santiago@proveedor.com')
     cy.get('input').last().type('proveedorSanti')
     cy.get('#login-button').click()
-    //cy.url().should('include', '/Proveedor')
+    cy.url().should('include', '/dist')
   })
   
    /*
@@ -67,6 +67,11 @@ describe('PA01002. Cerrar Sesión', () => {
     cy.get('#logout-button').click()
     cy.url().should('include', '/')
   })
+  it('Proveedor', () => {
+    cy.loginProveedor()
+    cy.get('#logout-button').click()
+    cy.url().should('include', '/')
+  })
 
    /*
   it('Dueño/Cliente', () => {
@@ -76,11 +81,6 @@ describe('PA01002. Cerrar Sesión', () => {
   })
   it('Sucursal', () => {
     cy.loginSucursal()
-    cy.get('#logout-button').click()
-    cy.url().should('include', '/')
-  })
-  it('Proveedor', () => {
-    cy.loginProveedor()
     cy.get('#logout-button').click()
     cy.url().should('include', '/')
   })

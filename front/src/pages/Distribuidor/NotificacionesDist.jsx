@@ -50,9 +50,18 @@ function NotificacionesDist() {
             </div>
 
             <div className="w-full h-[75%]">
-                <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
+                {/* ID para Pruebas */}
+                <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'
+                data-testid="notificacionEntrega-container">
+
                     <div className='w-[80px] h-full flex flex-col justify-center'>
-                        <Switch size='large' checked={notificacionesEntrega}  onChange={(e) => setNotificacionesEntrega(e.target.checked)}/>
+                        <Switch 
+                            size='large' 
+                            checked={notificacionesEntrega}  
+                            onChange={(e) => setNotificacionesEntrega(e.target.checked)}
+                            inputProps={{ 'data-testid': 'switchNotificacionEntrega' }}
+                            
+                            />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
                         <h1 className='text-[18px] font-bold'>Alertas de Entrega estimada</h1>
@@ -65,18 +74,24 @@ function NotificacionesDist() {
                             exclusive
                             onChange={handleEntrega}
                             >
-                            <ToggleButton value="10" disabled={!notificacionesEntrega}>10H</ToggleButton>
-                            <ToggleButton value="15" disabled={!notificacionesEntrega}>15H</ToggleButton>
-                            <ToggleButton value="20" disabled={!notificacionesEntrega}>20H</ToggleButton>
+                            <ToggleButton data-testid="10h" value="10" disabled={!notificacionesEntrega}>10H</ToggleButton>
+                            <ToggleButton data-testid="15h" value="15" disabled={!notificacionesEntrega}>15H</ToggleButton>
+                            <ToggleButton data-testid="20h" value="20" disabled={!notificacionesEntrega}>20H</ToggleButton>
                         </ToggleButtonGroup>
                     </div>
 
                 </div>
                 <br />
 
-                <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
+                <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'
+                data-testid="notificacionAutomatizacion-container">
                     <div className='w-[80px] h-full flex flex-col justify-center'>
-                        <Switch size='large'  checked={automatizacionNotificacion}  onChange={(e) => setAutomatizacionNotificacion(e.target.checked)} />
+                        <Switch 
+                        size='large'  
+                        checked={automatizacionNotificacion}  
+                        onChange={(e) => setAutomatizacionNotificacion(e.target.checked)} 
+                        inputProps={{ 'data-testid': 'switchNotificacionAutomatizacion' }}
+                        />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center bg-'>
                         <h1 className='text-[18px] font-bold'>Automatización a Proveedor/Cliente</h1>

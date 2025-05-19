@@ -37,25 +37,37 @@ function PedidosRecibidos({ pedidoModal, setPedidoModal, pedidos, setPedido, set
               <th className="w-1/3 px-4 py-2 text-left">Estatus</th>
             </tr>
           </thead>
-          <tbody className="block w-full overflow-y-auto max-h-[55vh]">
-            {safePedidos.map((pedido, index) => (
+          
+          <tbody 
+          id="pedido-list"
+          className="block w-full overflow-y-auto max-h-[55vh]"
+          >
+            {safePedidos.length > 0 ? (
+              safePedidos.map((pedido, index) => (
               <tr
-                key={index}
-                className="flex w-full rounded-md hover:bg-slate-300 hover:cursor-pointer duration-300"
-                onClick={() => {
-                  setPedidoModal(true);
-                  setPedido({
-                    ...pedido,
-                    onStatusChange: (newStatus) =>
-                      handleStatusChange(pedido.id, newStatus),
-                  });
-                }}
+              key={index}
+              className="flex w-full rounded-md hover:bg-slate-300 hover:cursor-pointer duration-300"
+              onClick={() => {
+                setPedidoModal(true);
+                setPedido({
+                  ...pedido,
+                  onStatusChange: (newStatus) =>
+                  handleStatusChange(pedido.id, newStatus),
+                });
+              }}
               >
                 <td className="w-1/3 px-4 py-2">{pedido.Cliente}</td>
                 <td className="w-1/3 px-4 py-2">{pedido.Ubicación}</td>
                 <td className="w-1/3 px-4 py-2">{pedido.Estado}</td>
               </tr>
-            ))}
+              ))
+            ) : (
+            <tr className="w-full flex">
+              <td colSpan="3" className="text-center w-full py-4 text-gray-500">
+                No se encontraron pedidos.
+              </td>
+            </tr>
+          )}
           </tbody>
         </table>
       </div>

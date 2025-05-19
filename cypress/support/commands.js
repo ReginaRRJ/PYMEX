@@ -53,14 +53,14 @@ Cypress.Commands.add('loginAdmin', () => {
     cy.get('input').first().type('santiago@proveedor.com')
     cy.get('input').last().type('proveedorSanti')
     cy.get('#login-button').click()
-    cy.url().should('include', '/sucursal')
+    cy.url().should('include', '/dist')
   })
   Cypress.Commands.add('loginVendedor', () => { 
     cy.visit('http://localhost:5173/')
     cy.get('input').first().type('regina@vendedor.com')
     cy.get('input').last().type('vendedorRe')
     cy.get('#login-button').click()
-    cy.url().should('include', '/sucursal')
+    cy.url().should('include', '/vendedor')
   })
 
 
