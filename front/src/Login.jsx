@@ -40,7 +40,9 @@ const Login = () => {
         navigate("/sucursal");
       }else if (rol === "Proveedor") {
         navigate("/dist");
-      } else {
+      } else if (rol === "Vendedor") {
+        navigate("/vendedor");
+      }else {
         alert("Unknown role");
       }
     } catch (error) {

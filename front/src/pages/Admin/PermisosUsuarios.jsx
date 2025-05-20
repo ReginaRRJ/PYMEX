@@ -39,7 +39,7 @@ function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEdi
 
   return (
     <motion.div
-      className="h-full w-[75%] flex flex-col pt-[6vh] pr-[50px]"
+      className="h-full w-full flex flex-col pt-[6vh] pr-[50px]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
