@@ -7,38 +7,6 @@ function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEdi
   const [usuarios, setUsuarios] = useState(usuariosData);
   const [error, setError] = useState("");
 
-  // useEffect(() => {
-  //   const controller = new AbortController();
-  //   const signal = controller.signal;
-
-  //   const fetchUsuarios = async () => {
-  //     try {
-  //       const res = await axios.get("http://localhost:3001/api/usuarios", { signal });
-
-  //       if (res.data && Array.isArray(res.data)) {
-  //         setUsuarios(res.data);
-  //         setError("");
-  //       } else {
-  //         setError("Formato de datos inesperado.");
-  //         setUsuarios([]);
-  //       }
-  //     } catch (err) {
-  //       if (err.name !== "AbortError") {
-  //         console.error("Error fetching usuarios:", err);
-  //         setError("No se pudo obtener la lista de usuarios. Verifica que el backend esté activo.");
-  //         setUsuarios([]);
-  //       }
-  //     }
-  //   };
-
-  //   fetchUsuarios();
-
-  //   return () => {
-  //     controller.abort();
-  //   };
-  // }, []);
-
-
   return (
     <motion.div
       className="h-full w-full flex flex-col pt-[6vh] pr-[50px]"
