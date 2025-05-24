@@ -2,6 +2,9 @@ import React from "react";
 import { useState } from "react";
 import PedidosSucursal from "./PedidosSucursal";
 import NotificacionesSucursal from "./NotificacionesSucursal";
+import VentasSucursal from "./VentasSucursal";
+import StockSucursal from "./StockSucursal";
+import ReporteSucursal from "./ReporteSucursal";
 import Header from "../../components/Header";
 import { motion } from "framer-motion";
 import NavbarIcon from "../../components/NavbarIcon";
@@ -17,6 +20,8 @@ let rol = "SUCURSAL";
 
 function SucursalMain() {
     const [activeScreenSucursal, setActiveScreenSucursal] = useState("pedidosSucursal");
+    const [updateButton, setUpdateButton] = useState(false);
+    const [newOrder, setNewOrder] = useState(false)
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -27,15 +32,31 @@ function SucursalMain() {
     const renderScreen = () => {
         switch (activeScreenSucursal) {
             case "pedidosSucursal":
-                return <PedidosSucursal />;
+                return <PedidosSucursal updateButton={updateButton} setUpdateButton={setUpdateButton}
+                                        newOrder={newOrder} setNewOrder={setNewOrder}/>;
             case "notificacionesSucursal":
                 return <NotificacionesSucursal />;
+            case "ventasSucursal":
+                return <VentasSucursal />;
+            case "stockSucursal":
+                return <StockSucursal />;
+            case "reporteSucursal":
+                return <ReporteSucursal />;
             default:
                 return <h2>Screen not found</h2>;
         }
     };
 
     return (
+      <>
+        {updateButton && (
+          <ActualizarPedido onClose={() => setUpdateButton(false)} />
+        )}
+
+        {newOrder && (
+          <AddOrder onClose={() => setNewOrder(false)} />
+        )}
+      
         <div className="w-screen h-screen flex flex-col items-center">
         <Header rol={rol} />
         <hr className="w-[95%]" />
@@ -57,8 +78,8 @@ function SucursalMain() {
               <NavbarIcon
                 icon={market}
                 text={"Sucursales"}
-                onClick={() => setActiveScreenSucursal("sucursalesSucursal")}
-                selected={activeScreenSucursal === "sucursalesSucursal"}
+                onClick={() => setActiveScreenSucursal("ventasSucursal")}
+                selected={activeScreenSucursal === "ventasSucursal"}
               />
               <NavbarIcon
                 icon={stock}
@@ -69,8 +90,8 @@ function SucursalMain() {
               <NavbarIcon
                 icon={report}
                 text={"Reportar"}
-                onClick={() => setActiveScreenSucursal("reportarSucursal")}
-                selected={activeScreenSucursal === "reportarSucursal"}
+                onClick={() => setActiveScreenSucursal("reporteSucursal")}
+                selected={activeScreenSucursal === "reporteSucursal"}
               />
             </div>
             <div className="w-full h-[20%]">
@@ -80,6 +101,7 @@ function SucursalMain() {
           {renderScreen()}
         </div>
       </div>
+    </>
     );
 }
 

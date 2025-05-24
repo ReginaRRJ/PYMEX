@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import roles from './roles';
 import { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 async function generarHash(contrasena) {
     const encoder = new TextEncoder();
@@ -49,9 +50,11 @@ function EditUser({user, onClose}) {
       
           const res = await axios.put(`http://localhost:3001/api/usuarios/${user.idUsuario}`, datos);
           console.log("Usuario actualizado:", res.data);
+          toast.success("Usuario actualizado correctamente");
           onClose(); // cerrar modal si todo sale bien
         } catch (error) {
           console.error("Error al actualizar usuario:", error);
+          toast.error("Error al actualizar usuario.");
         }
     };
 
