@@ -9,7 +9,8 @@ import Header from "../../components/Header";
 import { motion } from "framer-motion";
 import NavbarIcon from "../../components/NavbarIcon";
 import Profile from "../../components/Profile";
-
+import AddOrder from "./AddOrder";
+import ActualizarPedido from "./ActualizarPedido";
 import carrito from '/assets/carrito.png';
 import notificacion from '/assets/notificacion.png';
 import market from '/assets/market.png'
@@ -21,7 +22,11 @@ let rol = "SUCURSAL";
 function SucursalMain() {
     const [activeScreenSucursal, setActiveScreenSucursal] = useState("pedidosSucursal");
     const [updateButton, setUpdateButton] = useState(false);
-    const [newOrder, setNewOrder] = useState(false)
+    const [newOrder, setNewOrder] = useState(false);
+    const [pedidoSeleccionadoId, setPedidoSeleccionadoId] = useState(null);
+
+    const storedUser = JSON.parse(localStorage.getItem("usuario"));
+    const idSucursal = storedUser?.idSucursal;
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -29,11 +34,23 @@ function SucursalMain() {
         window.location.href = "/"; // Redirect to login page
     };
 
+    const abrirActualizarPedido = (idPedido) => {
+      setPedidoSeleccionadoId(idPedido);
+      console.log("ID del pedido seleccionado:", idPedido);
+      setUpdateButton(true);
+    };
+
+
     const renderScreen = () => {
         switch (activeScreenSucursal) {
             case "pedidosSucursal":
-                return <PedidosSucursal updateButton={updateButton} setUpdateButton={setUpdateButton}
-                                        newOrder={newOrder} setNewOrder={setNewOrder}/>;
+                return <PedidosSucursal 
+                updateButton={updateButton}
+                setUpdateButton={setUpdateButton}
+                newOrder={newOrder}
+                setNewOrder={setNewOrder}
+                setPedidoSeleccionadoId={setPedidoSeleccionadoId}
+                onActualizarPedido={abrirActualizarPedido}/>;
             case "notificacionesSucursal":
                 return <NotificacionesSucursal />;
             case "ventasSucursal":
@@ -49,8 +66,15 @@ function SucursalMain() {
 
     return (
       <>
-        {updateButton && (
-          <ActualizarPedido onClose={() => setUpdateButton(false)} />
+        {updateButton && //pedidoSeleccionadoId && 
+        (
+          <ActualizarPedido
+            idPedido={pedidoSeleccionadoId}
+            onClose={() => {
+              setUpdateButton(false);
+              setPedidoSeleccionadoId(null);
+            }}
+          />
         )}
 
         {newOrder && (

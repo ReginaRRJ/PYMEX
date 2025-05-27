@@ -13,6 +13,7 @@ import adminCrudRoutes from "./routes/usuarioCRUDRutas.js";
 import pedidosRouter from "./routes/pedidos.js";
 import sucursalRouter from "./routes/sucursalRutas.js"
 import notifConfigRouter from "./routes/notifConfigRutas.js";
+import ticketRoutes from './routes/vendedorRutas.js'; 
 // Initialize dotenv configuration
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use("/reportes", reporteRoutes);  // Existing report routes
 app.use("/api/pedidos", pedidosRouter);
 app.use("/api/sucursal", sucursalRouter);
 app.use("/api/notificaciones", notifConfigRouter);
+app.use('/api', ticketRoutes);
 // Swagger Documentation
 {/*app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));*/}
 

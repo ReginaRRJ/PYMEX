@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import VentasVendedor from "./VentasVendedor";
 import Header from "../../components/Header";
 import NavbarIcon from "../../components/NavbarIcon";
@@ -12,11 +12,34 @@ let rol = "VENDEDOR";
 function VendedorMain() {
     const [activeScreenVendedor, setActiveScreenVendedor] = useState("ventasVendedor");
     const [ventaModal, setVentaModal] = useState(false);
+    // State to trigger a refresh of tickets in VentasVendedor
+    const [refreshTickets, setRefreshTickets] = useState(false);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem("usuario");
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
+
+    // Callback function to be passed to TicketModal,
+    // which will be called when a ticket is successfully created.
+    const handleTicketCreated = () => {
+        setVentaModal(false); // Close the modal
+        setRefreshTickets(prev => !prev); // Toggle state to trigger re-fetch in VentasVendedor
+    };
 
     const renderScreen = () => {
         switch (activeScreenVendedor) {
             case "ventasVendedor":
-                return <VentasVendedor ventaModal={ventaModal} setVentaModal={setVentaModal}/>;
+                return (
+                    <VentasVendedor
+                        ventaModal={ventaModal}
+                        setVentaModal={setVentaModal}
+                        refreshTickets={refreshTickets} // Pass refreshTickets state
+                    />
+                );
             default:
                 return <h2>Screen not found</h2>;
         }
@@ -24,8 +47,12 @@ function VendedorMain() {
 
     return (
         <>
-            {ventaModal && (
-                <TicketModal onClose={() => setVentaModal(false)} />
+            {/* Render TicketModal only if ventaModal is true and user data is available */}
+            {ventaModal && user && (
+                <TicketModal
+                    onClose={() => setVentaModal(false)}
+                    onTicketCreated={handleTicketCreated} // Pass the callback function
+                />
             )}
 
             <div className="w-screen h-screen flex flex-col items-center">
@@ -52,4 +79,4 @@ function VendedorMain() {
     )
 }
 
-export default VendedorMain
+export default VendedorMain;

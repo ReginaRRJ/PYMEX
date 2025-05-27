@@ -1,10 +1,27 @@
 import { motion, AnimatePresence } from 'framer-motion'
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
-function ActualizarPedido({onClose}) {
+function ActualizarPedido({onClose, idPedido}) {
+    console.log("Recibiendo idPedido en modal:", idPedido);
     const handleContentClick = (e) => {
         e.stopPropagation();
     };
 
+    const handleActualizar = async () => {
+        try {
+        const response = await axios.put(`http://localhost:3001/api/sucursal/pedido/${idPedido}/estado`, {
+            estatusProveedor: "Entregado"
+        });
+
+        console.log("Pedido actualizado:", response.data);
+        onClose(); // Cierra el modal después de actualizar
+        toast.success("Pedido actualizado exitosamente");
+        } catch (error) {
+        console.error("Error al actualizar pedido:", error);
+        toast.error("Error al actualizar el pedido");
+        }
+    };
 
     // Handle change event to update the selected role
     const handleChange = (e) => {
@@ -27,9 +44,10 @@ function ActualizarPedido({onClose}) {
                         <h1 className='text-[2rem]  font-bold'>Actualiza el pedido</h1>
                         <h1 className=''>¿Estas segur@ que quieres actualizar el estado del pedido a “Entregado” ?”</h1>
                         <div className='h-[15%] w-full flex justify-center items-center gap-4'>
-                            <button className='h-[40px] w-[150px] rounded-2xl text-white bg-red-500 hover:bg-red-700'
-                            >Eliminar</button>
+                            <button className='h-[40px] w-[150px] rounded-2xl text-white bg-blue-500 hover:bg-blue-700' onClick={onClose}
+                            >Cancelar</button>
                             <button className='h-[40px] w-[150px] rounded-2xl text-white bg-black hover:bg'
+                            onClick={handleActualizar}
                             >Actualizar</button>
                         </div>
                     </div>

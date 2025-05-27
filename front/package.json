@@ -26,6 +26,7 @@
     "react-dom": "18.2.0",
     "react-router-dom": "^7.4.1",
     "react-select": "^5.10.1",
+    "react-toastify": "^11.0.5",
     "readable-stream": "^4.7.0",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5"

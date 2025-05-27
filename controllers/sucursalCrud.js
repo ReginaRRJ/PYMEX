@@ -1,8 +1,33 @@
 import connection from "../config/db.js"; 
 import hana from '@sap/hana-client';
 import dotenv from 'dotenv';
-
+// controllers/sucursalController.js
+import { getProveedores as getProveedoresQuery, getProductosPorProveedor, crearPedido, updatePedidoEstado } from "./sucursalPedidos.js";
 dotenv.config();
+
+export async function getProductos(req, res) {
+  const { idProveedor } = req.params;
+  try {
+    const productos = await getProductosPorProveedor(idProveedor);
+    res.json(productos);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener productos" });
+  }
+}
+
+export async function actualizarEstadoPedido(req, res) {
+  const { idPedido } = req.params;
+  const { nuevoEstado } = req.body;
+
+  try {
+    await updatePedidoEstado(idPedido, nuevoEstado);
+    res.json({ message: "Pedido actualizado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al actualizar el pedido" });
+  }
+}
 
 const connParams = {
   serverNode: process.env.DB_HOST,
@@ -225,3 +250,38 @@ export const getStockPorProducto = async (req, res) => {
   }
 };
  
+export async function getProveedores(req, res) {
+  try {
+    const proveedores = await getProveedoresQuery();
+    res.json(proveedores);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener proveedores" });
+  }
+}
+
+
+export async function postCrearPedido(req, res) {
+  try {
+    const pedidoData = req.body;
+
+    if (
+      !pedidoData.tipoPedido ||
+      !pedidoData.cantidad ||
+      !pedidoData.fechaCreacion ||
+      !pedidoData.fechaEntregaEstimada ||
+      !pedidoData.fechaEntrega ||
+      !pedidoData.idProveedor ||
+      !pedidoData.idProducto ||
+      !pedidoData.idSucursal
+    ) {
+      return res.status(400).json({ message: "Faltan datos en la solicitud" });
+    }
+
+    await crearPedido(pedidoData);
+    res.status(201).json({ message: "Pedido creado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al crear pedido" });
+  }
+}

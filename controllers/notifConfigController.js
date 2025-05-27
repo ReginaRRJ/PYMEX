@@ -16,6 +16,7 @@ export const getNotificationConfig = async (req, res) => {
       cn."idNotificacion",
       tn."nombre",
       cn."activo",
+      tn."descripcion",
       cn."parametroTiempo"
     FROM "DBADMIN"."ConfiguracionNotificacion" cn
     JOIN "DBADMIN"."TipoNotificacion" tn ON cn."idNotificacion" = tn."idNotificacion"

@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import pedidosSuc from './pedidosSuc'
 
-function PedidosSucursal() {
+function PedidosSucursal({updateButton, setUpdateButton,newOrder, setNewOrder, setPedidoSeleccionadoId}) {
   const [pedidosSuc, setPedidosSuc] = useState([]);
   const [user, setUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPedidoId, setSelectedPedidoId] = useState(null);
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem("usuario");
@@ -49,7 +52,7 @@ function PedidosSucursal() {
           <h1>Pedidos que se han hecho a distribuidor</h1>  
           <button
             className="w-[18%] h-full bg-slate-900 rounded-2xl text-white"
-            // onClick={() => setAddUserModal(!addUserModal)}
+            onClick={() => setNewOrder(!newOrder)}
           >
             + Agregar pedido
           </button>
@@ -72,7 +75,11 @@ function PedidosSucursal() {
                   <tr
                     key={index}
                     className="flex w-full rounded-md hover:bg-slate-300 cursor-pointer duration-300"
-                    // onClick={() => {setEditUserModal(!editUserModal); setUsuarioSeleccionado(user)}}
+                    onClick={() => { console.log("Pedido ID clickeado:", pedido.idPedido);
+                      setPedidoSeleccionadoId(pedido.idPedido);
+                      setUpdateButton(true);
+                    }}
+
                   >
                     <td className="w-[40%] px-4 py-2">{pedido.nombre}</td>
                     <td className="w-[20%] px-4 py-2">${pedido.total} MXN</td>
