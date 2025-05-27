@@ -78,7 +78,7 @@ function AdminMain() {
                     </div>
                     <div className="w-full h-[20%]">
                         <Profile />
-                        </div>
+                    </div>
                     </div>
                     <div className="w-[75%] h-full">
                         {renderScreen()}
