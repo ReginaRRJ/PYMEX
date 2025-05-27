@@ -1,7 +1,16 @@
 import express from "express"; 
 import { getSucPedidos, getVentasAnualesPorSucursal, getVentasMensualesPorSucursal, getVentasSemanalesPorSucursal, getStockPorProducto } from "../controllers/sucursalCrud.js";
+import { getProveedores, getProductos, postCrearPedido, actualizarEstadoPedido } from "../controllers/sucursalCrud.js";
 
 const router = express.Router();
+
+router.put('/pedido/:idPedido/estado', actualizarEstadoPedido);
+
+router.get("/proveedores", getProveedores);
+
+router.get("/productos/:idProveedor", getProductos);
+
+router.post("/pedidos", postCrearPedido);
 
 router.get("/usuario/:idUsuario", getSucPedidos);
 
