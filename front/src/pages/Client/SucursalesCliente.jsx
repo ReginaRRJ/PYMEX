@@ -20,7 +20,7 @@ function SucursalCliente() {
     return (
         <motion.div className="h-full w-full flex flex-col pt-[6vh] pr-[50px]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}> 
             <div className='h-[20%] w-full'>
-                <h1 className="text-[40px]">Stock</h1> 
+                <h1 className="text-[40px]">Sucursales</h1> 
                 <div className="h-[50px] w-full flex justify-between items-center">
                     <h1>Visualiza métricas de esta sucursal</h1>  
                 </div>

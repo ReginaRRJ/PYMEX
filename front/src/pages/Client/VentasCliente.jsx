@@ -28,10 +28,11 @@ function VentasCliente() {
           <table className="table-fixed w-full h-full border-spacing-0">
           <thead className="block bg-slate-100 w-full">
               <tr className="w-full flex">
-                  <th className="w-1/3 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Sucursal</th>
-                  <th className="w-1/3 px-4 py-2 text-left">Cantidad</th>
-                  <th className="w-1/3 px-4 py-2 text-left">Fecha_Entrega</th>
-                  <th className="w-1/3 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Estado</th>
+                  <th className="w-1/4 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Sucursal</th>
+                  <th className="w-1/4 px-4 py-2 text-left">Producto</th>
+                  <th className="w-1/4 px-4 py-2 text-left">Cantidad</th>
+                  <th className="w-1/4 px-4 py-2 text-left">Total</th>
+                  <th className="w-1/4 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Fecha de entrega</th>
               </tr>
             </thead>
             <tbody className="block w-full overflow-y-auto max-h-[55vh]">
@@ -40,12 +41,12 @@ function VentasCliente() {
                   <tr
                     key={index}
                     className="flex w-full hover:bg-slate-300 cursor-pointer duration-300 rounded-md"
-                    // onClick={() => {setEditUserModal(!editUserModal); setUsuarioSeleccionado(user)}}
                   >
-                    <td className="w-1/4 px-4 py-2">{venta.sucursal}</td>
-                    <td className="w-1/4 px-4 py-2">{venta.cantidad}</td>
-                    <td className="w-1/4 px-4 py-2">{venta.fecha_entrega}</td>
-                    <td className="w-1/4 px-4 py-2">{venta.estado}</td>
+                    <td className="w-1/5 px-4 py-2">{venta.sucursal}</td>
+                    <td className="w-1/5 px-4 py-2">{venta.producto}</td>
+                    <td className="w-1/5 px-4 py-2">{venta.cantidad}</td>
+                    <td className="w-1/5 px-4 py-2">{venta.precio}</td>
+                    <td className="w-1/5 px-4 py-2">{venta.fecha_entrega}</td>
                   </tr>
                 ))
               ) : (
