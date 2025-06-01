@@ -25,34 +25,17 @@ app.use(cors());
 app.use(morgan("dev"));
 
 // Set up routes
-app.use("/users", userRoutes);  // Existing user routes
-app.use("/login", loginRoutes);  // Existing login routes
-app.use("/api/usuarios", adminCrudRoutes);  // New admin route to manage users
-app.use("/reportes", reporteRoutes);  // Existing report routes
+app.use("/users", userRoutes);  
+app.use("/login", loginRoutes);  
+app.use("/api/usuarios", adminCrudRoutes);  
+app.use("/reportes", reporteRoutes);  
 app.use("/api/pedidos", pedidosRouter);
 app.use("/api/sucursal", sucursalRouter);
 app.use("/api/notificaciones", notifConfigRouter);
 app.use('/api', ticketRoutes);
-app.use('/api/ventas', clientVentasRoutes);
-app.use('/api/pedidosPyme', pedidosPymeRoutes); 
-// Swagger Documentation
-{/*app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));*/}
+app.use('/api/ventasClient', clientVentasRoutes);
+app.use('/api/pedidosClient', pedidosPymeRoutes); 
 
-// Serve the React app in production mode
-// if (process.env.NODE_ENV === "production") {
-//   // Serve static files from the React app's build folder
-//   app.use(express.static(path.join(process.cwd(), "front", "build")));
-  
-//   // For all routes not part of the API, send back the React app's index.html
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.join(process.cwd(), "front", "build", "index.html"));
-//   });
-// } else {
-//   // If in development mode, just provide a simple message
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.join(process.cwd(), "front", "build", "index.html"));
-//   });
-// }
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

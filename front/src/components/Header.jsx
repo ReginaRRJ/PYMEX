@@ -18,7 +18,8 @@ function Header({rol, bell}) {
             </div>
             {bell === true ? (
                 <div className="w-[15%] h-full flex items-center justify-between">
-                    <img src={bellIcon} alt="" className="h-[50%] cursor-pointer" onClick={{}}></img>
+                    {/* THIS IS THE FIX: Changed onClick={{}} to onClick={() => {}} */}
+                    <img src={bellIcon} alt="" className="h-[50%] cursor-pointer" onClick={() => {}}></img>
                     <button onClick={handleLogout} className="w-[70%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
 
                 </div>
@@ -29,5 +30,37 @@ function Header({rol, bell}) {
     )
 }
 
+export default Header;
+// import { useState } from "react"
+// import { motion } from "framer-motion";
+// import React from "react";
+// import sapLogo from "../assets/sapLogo.png"
+// import bellIcon from "/assets/bell.png"
 
-export default Header
+// function Header({rol, bell}) {
+//     const handleLogout = () => {
+//         localStorage.removeItem("token");
+//         localStorage.removeItem("rol");
+//         window.location.href = "/"; 
+//       };
+//     return (
+//         <div className="h-[10%] w-screen pl-[50px] pr-[50px] flex items-center justify-between">
+//             <div className="w-[15%] h-full flex items-center justify-start">
+//                 <img className="h-[50%]" src={sapLogo} alt="Example" />
+//                 <h1 className="text-blue-600 font-medium">{rol}</h1>
+//             </div>
+//             {bell === true ? (
+//                 <div className="w-[15%] h-full flex items-center justify-between">
+//                     <img src={bellIcon} alt="" className="h-[50%] cursor-pointer" onClick={{}}></img>
+//                     <button onClick={handleLogout} className="w-[70%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
+
+//                 </div>
+//             ) : (
+//                 <button onClick={handleLogout} className="w-[10%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
+//             )}
+//         </div>
+//     )
+// }
+
+
+// export default Header
