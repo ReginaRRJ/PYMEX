@@ -14,6 +14,8 @@ import pedidosRouter from "./routes/pedidos.js";
 import sucursalRouter from "./routes/sucursalRutas.js"
 import notifConfigRouter from "./routes/notifConfigRutas.js";
 import ticketRoutes from './routes/vendedorRutas.js'; 
+import clientVentasRoutes from './routes/clientVentasRutas.js'; 
+import pedidosPymeRoutes from './routes/clientPedidosRutas.js';
 // Initialize dotenv configuration
 dotenv.config();
 
@@ -31,6 +33,8 @@ app.use("/api/pedidos", pedidosRouter);
 app.use("/api/sucursal", sucursalRouter);
 app.use("/api/notificaciones", notifConfigRouter);
 app.use('/api', ticketRoutes);
+app.use('/api/ventas', clientVentasRoutes);
+app.use('/api/pedidosPyme', pedidosPymeRoutes); 
 // Swagger Documentation
 {/*app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));*/}
 

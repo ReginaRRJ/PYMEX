@@ -2,8 +2,19 @@ import connection from "../config/db.js";
 import hana from '@sap/hana-client';
 import dotenv from 'dotenv';
 // controllers/sucursalController.js
-import { getProveedores as getProveedoresQuery, getProductosPorProveedor, crearPedido, updatePedidoEstado } from "./sucursalPedidos.js";
-dotenv.config();
+import { getProveedores as getProveedoresQuery, getProductosPorProveedor, crearPedido, updatePedidoEstado, getProductoss as getProductossQuery } from "./sucursalPedidos.js";
+dotenv.config(); 
+
+ 
+export async function getProductoss(req, res) {
+  try {
+    const productos = await getProductossQuery();
+    res.json(productos);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener productos" });
+  }
+}
 
 export async function getProductos(req, res) {
   const { idProveedor } = req.params;
@@ -208,8 +219,8 @@ export const getVentasSemanalesPorSucursal = async (req, res) => {
 };
 
 export const getStockPorProducto = async (req, res) => {
-  const { idUsuario } = req.params;
-  const query = `SELECT * FROM "DBADMIN"."fn_stock_por_producto_y_sucursl"(?, ?)`;
+  const { idProducto, idSucursal } = req.params;
+  const query = `SELECT * FROM "DBADMIN"."fn_stock_por_producto_y_sucursal"(?, ?)`;
   const conn = hana.createConnection();
 
   try {
@@ -231,7 +242,7 @@ export const getStockPorProducto = async (req, res) => {
     });
 
     const rows = await new Promise((resolve, reject) => {
-      stmt.exec([idUsuario], (err, result) => {
+      stmt.exec([idProducto, idSucursal], (err, result) => {  // ✅ Pasa ambos
         if (err) reject(new Error(`Error executing query: ${err.message}`));
         else resolve(result);
       });
@@ -239,8 +250,8 @@ export const getStockPorProducto = async (req, res) => {
 
     res.json(rows);
   } catch (error) {
-    console.error("Error al obtener ventas anuales:", error.message);
-    res.status(500).json({ error: "Error al obtener ventas anuales" });
+    console.error("Error al obtener stock:", error.message);
+    res.status(500).json({ error: "Error al obtener stock" });
   } finally {
     conn.disconnect((err) => {
       if (err) {

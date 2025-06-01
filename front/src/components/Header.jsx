@@ -2,10 +2,9 @@ import { useState } from "react"
 import { motion } from "framer-motion";
 import React from "react";
 import sapLogo from "../assets/sapLogo.png"
+import bellIcon from "/assets/bell.png"
 
-let rol = "ADMINISTRADOR"
-
-function Header({rol}) {
+function Header({rol, bell}) {
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("rol");
@@ -17,11 +16,15 @@ function Header({rol}) {
                 <img className="h-[50%]" src={sapLogo} alt="Example" />
                 <h1 className="text-blue-600 font-medium">{rol}</h1>
             </div>
-            
-            {/* ID para Pruebas */}
-            <button 
-            id ="logout-button"
-            onClick={handleLogout} className="w-[10%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
+            {bell === true ? (
+                <div className="w-[15%] h-full flex items-center justify-between">
+                    <img src={bellIcon} alt="" className="h-[50%] cursor-pointer" onClick={{}}></img>
+                    <button onClick={handleLogout} className="w-[70%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
+
+                </div>
+            ) : (
+                <button onClick={handleLogout} className="w-[10%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
+            )}
         </div>
     )
 }

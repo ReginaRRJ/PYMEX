@@ -8,7 +8,7 @@ const connParams = {
   uid: process.env.DB_USER,
   pwd: process.env.DB_PASSWORD,
   encrypt: "true",
-  sslValidateCertificate: "false"
+  sslValidateCertificate: "false",
 };
 
 // Obtener todos los usuarios
@@ -47,8 +47,8 @@ async function createUsuario(usuario) {
         usuario.rol,
         usuario.correo,
         usuario.contrasena,
-        Buffer.from(usuario.hashContrasena, 'hex'),
-        usuario.idPyme
+        Buffer.from(usuario.hashContrasena, "hex"),
+        usuario.idPyme,
       ];
 
       conn.prepare(query, (err, statement) => {
@@ -80,9 +80,7 @@ async function updateUsuario(id, usuario) {
         SET "nombreUsuario" = ?, 
             "apellidoUsuario" = ?, 
             "rol" = ?, 
-            "correo" = ?, 
-            "contrasena" = ?, 
-            "hashContrasena" = ?, 
+            "correo" = ?,  
             "idPyme" = ?
         WHERE "idUsuario" = ?
       `;
@@ -92,10 +90,8 @@ async function updateUsuario(id, usuario) {
         usuario.apellidoUsuario,
         usuario.rol,
         usuario.correo,
-        usuario.contrasena,
-        Buffer.from(usuario.hashContrasena, 'hex'),
         usuario.idPyme,
-        id
+        id,
       ];
 
       conn.prepare(query, (err, statement) => {
@@ -141,9 +137,4 @@ async function deleteUsuario(id) {
   });
 }
 
-export {
-  getUsuarios,
-  createUsuario,
-  updateUsuario,
-  deleteUsuario
-};
+export { getUsuarios, createUsuario, updateUsuario, deleteUsuario };

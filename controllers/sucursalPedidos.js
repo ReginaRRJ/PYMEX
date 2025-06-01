@@ -29,6 +29,23 @@ async function getProveedores() {
   });
 }
 
+// Obtener todos los productos
+async function getProductoss() {
+  return new Promise((resolve, reject) => {
+    const conn = hana.createConnection();
+    conn.connect(connParams, (err) => {
+      if (err) return reject("Error conectando a SAP HANA: " + err);
+
+      const query = `SELECT * FROM "DBADMIN"."Producto"`;
+      conn.exec(query, (err, result) => {
+        conn.disconnect();
+        if (err) return reject("Error al obtener proveedores: " + err);
+        resolve(result);
+      });
+    });
+  });
+}
+
 // sucursalPedidos.js
 function getProductosPorProveedor(idProveedor) {
   return new Promise((resolve, reject) => {
@@ -140,4 +157,4 @@ async function updatePedidoEstado(idPedido, nuevoEstado) {
   });
 }
 
-export { getProveedores, getProductosPorProveedor, crearPedido, updatePedidoEstado };
+export { getProveedores, getProductosPorProveedor, crearPedido, updatePedidoEstado, getProductoss };
