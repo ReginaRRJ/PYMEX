@@ -19,7 +19,7 @@ async function getProveedores() {
     conn.connect(connParams, (err) => {
       if (err) return reject("Error conectando a SAP HANA: " + err);
 
-      const query = `SELECT * FROM "DBADMIN"."Proveedor"`;
+      const query = `SELECT * FROM "BACKPYMEX"."Proveedor"`;
       conn.exec(query, (err, result) => {
         conn.disconnect();
         if (err) return reject("Error al obtener proveedores: " + err);
@@ -36,7 +36,7 @@ async function getProductoss() {
     conn.connect(connParams, (err) => {
       if (err) return reject("Error conectando a SAP HANA: " + err);
 
-      const query = `SELECT * FROM "DBADMIN"."Producto"`;
+      const query = `SELECT * FROM "BACKPYMEX"."Producto"`;
       conn.exec(query, (err, result) => {
         conn.disconnect();
         if (err) return reject("Error al obtener proveedores: " + err);
@@ -55,7 +55,7 @@ function getProductosPorProveedor(idProveedor) {
 
       const query = `
         SELECT * 
-        FROM "DBADMIN"."Producto" 
+        FROM "BACKPYMEX"."Producto" 
         WHERE "idProveedor" = ?
       `;
       conn.prepare(query, (err, statement) => {
@@ -91,7 +91,7 @@ function crearPedido(pedidoData) {
       } = pedidoData;
 
       const query = `
-        INSERT INTO "DBADMIN"."Pedido" 
+        INSERT INTO "BACKPYMEX"."Pedido" 
           (
             "tipoPedido", "cantidad", "fechaCreacion", "fechaEntregaEstimada", "fechaEntrega",
             "idProveedor", "idProducto", "idSucursal", "idUsuario",
@@ -135,7 +135,7 @@ async function updatePedidoEstado(idPedido, nuevoEstado) {
       if (err) return reject("Error conectando a SAP HANA: " + err);
 
       const query = `
-        UPDATE "DBADMIN"."Pedido"
+        UPDATE "BACKPYMEX"."Pedido"
         SET "estatusProveedor" = ?
         WHERE "idPedido" = ?
       `;

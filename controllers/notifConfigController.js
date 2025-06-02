@@ -18,8 +18,8 @@ export const getNotificationConfig = async (req, res) => {
       cn."activo",
       tn."descripcion",
       cn."parametroTiempo"
-    FROM "DBADMIN"."ConfiguracionNotificacion" cn
-    JOIN "DBADMIN"."TipoNotificacion" tn ON cn."idNotificacion" = tn."idNotificacion"
+    FROM "BACKPYMEX"."ConfiguracionNotificacion" cn
+    JOIN "BACKPYMEX"."TipoNotificacion" tn ON cn."idNotificacion" = tn."idNotificacion"
     WHERE cn."idUsuario" = ?;
   `;
 
@@ -57,7 +57,7 @@ export const updateNotificationConfig = async (req, res) => {
   const parametroTiempo = 12;
 
   const query = `
-    UPDATE "DBADMIN"."ConfiguracionNotificacion"
+    UPDATE "BACKPYMEX"."ConfiguracionNotificacion"
     SET "activo" = ?, "parametroTiempo" = ?
     WHERE "idUsuario" = ? AND "idNotificacion" = ?;
   `;

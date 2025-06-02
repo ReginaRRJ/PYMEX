@@ -20,7 +20,7 @@ export function createReporte(reporte) {
       }
 
       const query = `
-        INSERT INTO "DBADMIN"."Reporte"
+        INSERT INTO "BACKPYMEX"."Reporte"
         ("titulo", "descripcion", "urgencia", "fechaReporte", "resuelto", "detalleSolucion", "idUsuario", "idPyme")
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `;
@@ -58,7 +58,7 @@ export const getAllReportes = () => {
         return reject(err);
       }
 
-      conn.exec('SELECT * FROM "DBADMIN"."Reporte"', (err, rows) => {
+      conn.exec('SELECT * FROM "BACKPYMEX"."Reporte"', (err, rows) => {
         conn.disconnect();
         if (err) {
           console.error(' Error al obtener los reportes:', err);
@@ -100,7 +100,7 @@ export function getReporte(id) {
         return reject(err);
       }
 
-      const query = `SELECT * FROM "DBADMIN"."Reporte" WHERE "idReporte" = ?`;
+      const query = `SELECT * FROM "BACKPYMEX"."Reporte" WHERE "idReporte" = ?`;
 
       conn.exec(query, [id], (err, rows) => {
         conn.disconnect();
@@ -125,7 +125,7 @@ export function updateReporte(id, reporte) {
       }
 
       const query = `
-        UPDATE "DBADMIN"."Reporte"
+        UPDATE "BACKPYMEX"."Reporte"
         SET "titulo" = ?, "descripcion" = ?, "prioridad" = ?, "resuelto" = ?, "fechaReporte" = ?
         WHERE "idReporte" = ?
       `;

@@ -48,7 +48,7 @@ const connParams = {
 
 export const getSucPedidos = async (req, res) => {
   const { idUsuario } = req.params;
-  const query = `SELECT * FROM "DBADMIN"."fn_pedidos_por_usuario"(?)`;
+  const query = `SELECT * FROM "BACKPYMEX"."fn_pedidos_por_usuario"(?)`;
   const conn = hana.createConnection();
 
   try {
@@ -91,7 +91,7 @@ export const getSucPedidos = async (req, res) => {
 
 export const getVentasAnualesPorSucursal = async (req, res) => {
   const { idUsuario } = req.params;
-  const query = `SELECT * FROM "DBADMIN"."fn_ventas_anuales_por_sucursal"(?)`;
+  const query = `SELECT * FROM "BACKPYMEX"."fn_ventas_anuales_por_sucursal"(?)`;
   const conn = hana.createConnection();
 
   try {
@@ -134,7 +134,7 @@ export const getVentasAnualesPorSucursal = async (req, res) => {
 
 export const getVentasMensualesPorSucursal = async (req, res) => {
   const { idUsuario } = req.params;
-  const query = `SELECT * FROM "DBADMIN"."fn_ventas_mes_actual_por_sucursal"(?)`;
+  const query = `SELECT * FROM "BACKPYMEX"."fn_ventas_mes_actual_por_sucursal"(?)`;
   const conn = hana.createConnection();
 
   try {
@@ -177,7 +177,7 @@ export const getVentasMensualesPorSucursal = async (req, res) => {
 
 export const getVentasSemanalesPorSucursal = async (req, res) => {
   const { idUsuario } = req.params;
-  const query = `SELECT * FROM "DBADMIN"."fn_ventas_semana_actual_por_sucursal"(?)`;
+  const query = `SELECT * FROM "BACKPYMEX"."fn_ventas_semana_actual_por_sucursal"(?)`;
   const conn = hana.createConnection();
 
   try {
@@ -220,7 +220,7 @@ export const getVentasSemanalesPorSucursal = async (req, res) => {
 
 export const getStockPorProducto = async (req, res) => {
   const { idProducto, idSucursal } = req.params;
-  const query = `SELECT * FROM "DBADMIN"."fn_stock_por_producto_y_sucursal"(?, ?)`;
+  const query = `SELECT * FROM "BACKPYMEX"."fn_stock_por_producto_y_sucursal"(?, ?)`;
   const conn = hana.createConnection();
 
   try {

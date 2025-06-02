@@ -25,7 +25,7 @@ export const login = (req, res) => {
       console.log("Conectado a SAP HANA Cloud");
 
       // PASO 2: preparar SP de forma segura
-      const spQuery = 'CALL "DBADMIN"."loginHash"(?, ?)';
+      const spQuery = 'CALL "BACKPYMEX"."loginHash"(?, ?)';
       conn.prepare(spQuery, (err, statement) => {
           if (err) {
               console.error("Error preparando SP:", err);

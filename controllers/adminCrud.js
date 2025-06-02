@@ -18,7 +18,7 @@ async function getUsuarios() {
     conn.connect(connParams, (err) => {
       if (err) return reject("Error conectando a SAP HANA: " + err);
 
-      const query = `SELECT * FROM "DBADMIN"."Usuario"`;
+      const query = `SELECT * FROM "BACKPYMEX"."Usuario"`;
       conn.exec(query, (err, result) => {
         conn.disconnect();
         if (err) return reject("Error al obtener usuarios: " + err);
@@ -36,7 +36,7 @@ async function createUsuario(usuario) {
       if (err) return reject("Error conectando a SAP HANA: " + err);
 
       const query = `
-        INSERT INTO "DBADMIN"."Usuario" 
+        INSERT INTO "BACKPYMEX"."Usuario" 
         ("nombreUsuario", "apellidoUsuario", "rol", "correo", "contrasena", "hashContrasena", "idPyme")
         VALUES (?, ?, ?, ?, ?, ?, ?)
       `;
@@ -76,7 +76,7 @@ async function updateUsuario(id, usuario) {
       if (err) return reject("Error conectando a SAP HANA: " + err);
 
       const query = `
-        UPDATE "DBADMIN"."Usuario"
+        UPDATE "BACKPYMEX"."Usuario"
         SET "nombreUsuario" = ?, 
             "apellidoUsuario" = ?, 
             "rol" = ?, 
@@ -118,7 +118,7 @@ async function deleteUsuario(id) {
     conn.connect(connParams, (err) => {
       if (err) return reject("Error conectando a SAP HANA: " + err);
 
-      const query = `DELETE FROM "DBADMIN"."Usuario" WHERE "idUsuario" = ?`;
+      const query = `DELETE FROM "BACKPYMEX"."Usuario" WHERE "idUsuario" = ?`;
 
       conn.prepare(query, (err, statement) => {
         if (err) {

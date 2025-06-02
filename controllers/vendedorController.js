@@ -48,8 +48,8 @@ export const getProductsByBranch = async (req, res) => {
       P."nombreProductoo",
       P."precioProducto", 
       A."cantidadProducto" AS "availableQuantity"
-    FROM "DBADMIN"."Producto" AS P
-    JOIN "DBADMIN"."Almacenamiento" AS A
+    FROM "BACKPYMEX"."Producto" AS P
+    JOIN "BACKPYMEX"."Almacenamiento" AS A
       ON P."idProducto" = A."idProducto"
     WHERE A."idSucursal" = ?;
   `;
@@ -85,7 +85,7 @@ export const createTicket = async (req, res) => {
       }
 
       const checkAvailabilityQuery = `
-        SELECT "cantidadProducto" FROM "DBADMIN"."Almacenamiento"
+        SELECT "cantidadProducto" FROM "BACKPYMEX"."Almacenamiento"
         WHERE "idProducto" = ? AND "idSucursal" = ?;
       `;
       conn.prepare(checkAvailabilityQuery, (checkPrepErr, checkStmt) => {
@@ -120,7 +120,7 @@ export const createTicket = async (req, res) => {
           checkStmt.drop();
 
           const insertTicketQuery = `
-            INSERT INTO "DBADMIN"."Ticket" ("fechaVenta", "cantidadTotal", "idSucursal")
+            INSERT INTO "BACKPYMEX"."Ticket" ("fechaVenta", "cantidadTotal", "idSucursal")
             VALUES (CURRENT_DATE, ?, ?);
           `;
           conn.prepare(insertTicketQuery, (ticketPrepErr, ticketStmt) => {
@@ -149,7 +149,7 @@ export const createTicket = async (req, res) => {
                 ticketStmt.drop();
 
                 const insertTicketProductQuery = `
-                  INSERT INTO "DBADMIN"."Ticket_Producto" ("cantidad", "idTicket", "idProducto")
+                  INSERT INTO "BACKPYMEX"."Ticket_Producto" ("cantidad", "idTicket", "idProducto")
                   VALUES (?, ?, ?);
                 `;
                 conn.prepare(insertTicketProductQuery, (tpPrepErr, tpStmt) => {
@@ -169,7 +169,7 @@ export const createTicket = async (req, res) => {
                     tpStmt.drop();
 
                     const updateAlmacenamientoQuery = `
-                      UPDATE "DBADMIN"."Almacenamiento"
+                      UPDATE "BACKPYMEX"."Almacenamiento"
                       SET "cantidadProducto" = "cantidadProducto" - ?
                       WHERE "idProducto" = ? AND "idSucursal" = ?;
                     `;
@@ -223,10 +223,10 @@ export const getTicketsByBranch = async (req, res) => {
       TP."cantidad",
       P."nombreProductoo" AS "productName",
       P."precioProducto" -- Corrected column name
-    FROM "DBADMIN"."Ticket" AS T
-    JOIN "DBADMIN"."Ticket_Producto" AS TP
+    FROM "BACKPYMEX"."Ticket" AS T
+    JOIN "BACKPYMEX"."Ticket_Producto" AS TP
       ON T."idTicket" = TP."idTicket"
-    JOIN "DBADMIN"."Producto" AS P
+    JOIN "BACKPYMEX"."Producto" AS P
       ON TP."idProducto" = P."idProducto"
     WHERE T."idSucursal" = ?
     ORDER BY T."fechaVenta" DESC, T."idTicket" DESC;
