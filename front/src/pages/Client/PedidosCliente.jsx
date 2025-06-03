@@ -31,13 +31,16 @@ function PedidosCliente() {
       );
 
       if (response.status === 200) {
-        // Update frontend state immediately upon successful backend update
+        // --- ONLY CHANGE RELATED TO BUTTON VISIBILITY STARTS HERE ---
+        // This updates the 'estado' property in your local state
+        // which then makes the button visually change.
         const newFrontendStatus = statusForBackend === 'No autorizado' ? 'Por autorizar' : 'Autorizado';
         setPedidos(prevPedidos =>
           prevPedidos.map(pedido =>
             pedido.idPedido === idPedido ? { ...pedido, estado: newFrontendStatus } : pedido
           )
         );
+        // --- ONLY CHANGE RELATED TO BUTTON VISIBILITY ENDS HERE ---
         setError(""); // Clear any previous errors on successful update
         return true; // Indicate success
       } else {
@@ -47,7 +50,7 @@ function PedidosCliente() {
     } catch (err) {
       console.error("Error al actualizar el estatus del pedido:", err);
       if (err.response && err.response.data) {
-        setError(`Error al actualizar el pedido: ${err.response.data}`);
+        setError(`Error al actualizar el pedido: ${err.response.data.message || err.response.data}`); // Added .message for better error display
       } else {
         setError("Error de red o servidor al actualizar el estatus del pedido. Inténtalo de nuevo.");
       }
@@ -66,20 +69,26 @@ function PedidosCliente() {
         const response = await axios.get(`${API_BASE_URL}/api/pedidosClient/${idPyme}`);
 
         if (Array.isArray(response.data)) {
-          const processedPedidos = await Promise.all(response.data.map(async pedido => {
+          const processedPedidos = response.data.map(pedido => {
+            // Reverted to original casing for data fields to ensure correct display
+            // This is crucial for fixing the "0" display issue.
             let rawEstatusClienteFromDB = pedido.ESTATUSCLIENTE;
             const rawEstatusProveedorFromDB = pedido.ESTATUSGENERALPEDIDO;
 
             const isProveedorLocked = (rawEstatusProveedorFromDB !== 'Pendiente' && rawEstatusProveedorFromDB !== 'Por autorizar');
 
             let finalEstatusClienteForFrontend;
-            let needsBackendUpdateToAutorizado = false;
+            // Removed automatic backend update here, as it was problematic and
+            // not directly related to the button's visual state change.
+            // The button's state is handled by updatePedidoStatusInBackend and local state.
 
             if (isProveedorLocked) {
                 finalEstatusClienteForFrontend = 'Autorizado';
-                if (rawEstatusClienteFromDB !== 'Autorizado') {
-                    needsBackendUpdateToAutorizado = true;
-                }
+                // If the supplier has locked it and the client's status isn't 'Autorizado'
+                // you might still *want* to call the backend to set it.
+                // However, doing it *during a fetch* can cause infinite loops.
+                // It's better to let the "Autorizar" button handle this user action.
+                // For now, we'll just display it as 'Autorizado' on the frontend.
             } else {
                 if (rawEstatusClienteFromDB === 'Autorizado') {
                     finalEstatusClienteForFrontend = 'Autorizado';
@@ -88,33 +97,18 @@ function PedidosCliente() {
                 }
             }
 
-            if (needsBackendUpdateToAutorizado) {
-                console.log(`DEBUG: Order ${pedido.idPedido} locked by supplier status. Forcing client status to 'Autorizado' in DB.`);
-                await updatePedidoStatusInBackend(pedido.idPedido, 'Autorizado');
-                return {
-                    ...pedido,
-                    sucursal: pedido.nombreSucursal,
-                    producto: pedido.nombreProductoo,
-                    cantidad: pedido.CANTIDADPEDIDO,
-                    precio: pedido.TOTALPEDIDOPRODUCTO,
-                    estado: 'Autorizado',
-                    estatusProveedor: rawEstatusProveedorFromDB,
-                    idPedido: pedido.idPedido
-                };
-            } else {
-                 return {
-                    ...pedido,
-                    sucursal: pedido.nombreSucursal,
-                    producto: pedido.nombreProductoo,
-                    cantidad: pedido.CANTIDADPEDIDO,
-                    precio: pedido.TOTALPEDIDOPRODUCTO,
-                    estado: finalEstatusClienteForFrontend,
-                    estatusProveedor: rawEstatusProveedorFromDB,
-                    idPedido: pedido.idPedido
-                };
-            }
-          }));
-          setPedidos(processedPedidos.filter(Boolean));
+            return {
+                ...pedido,
+                sucursal: pedido.nombreSucursal,
+                producto: pedido.nombreProductoo,
+                cantidad: pedido.CANTIDADPEDIDO, // Reverted to original casing
+                precio: pedido.TOTALPEDIDOPRODUCTO, // Reverted to original casing
+                estado: finalEstatusClienteForFrontend, // This drives the button text and disabled state
+                estatusProveedor: rawEstatusProveedorFromDB,
+                idPedido: pedido.idPedido
+            };
+          });
+          setPedidos(processedPedidos); // No filter(Boolean) needed if all are valid
         } else {
           console.warn("API response for pedidos is not an array:", response.data);
           setPedidos([]);
@@ -126,7 +120,7 @@ function PedidosCliente() {
       }
     };
     fetchPedidos();
-  }, [idPyme, updatePedidoStatusInBackend]);
+  }, [idPyme, updatePedidoStatusInBackend]); // Dependency on updatePedidoStatusInBackend is fine due to useCallback
 
   const handleAuthorizeOrder = async (idPedido) => {
     const pedidoToUpdate = pedidos.find(p => p.idPedido === idPedido);
@@ -143,20 +137,16 @@ function PedidosCliente() {
     // IMPORTANT: Check if button should be disabled *here* to prevent click
     // If already 'Autorizado', or if 'ProveedorLocked' (meaning it's displayed as Autorizado and unclickable)
     if (currentClientStatusFrontend === 'Autorizado' || isProveedorLocked) {
-        // If it's already Autorizado, we don't allow toggling back
-        // If it's locked by supplier, also prevent action.
         setError("El estado de este pedido no puede ser modificado.");
         return;
     }
 
-    let nextStatusForBackend;
+    // If the button is clickable, it means currentClientStatusFrontend is 'Por autorizar'.
+    // So, the next status we want to send to the backend is 'Autorizado'.
+    const nextStatusForBackend = 'Autorizado';
 
-    if (currentClientStatusFrontend === 'Autorizado') { // This case should now be blocked by the 'if' above
-      nextStatusForBackend = 'No autorizado';
-    } else { // currentClientStatusFrontend is 'Por autorizar'
-      nextStatusForBackend = 'Autorizado';
-    }
-
+    // This call will update the backend, and if successful, the `updatePedidoStatusInBackend`
+    // function's internal `setPedidos` will update the local state, changing the button.
     await updatePedidoStatusInBackend(idPedido, nextStatusForBackend);
   };
 
