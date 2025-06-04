@@ -42,8 +42,8 @@ Cypress.Commands.add('loginAdmin', () => {
 
   Cypress.Commands.add('loginSucursal', () => { 
     cy.visit('http://localhost:5173/')
-    cy.get('input').first().type('mich@sucursal.com')
-    cy.get('input').last().type('sucursalMich')
+    cy.get('input').first().type('ximena@suc.monterrey.com')
+    cy.get('input').last().type('XsucM')
     cy.get('#login-button').click()
     cy.url().should('include', '/sucursal')
   })

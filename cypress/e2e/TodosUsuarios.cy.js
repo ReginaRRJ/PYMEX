@@ -42,8 +42,8 @@ describe('PA01001. Inicio sesión', () => {
 
   it('Sucursal', () => {
     cy.contains('Iniciar sesión')
-    cy.get('input').first().type('mich@sucursal.com')
-    cy.get('input').last().type('sucursalMich')
+    cy.get('input').first().type('ximena@suc.monterrey.com')
+    cy.get('input').last().type('XsucM')
     cy.get('#login-button').click()
     cy.url().should('include', '/sucursal')
   })
