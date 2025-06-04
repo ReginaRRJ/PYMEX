@@ -69,6 +69,39 @@ export const getAllReportes = () => {
     });
   });
 };
+
+// Actualizar el campo "resuelto" de un reporte por su ID 
+export function updateResueltoReporte(idReporte, resuelto) {
+  return new Promise((resolve, reject) => {
+    const conn = hana.createConnection();
+
+    conn.connect(connParams, (err) => {
+      if (err) {
+        console.error('Error al conectar a SAP HANA:', err);
+        return reject(err);
+      }
+
+      const query = `
+        UPDATE "BACKPYMEX"."Reporte"
+        SET "resuelto" = ?
+        WHERE "idReporte" = ?
+      `;
+
+      const values = [resuelto ? 1 : 0, idReporte];
+
+      conn.exec(query, values, (err, result) => {
+        conn.disconnect();
+        if (err) {
+          console.error('Error al actualizar el reporte:', err);
+          return reject(err);
+        }
+
+        resolve({ message: "Reporte actualizado correctamente", data: result });
+      });
+    });
+  });
+} 
+
 // Update a Reporte
 /*async function updateReporte(id, reporte) {
     try {

@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllReportes } from "../controllers/adminReport.js";
+import { getAllReportes, updateResueltoReporte } from "../controllers/adminReport.js";
 import { createReporte } from "../controllers/reporteAdminController.js";
 
 const router = express.Router();
@@ -38,11 +38,12 @@ router.post("/pedido", async (req, res) => {
   }
 });
 
+//Editar reporte
 router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const reporte = req.body;
-    const result = await updateReporte(id, reporte);
+    const result = await updateResueltoReporte(id, reporte);
     res.json(result);
   } catch (err) {
     console.error("Error al actualizar reporte:", err.message);

@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function TicketModal({ onClose, onTicketCreated }) {
     const [user, setUser] = useState(null);
@@ -225,7 +226,7 @@ function TicketModal({ onClose, onTicketCreated }) {
                         </div>
                         <div className="h-[34%] w-full flex justify-between pl-10 pr-10 pt-6 pb-5">
                             {/* The "Solicitar producto" button is currently disabled and styled based on availability */}
-                            <button className={`h-[3rem] w-[45%] rounded-2xl text-white ${isAvailable === true ? 'bg-slate-300 cursor-not-allowed duration-300' : isAvailable === false ? 'bg-black duration-300' : 'bg-slate-300 cursor-not-allowed duration-300'}`}>
+                            <button onClick={() => toast.success('Próximamente estará disponible.')} className={`h-[3rem] w-[45%] rounded-2xl text-white ${isAvailable === true ? 'bg-slate-300 cursor-not-allowed duration-300' : isAvailable === false ? 'bg-black duration-300' : 'bg-slate-300 cursor-not-allowed duration-300'}`}>
                                 Solicitar producto
                             </button>
                             {/* The "Crear" button is enabled only when the product is available */}
@@ -245,61 +246,130 @@ function TicketModal({ onClose, onTicketCreated }) {
 }
 
 export default TicketModal;
-
 // import { motion, AnimatePresence } from 'framer-motion';
 // import { useState, useEffect } from 'react';
 // import Select from 'react-select';
-// import products from './product';
+// import axios from 'axios';
 
-// function TicketModal({ onClose }) {
+// function TicketModal({ onClose, onTicketCreated }) {
+//     const [user, setUser] = useState(null);
+//     const [productsOptions, setProductsOptions] = useState([]);
 //     const [producto, setProducto] = useState(null);
 //     const [cantidad, setCantidad] = useState('');
 //     const [isAvailable, setIsAvailable] = useState(null);
 
 //     useEffect(() => {
+//         const storedUser = localStorage.getItem("usuario");
+//         if (storedUser) {
+//             setUser(JSON.parse(storedUser));
+//         }
+//     }, []);
+
+//     useEffect(() => {
+//         if (!user || !user.idSucursal) return;
+
+//         const fetchProducts = async () => {
+//             try {
+//                 // Fetch products available for the current branch
+//                 const response = await axios.get(`http://localhost:3001/api/products/branch/${user.idSucursal}`);
+//                 // Map the fetched data to options suitable for the react-select component
+//                 const options = response.data.map((p) => ({
+//                     label: p.nombreProductoo, // Display product name
+//                     value: p.idProducto,     // Use idProducto as the value
+//                     idProducto: p.idProducto, // Store idProducto explicitly
+//                     price: p.precioProducto,  // Use precioProducto from the backend
+//                     quantity: p.availableQuantity, // Store available quantity
+//                 }));
+//                 setProductsOptions(options);
+//             } catch (error) {
+//                 console.error("Error fetching products:", error);
+//             }
+//         };
+
+//         fetchProducts();
+//     }, [user]); // Re-fetch products when user changes
+
+//     useEffect(() => {
+//         // Recalculate availability whenever quantity or selected product changes
 //         if (producto && cantidad !== '') {
 //             getAvailability();
 //         } else {
-//             setIsAvailable(null);
+//             setIsAvailable(null); // Reset availability if no product or quantity
 //         }
 //     }, [cantidad, producto]);
 
-//     const options = products.map((p) => ({
-//         label: p.product,
-//         value: p.product,
-//         price: p.price,
-//         quantity: p.quantity,
-//     }));
-
+//     // Prevents the modal from closing when clicking inside its content
 //     const handleContentClick = (e) => {
 //         e.stopPropagation();
 //     };
 
+//     // Handles product selection from the dropdown
 //     const handleProductChange = (selectedOption) => {
 //         setProducto(selectedOption);
 //     };
 
+//     // Determines if the requested quantity is available
 //     const getAvailability = () => {
 //         const cant = parseFloat(cantidad);
 //         if (isNaN(cant) || cant <= 0) {
-//             setIsAvailable(null);
-//         } else if (cant > producto.quantity) {
-//             setIsAvailable(false);
+//             setIsAvailable(null); // Invalid quantity
+//         } else if (producto && cant > producto.quantity) {
+//             setIsAvailable(false); // Not enough stock
 //         } else {
-//             setIsAvailable(true);
+//             setIsAvailable(true); // Available
 //         }
 //     };
 
+//     // Returns the CSS class for the availability input background color
 //     const getColor = () => {
 //         if (isAvailable === true) return 'bg-green-300';
 //         if (isAvailable === false) return 'bg-red-300';
 //         return 'bg-slate-300';
 //     };
 
+//     // Returns the text for the availability status
 //     const getEstadoText = () => {
 //         if (isAvailable === true) return 'Disponible';
 //         if (isAvailable === false) return 'No disponible';
 //         return '';
+//     };
+
+//     // Handles the creation of a new ticket
+//     const handleCreateTicket = async () => {
+//         // Validate inputs before creating a ticket
+//         if (!isAvailable || !producto || !cantidad || !user || !user.idSucursal) {
+//             // Using a custom modal/message box instead of alert()
+//             // For simplicity, I'm using a console log here. In a real app, you'd show a UI message.
+//             console.error('Por favor, selecciona un producto y una cantidad válida, y asegúrate de la disponibilidad.');
+//             return;
+//         }
+
+//         try {
+//             const ticketData = {
+//                 idSucursal: user.idSucursal,
+//                 product: {
+//                     idProducto: producto.idProducto,
+//                     nombreProductoo: producto.label, // Send the product name
+//                     precio: producto.price // Send the product price
+//                 },
+//                 cantidad: parseFloat(cantidad)
+//             };
+
+//             const response = await axios.post('http://localhost:3001/api/tickets', ticketData);
+//             console.log('Ticket created successfully:', response.data);
+//             // Using a console log instead of alert()
+//             console.log('Ticket creado exitosamente!');
+
+//             // Call the callback function to refresh tickets in the parent component
+//             if (onTicketCreated) {
+//                 onTicketCreated();
+//             }
+//             onClose(); // Close the modal
+//         } catch (error) {
+//             console.error('Error creating ticket:', error.response ? error.response.data : error.message);
+//             // Using a console log instead of alert()
+//             console.error(`Error al crear el ticket: ${error.response?.data?.error || error.message}`);
+//         }
 //     };
 
 //     return (
@@ -333,7 +403,7 @@ export default TicketModal;
 //                             <div className="w-[45%] h-[20%]">
 //                                 <h1>Producto</h1>
 //                                 <Select
-//                                     options={options}
+//                                     options={productsOptions}
 //                                     placeholder="Selecciona un producto..."
 //                                     value={producto}
 //                                     onChange={handleProductChange}
@@ -402,11 +472,17 @@ export default TicketModal;
 //                             </div>
 //                         </div>
 //                         <div className="h-[34%] w-full flex justify-between pl-10 pr-10 pt-6 pb-5">
+//                             {/* The "Solicitar producto" button is currently disabled and styled based on availability */}
 //                             <button className={`h-[3rem] w-[45%] rounded-2xl text-white ${isAvailable === true ? 'bg-slate-300 cursor-not-allowed duration-300' : isAvailable === false ? 'bg-black duration-300' : 'bg-slate-300 cursor-not-allowed duration-300'}`}>
 //                                 Solicitar producto
 //                             </button>
-//                             <button className={`h-[3rem] w-[45%] rounded-2xl text-white ${isAvailable === true ? 'bg-black duration-300' : isAvailable === false ? 'bg-slate-300 cursor-not-allowed duration-300' : 'bg-slate-300 cursor-not-allowed duration-300'}`}>
-//                                 Crear    
+//                             {/* The "Crear" button is enabled only when the product is available */}
+//                             <button
+//                                 className={`h-[3rem] w-[45%] rounded-2xl text-white ${isAvailable === true ? 'bg-black duration-300' : 'bg-slate-300 cursor-not-allowed duration-300'}`}
+//                                 onClick={handleCreateTicket}
+//                                 disabled={!isAvailable} // Disable if not available
+//                             >
+//                                 Crear
 //                             </button>
 //                         </div>
 //                     </div>
@@ -417,3 +493,4 @@ export default TicketModal;
 // }
 
 // export default TicketModal;
+

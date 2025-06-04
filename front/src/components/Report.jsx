@@ -32,22 +32,22 @@ function Report({ reporte, index }) {
                     {importancia}
                 </div>
                 <div className="w-[30%] h-full">
-                    <div className="w-full h-[50%] flex flex-col justify-end text-[16px] font-bold">Título:</div>
-                    <div className="w-full h-[50%] text-[12px]">{reporte.titulo}</div>
+                    <div className="w-full h-[50%] flex flex-col justify-end text-[18px] font-bold">Título:</div>
+                    <div className="w-full h-[50%] text-[15px]">{reporte.titulo}</div>
                 </div>
                 <div className="w-[30%] h-full">
-                    <div className="w-full h-[50%] flex flex-col justify-end text-[16px] font-bold">Fecha:</div>
-                    <div className="w-full h-[50%] text-[12px]">{new Date(reporte.fechaReporte).toLocaleDateString()}</div>
+                    <div className="w-full h-[50%] flex flex-col justify-end text-[18px] font-bold">Fecha:</div>
+                    <div className="w-full h-[50%] text-[15px]">{new Date(reporte.fechaReporte).toLocaleDateString()}</div>
                 </div>
                 <div className="w-[20%] h-full flex justify-center items-center">
                     <ReportButton reporte={reporte} />
                 </div>
             </div>
             <div className="w-full h-[50%] pl-[3%] pr-[25px]">
-                <div className="w-full h-[30%] flex flex-col justify-baseline text-[16px] font-bold pl-[10px]">
+                <div className="w-full h-[30%] flex flex-col justify-baseline text-[18px] font-bold pl-[10px]">
                     Contenido:
                 </div>
-                <div className="w-full h-[70%] flex flex-col justify-baseline text-[12px] pl-[10px]">
+                <div className="w-full h-[70%] flex flex-col justify-baseline text-[15px] pl-[10px]">
                     {reporte.descripcion}
                 </div>
             </div>
