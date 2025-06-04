@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import roles from './roles';
 import { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 async function generarHash(contrasena) {
     const encoder = new TextEncoder();
@@ -30,7 +31,24 @@ function AddUser({onClose}) {
         setSelectedRole(e.target.value);
     };
 
-    const crearUsuario = async () => {
+    const crearUsuario = async () => { 
+        if (!nombre) {
+        toast.error("Error, por favor asigna un nombre") // puedes usar toast también si quieres
+        return;
+        } else if (!apellido) {
+            toast.error("Error, por favor asigna un apellido");
+            return;
+        } else if (!correo) {
+            toast.error("Error, por favor asigna un correo");
+            return;
+        } else if (!contraseña) {
+            toast.error("Error, por favor asigna una contraseña");
+            return;
+        } else if (selectedRole === "Sucursal" && !sucursal) {
+            toast.error("Error, por favor asigna una sucursal");
+            return;
+        }
+
         try {
             const hash = await generarHash(contraseña);
             const datos = {
@@ -50,6 +68,7 @@ function AddUser({onClose}) {
             console.log("Usuario creado:", res.data);
             window.location.reload(); //Nancy: Agregado para recargar la página después de la actualización
             onClose(); // cerrar modal si todo sale bien
+            toast.success("Usuario creado correctamente");
         } catch (error) {
             console.error("Error al crear usuario:", error);
         }

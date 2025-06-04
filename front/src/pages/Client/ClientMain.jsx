@@ -1,76 +1,108 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import PedidosDist from "./PedidosDist";
+import { useState } from "react";
+import Header from "../../components/Header";
+import NavbarIcon from "../../components/NavbarIcon";
+import Profile from "../../components/Profile";
+import PedidosCliente from "./PedidosCliente";
+import VentasCliente from "./VentasCliente";
+import NotificacionesCliente from "./NotificacionesCliente";
+import SucursalesCliente from "./SucursalesCliente";
+import StockCliente from "./StockCliente";
+import ReporteCliente from "./ReporteCliente";
+import Notificaciones from "../../components/Notifications";
+
+import carrito from '/assets/carrito.png';
+import notificacion from '/assets/notificacion.png';
+import market from '/assets/market.png'
+import stock from '/assets/stock.png'
+import report from '/assets/report.png'
+import sell from '/assets/sell.png'
+
+let rol = "CLIENTE";
 
 function ClientMain() {
-  const [activeScreenClient, setActiveScreenClient] = useState("pedidosDist");
+    const [activeScreenCliente, setActiveScreenCliente] = useState("pedidosCliente");
+    const [notModal, setNotModal] = useState(false)
 
-  const fetchProtectedData = async () => {
-    const token = localStorage.getItem("token");
+    const renderScreen = () => {
+        switch (activeScreenCliente) {
+            case "pedidosCliente":
+                return <PedidosCliente/>;
+            case "ventasCliente":
+                return <VentasCliente/>;
+            case "notificacionesCliente":
+                return <NotificacionesCliente/>;
+            case "sucursalesCliente":
+                return <SucursalesCliente/>;
+            case "stockCliente":
+                return <StockCliente/>;
+            case "reporteCliente":
+                return <ReporteCliente/>;
+            default:
+                return <h2>Screen not found</h2>;
+        }
+    };
 
-    if (!token) {
-      window.location.href = "/"; // Redirect if no token
-      return;
-    }
+    return (
+      <>
+        {notModal && (
+          <NotModalCliente onClose={() => setNotModal(false)}></NotModalCliente>
+        )}
 
-    try {
-      const response = await fetch("http://localhost:3000/protectedRoute", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        console.log("Protected data:", data);
-      } else {
-        console.error("Failed to fetch protected data:", data.message);
-      }
-    } catch (error) {
-      console.error("Error fetching protected data:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProtectedData();
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("rol");
-    window.location.href = "/"; // Redirect to login page
-  };
-
-  const renderScreen = () => {
-    switch (activeScreenClient) {
-      case "pedidosDist":
-        return <PedidosDist />;
-      default:
-        return <h2>Screen not found</h2>;
-    }
-  };
-
-  return (
-    <div>
-      <button
-        onClick={handleLogout}
-        style={{
-          position: "absolute",
-          top: 10,
-          right: 10,
-          padding: "10px",
-          backgroundColor: "red",
-          color: "white",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
-       Cerrar sesión
-      </button>
-      {renderScreen()}
-    </div>
-  );
+        <div className="w-screen h-screen flex flex-col items-center">
+        <Header rol={rol} bell={true} setNotModal={setNotModal}/>
+        <hr className="w-[95%]" />
+        <div className="w-full h-[90%] flex">
+          <div className="w-[25%] h-full">
+            <div className="w-full h-[80%] flex flex-col items-center pt-[8vh]">
+              <NavbarIcon
+                icon={carrito}
+                text={"Pedidos"}
+                onClick={() => setActiveScreenCliente("pedidosCliente")}
+                selected={activeScreenCliente === "pedidosCliente"}
+              />
+              <NavbarIcon
+                icon={sell}
+                text={"Ventas"}
+                onClick={() => setActiveScreenCliente("ventasCliente")}
+                selected={activeScreenCliente === "ventasCliente"}
+              />
+              <NavbarIcon
+                icon={notificacion}
+                text={"Notificaciones"}
+                onClick={() => setActiveScreenCliente("notificacionesCliente")}
+                selected={activeScreenCliente === "notificacionesCliente"}
+              />
+              <NavbarIcon
+                icon={market}
+                text={"Sucursales"}
+                onClick={() => setActiveScreenCliente("sucursalesCliente")}
+                selected={activeScreenCliente === "sucursalesCliente"}
+              />
+              <NavbarIcon
+                icon={stock}
+                text={"Stock"}
+                onClick={() => setActiveScreenCliente("stockCliente")}
+                selected={activeScreenCliente === "stockCliente"}
+              />
+              <NavbarIcon
+                icon={report}
+                text={"Reportar"}
+                onClick={() => setActiveScreenCliente("reporteCliente")}
+                selected={activeScreenCliente === "reporteCliente"}
+              />
+            </div>
+            <div className="w-full h-[20%]">
+              <Profile />
+            </div>
+          </div>
+          <div className="w-[75%] h-full">
+            {renderScreen()}
+          </div>
+        </div>
+      </div>
+    </>
+    );
 }
 
 export default ClientMain;

@@ -9,10 +9,24 @@ import SucursalMain from "./pages/Sucursal/SucursalMain";
 import VendedorMain from "./pages/Vendedor/VendedorMain";
 import DistribuidorMain from "./pages/Distribuidor/DistribuidorMain";
 import ProtectedRoute from "../PrivateRoute"; // Import the ProtectedRoute
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <Router>
+      <ToastContainer 
+        position="top-right" 
+        autoClose={3000} 
+        hideProgressBar={false} 
+        newestOnTop={false} 
+        closeOnClick 
+        rtl={false} 
+        pauseOnFocusLoss 
+        draggable 
+        pauseOnHover 
+        theme="colored"
+      />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />

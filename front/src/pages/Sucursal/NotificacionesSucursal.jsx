@@ -108,7 +108,7 @@ function NotificacionesSucursal() {
                         />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
-                        <h1 className='text-[18px] font-bold'>Pedido Autorizado</h1>
+                        <h1 className='text-[18px] font-bold'>Pedido autorizado</h1>
                         <h1 className='text-[12px]'>Estado de autorización de los pedidos de la sucursal</h1>
                     </div>
                 </div>
@@ -126,7 +126,7 @@ function NotificacionesSucursal() {
                         />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
-                        <h1 className='text-[18px] font-bold'>Automatización de pedidoso</h1>
+                        <h1 className='text-[18px] font-bold'>Automatización de pedidos</h1>
                         <h1 className='text-[12px]'>Automatización en momento calculado para evitar desabasto.</h1>
                     </div>
                 </div>
