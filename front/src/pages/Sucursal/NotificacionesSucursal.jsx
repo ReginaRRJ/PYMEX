@@ -94,9 +94,18 @@ function NotificacionesSucursal() {
             </div>
 
             <div className="w-full h-[75%]">
-                <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
+                {/* ID para Pruebas */}
+                <div 
+                data-testid="notificacionAutorizado-container"
+                className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
+
                     <div className='w-[80px] h-full flex flex-col justify-center'>
-                        <Switch size='large' checked={pedidoAutorizado} onChange={(e) => handleSwitchChange(1, e.target.checked)}/>
+                        <Switch 
+                        size='large' 
+                        checked={pedidoAutorizado} 
+                        onChange={(e) => handleSwitchChange(1, e.target.checked)}
+                        inputProps={{ 'data-testid': 'switchNotificacionAutorizado' }}
+                        />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
                         <h1 className='text-[18px] font-bold'>Pedido autorizado</h1>
@@ -104,9 +113,17 @@ function NotificacionesSucursal() {
                     </div>
                 </div>
                 <br />
-                <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
+                {/* ID para Pruebas */}
+                <div 
+                data-testid="notificacionAutorizacion-container"
+                className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
-                        <Switch size='large' checked={automatizacionPedidos} onChange={(e) => handleSwitchChange(2, e.target.checked)}/>
+                        <Switch 
+                        size='large' 
+                        checked={automatizacionPedidos} 
+                        onChange={(e) => handleSwitchChange(2, e.target.checked)}
+                        inputProps={{ 'data-testid': 'switchNotificacionAutorizacion' }}
+                        />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
                         <h1 className='text-[18px] font-bold'>Automatización de pedidos</h1>
@@ -114,9 +131,17 @@ function NotificacionesSucursal() {
                     </div>
                 </div>
                 <br />
-                <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
+                {/* ID para Pruebas */}
+                <div 
+                data-testid="notificacionEstatus-container"
+                className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
-                        <Switch size='large' checked={estatusPedido} onChange={(e) => handleSwitchChange(3, e.target.checked)}/>    
+                        <Switch 
+                        size='large' 
+                        checked={estatusPedido} 
+                        onChange={(e) => handleSwitchChange(3, e.target.checked)}
+                        inputProps={{ 'data-testid': 'switchNotificacionEstatus' }}
+                        />    
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
                         <h1 className='text-[18px] font-bold'>Estatus del pedido</h1>

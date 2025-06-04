@@ -42,8 +42,8 @@ Cypress.Commands.add('loginAdmin', () => {
 
   Cypress.Commands.add('loginSucursal', () => { 
     cy.visit('http://localhost:5173/')
-    cy.get('input').first().type('mich@sucursal.com')
-    cy.get('input').last().type('sucursalMich')
+    cy.get('input').first().type('ximena@suc.monterrey.com')
+    cy.get('input').last().type('XsucM')
     cy.get('#login-button').click()
     cy.url().should('include', '/sucursal')
   })
@@ -53,14 +53,14 @@ Cypress.Commands.add('loginAdmin', () => {
     cy.get('input').first().type('santiago@proveedor.com')
     cy.get('input').last().type('proveedorSanti')
     cy.get('#login-button').click()
-    cy.url().should('include', '/sucursal')
+    cy.url().should('include', '/dist')
   })
   Cypress.Commands.add('loginVendedor', () => { 
     cy.visit('http://localhost:5173/')
     cy.get('input').first().type('regina@vendedor.com')
     cy.get('input').last().type('vendedorRe')
     cy.get('#login-button').click()
-    cy.url().should('include', '/sucursal')
+    cy.url().should('include', '/vendedor')
   })
 
 

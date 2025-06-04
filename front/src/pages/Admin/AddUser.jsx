@@ -66,6 +66,7 @@ function AddUser({onClose}) {
         
             const res = await axios.post(`http://localhost:3001/api/usuarios/admin`, datos);
             console.log("Usuario creado:", res.data);
+            window.location.reload(); //Nancy: Agregado para recargar la página después de la actualización
             onClose(); // cerrar modal si todo sale bien
             toast.success("Usuario creado correctamente");
         } catch (error) {

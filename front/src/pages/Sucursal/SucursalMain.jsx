@@ -65,6 +65,7 @@ function SucursalMain() {
     };
 
     return (
+
       <>
         {updateButton && //pedidoSeleccionadoId && 
         (
@@ -82,6 +83,7 @@ function SucursalMain() {
         )}
       
         <div className="w-screen h-screen flex flex-col items-center">
+
         <Header rol={rol} />
         <hr className="w-[95%]" />
         <div className="w-full h-[90%] flex">
@@ -94,6 +96,7 @@ function SucursalMain() {
                 selected={activeScreenSucursal === "pedidosSucursal"}
               />
               <NavbarIcon
+                
                 icon={notificacion}
                 text={"Notificaciones"}
                 onClick={() => setActiveScreenSucursal("notificacionesSucursal")}

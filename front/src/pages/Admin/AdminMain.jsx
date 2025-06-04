@@ -63,7 +63,9 @@ function AdminMain() {
             <hr className="w-[95%]"/>
             <div className="w-full h-[90%] flex">
                 <div className="w-[25%] h-full">
-                    <div className="w-full h-[80%] flex flex-col items-center pt-[8vh]">
+
+                    {/* ID para Pruebas */}
+                    <div id="Navbar" className="w-full h-[80%] flex flex-col items-center pt-[8vh]">
                        {/* Botones de izquierda */}
                         <NavbarIcon icon={userImg} 
                                     text={"Usuarios"} 
@@ -74,6 +76,7 @@ function AdminMain() {
                                     text={"Reportes"} 
                                     onClick={() => setActiveScreenAdmin("reportesUsuarios")} 
                                     selected={activeScreenAdmin === "reportesUsuarios"}>
+                                        
                         </NavbarIcon>
                     </div>
                     <div className="w-full h-[20%]">

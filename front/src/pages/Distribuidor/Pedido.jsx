@@ -70,7 +70,7 @@ function Pedido({ pedido, onClose }) {
             <div className="h-full w-[32%] rounded-xl bg-slate-200 p-10">
               <h1 className="font-bold">Detalles</h1>
               <br />
-              <h1 className="font-bold">ID:</h1>
+              <h1 data-testid="idPedido" className="font-bold">ID:</h1>
               <h1>{pedidoData.ID}</h1>
               <br />
               <h1 className="font-bold">Producto:</h1>
@@ -86,7 +86,7 @@ function Pedido({ pedido, onClose }) {
               <h1>{pedidoData["Fecha de Entrega"]}</h1>
               <br />
               <div className="h-[30%] w-full">
-                <StepperComp pedidoId={pedidoData.ID} /> {/* Pasamos el pedidoId a StepperComp */}
+                <StepperComp  pedidoId={pedidoData.ID} /> {/* Pasamos el pedidoId a StepperComp */}
               </div>
             </div>
             <div className="h-full w-[32%] bg-slate-200 rounded-xl p-10">
