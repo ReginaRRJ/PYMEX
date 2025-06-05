@@ -49,11 +49,13 @@ describe('PA09003. UpdateUsuario: CRUD', () => {
     cy.get ('[data-testid="inputActualizar-correo"]').clear().type('kim@namjoon.kr')
     cy.get('#update-button').click()
 
+    cy.wait(8000)
+
     cy.logOut()
     cy.get('input').first().type('kim@namjoon.kr')
     cy.get('input').last().type('WHYK')
     cy.get('#login-button').click()
-    //cy.url().should('include', '/vendedor')
+    cy.url().should('include', '/vendedor')
 
     })
   })
@@ -63,6 +65,7 @@ describe('PA09004. DeteleUsuario: CRUD', () => {
     cy.loginAdmin()
     cy.get ('#usuarios-list').find ('tr').contains('td', 'kim@namjoon.kr').click()
     cy.get('#delete-button').click()
+    cy.reload()
     cy.get ('#usuarios-list').find ('tr').contains('td', 'kim@namjoon.kr').should('not.exist');
   })
 })
@@ -91,6 +94,36 @@ describe('PA09005. Seguimiento de Reportes', () => {
   });  
 
 
+  it('Actualización de Estado de un Reporte', () => {
+  cy.loginAdmin(); 
+  cy.get('#Navbar').contains('Reportes').click();
+
+  // Paso 1: Obtener todos los reportes
+  cy.request('GET', 'http://localhost:3001/reportes').then((response) => {
+    const reportes = response.body;
+    const pendiente = reportes.find(r => !r.resuelto); // Paso 2: Buscar uno que aún no esté resuelto
+
+    if (pendiente) {
+      const idReporte = pendiente.idReporte;
+
+      cy.get(`[data-testid="reporte-row-${idReporte}"]`)
+        .find('[data-testid="UpdateEstadoReport-button"]')
+        .click();
+
+      cy.wait(500); 
+      cy.request('GET', 'http://localhost:3001/reportes').then((res) => {
+        const actualizado = res.body.find(r => r.idReporte === idReporte);
+        expect(actualizado).to.exist;
+        expect(actualizado.resuelto).to.be.true;
+      });
+    } else {
+      cy.log('No hay reportes pendientes por resolver');
+    }
+  });
+});
+
+
+/*
   it('Actualización de Estados', () => {
     cy.loginAdmin()
     cy.get('#Navbar').contains('Reportes').click();
@@ -128,4 +161,6 @@ describe('PA09005. Seguimiento de Reportes', () => {
       }
     });
   });
+*/
+
 })

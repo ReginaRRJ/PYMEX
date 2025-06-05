@@ -127,6 +127,7 @@ function EditUser({ user, onClose }) {
               <div className="h-20%">
                 <h1>Correo</h1>
                 <input
+                  data-testid="inputActualizar-correo"
                   type="text"
                   className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"
                   defaultValue={user.correo}
@@ -157,6 +158,7 @@ function EditUser({ user, onClose }) {
               <div className="h-20%">
                 <h1>Apellido</h1>
                 <input
+                  data-testid="inputActualizar-apellido"
                   type="text"
                   className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"
                   defaultValue={user.apellidoUsuario}

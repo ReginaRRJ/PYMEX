@@ -20,11 +20,11 @@ function Header({rol, bell}) {
                 <div className="w-[15%] h-full flex items-center justify-between">
                     {/* THIS IS THE FIX: Changed onClick={{}} to onClick={() => {}} */}
                     <img src={bellIcon} alt="" className="h-[50%] cursor-pointer" onClick={() => {}}></img>
-                    <button onClick={handleLogout} className="w-[70%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
+                    <button id ="logout-button" onClick={handleLogout} className="w-[70%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
 
                 </div>
             ) : (
-                <button onClick={handleLogout} className="w-[10%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
+                <button id ="logout-button" onClick={handleLogout} className="w-[10%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
             )}
         </div>
     )

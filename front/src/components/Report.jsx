@@ -26,7 +26,9 @@ function Report({ reporte, index }) {
     const { importancia, color } = getImportancia(reporte.urgencia);
 
     return (
-        <div className="w-full h-[180px] mb-[10px] bg-slate-100 rounded-2xl">
+        <div 
+        data-testid={`reporte-row-${reporte.idReporte}`}
+        className="w-full h-[180px] mb-[10px] bg-slate-100 rounded-2xl">
             <div className="w-full h-[50%] flex">
                 <div className={`w-[20%] h-full ${color} flex justify-center items-center text-[30px] font-bold`}>
                     {importancia}
