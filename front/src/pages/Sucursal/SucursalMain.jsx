@@ -11,6 +11,9 @@ import NavbarIcon from "../../components/NavbarIcon";
 import Profile from "../../components/Profile";
 import ActualizarPedido from "./ActualizarPedido";
 import AddOrder from "./AddOrder";
+import notificacionesData from "./notificaciones";
+import Notificaciones from "../../components/Notifications";
+
 
 import carrito from '/assets/carrito.png';
 import notificacion from '/assets/notificacion.png';
@@ -24,6 +27,9 @@ function SucursalMain() {
     const [activeScreenSucursal, setActiveScreenSucursal] = useState("pedidosSucursal");
     const [updateButton, setUpdateButton] = useState(false);
     const [newOrder, setNewOrder] = useState(false)
+    const [notificaciones, setNotificaciones] = useState(notificacionesData);
+    const [notificationsModal, setNotificationsModal] = useState(false);
+    
 
     const renderScreen = () => {
         switch (activeScreenSucursal) {
@@ -52,9 +58,13 @@ function SucursalMain() {
         {newOrder && (
           <AddOrder onClose={() => setNewOrder(false)} />
         )}
+
+        {notificationsModal && (
+          <Notificaciones onClose={() => setNotificationsModal(false)} notificaciones={notificaciones}></Notificaciones>
+        )}
       
         <div className="w-screen h-screen flex flex-col items-center">
-        <Header rol={rol} />
+        <Header rol={rol} bell={true} notificaciones={notificaciones} setNotificationsModal={setNotificationsModal}/>
         <hr className="w-[95%]" />
         <div className="w-full h-[90%] flex">
           <div className="w-[25%] h-full">

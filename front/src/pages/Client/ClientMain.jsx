@@ -10,6 +10,7 @@ import SucursalesCliente from "./SucursalesCliente";
 import StockCliente from "./StockCliente";
 import ReporteCliente from "./ReporteCliente";
 import Notificaciones from "../../components/Notifications";
+import notificacionesData from "./notificaciones";
 
 import carrito from '/assets/carrito.png';
 import notificacion from '/assets/notificacion.png';
@@ -22,7 +23,8 @@ let rol = "CLIENTE";
 
 function ClientMain() {
     const [activeScreenCliente, setActiveScreenCliente] = useState("pedidosCliente");
-    const [notModal, setNotModal] = useState(false)
+    const [notificationsModal, setNotificationsModal] = useState(false);
+    const [notificaciones, setNotificaciones] = useState(notificacionesData)
 
     const renderScreen = () => {
         switch (activeScreenCliente) {
@@ -45,12 +47,12 @@ function ClientMain() {
 
     return (
       <>
-        {notModal && (
-          <NotModalCliente onClose={() => setNotModal(false)}></NotModalCliente>
+        {notificationsModal && (
+          <Notificaciones onClose={() => setNotificationsModal(false)} notificaciones={notificaciones}></Notificaciones>
         )}
 
         <div className="w-screen h-screen flex flex-col items-center">
-        <Header rol={rol} bell={true} setNotModal={setNotModal}/>
+        <Header rol={rol} bell={true} notificaciones={notificaciones} setNotificationsModal={setNotificationsModal}/>
         <hr className="w-[95%]" />
         <div className="w-full h-[90%] flex">
           <div className="w-[25%] h-full">
