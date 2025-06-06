@@ -178,7 +178,9 @@ function PedidosCliente() {
                 <th className="w-1/5 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Estado</th>
               </tr>
             </thead>
-            <tbody className="block w-full overflow-y-auto max-h-[55vh]">
+            <tbody 
+            id="pedido-list"
+            className="block w-full overflow-y-auto max-h-[55vh]">
               {pedidos.length > 0 ? (
                 [...pedidos]
                   .sort((a, b) => (a.estado === 'Por autorizar' ? -1 : 1))

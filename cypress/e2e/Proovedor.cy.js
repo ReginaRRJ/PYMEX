@@ -1,5 +1,3 @@
-/*
-
 describe('PA03002. LeerPedidos', () => {
   it('Visualización de Pedidos ', () => {
     cy.loginProveedor()
@@ -73,8 +71,7 @@ describe('PA03003. Detalles del Pedido', () => {
   });
 });
 
-*/
-describe('PA03002. Notificaciones', () => {
+describe('PA04003. Notificaciones', () => {
   beforeEach(() => {
   cy.loginProveedor();
   cy.intercept('PUT', '**/api/notificaciones/configuracion-notificaciones/**').as('updateConfig');
