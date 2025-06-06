@@ -20,44 +20,213 @@ describe('PA03004. LeerPedidos', () => {
 });
 
 
-describe('PA04004. Notificaciones', () => {
-  it('Pedido Autorizado', () => {
+describe('PA02002. Creación de Pedidos', () => {
+  beforeEach(() => {
+    cy.intercept('GET', '**/api/sucursal/proveedores').as('getProveedores');
+    cy.intercept('GET', '**/api/sucursal/productos/2').as('getProductos');
+  });
+
+  it('Pedido Nuevo', () => {
     cy.loginSucursal();
+    cy.get("#add-pedido-button").click();
 
-    // 🟢 Interceptar ANTES de cualquier navegación o acción que dispare la petición
-    cy.intercept('GET', '**/api/notificaciones/configuracion-notificaciones/**').as('getNotificaciones');
+    cy.wait('@getProveedores');
+    cy.get('[data-testid="select-proveedor"]').select('Grupo TecnoDistribuciones S.A. de C.V.');
 
+    const randomNumber = Math.floor(Math.random() * 29) + 2;
+    cy.wrap(randomNumber).as('cantidadSeleccionada'); // guardamos alias
+    cy.get('[data-testid="input-piezas"]').type(randomNumber.toString());
+    cy.get('[data-testid="select-TipoPedido"]').select('Electrónica');
 
-    // 🔽 Ir a la sección de Notificaciones
-    cy.get('#Navbar').contains('Notificaciones').click();
+    cy.wait('@getProductos');
 
-    // 🕓 Esperar a que la respuesta llegue
-    cy.wait('@getNotificaciones').then(({ response }) => {
-      const notificaciones = response.body;
+    cy.get('[data-testid="select-producto"] option').then($options => {
+      const validOptions = [...$options].filter(opt => opt.value);
+      const randomOption = validOptions[Math.floor(Math.random() * validOptions.length)];
+      const productText = randomOption.text.trim();
+      cy.wrap(productText).as('productoSeleccionado'); // guardamos alias
+      cy.get('[data-testid="select-producto"]').select(randomOption.value);
+    });
 
-      // ✅ Validar que sea un arreglo
-      if (!Array.isArray(notificaciones)) {
-        throw new Error('La respuesta no es un arreglo: ' + JSON.stringify(notificaciones));
+    cy.get('[data-testid="input-telefono"]').type('0123456789');
+    cy.get('[data-testid="input-correo"]').type('Tecno@Distribuciones.com');
+    cy.get('#crearPedido_button').click();
+
+    cy.reload();
+
+    // Accedemos a los alias guardados
+    cy.get('@productoSeleccionado').then(producto => {
+      cy.get('@cantidadSeleccionada').then(cantidad => {
+        cy.get('#pedido-list')
+          .contains('tr', producto)
+          .should('contain', cantidad);
+      });
+    });
+  });
+})
+
+describe('PA08002. Realización de un Reporte', () => {
+  it('Realización de Reporte ', () => {
+    cy.loginSucursal()
+    cy.get('#Navbar').contains('Reportar').click();
+
+    cy.get('[data-testid="input-titulo"]').type('Error al generar pedidos');
+
+    const prioridad = Math.floor(Math.random() * 3) + 1;
+    cy.log(`Prioridad seleccionada: ${prioridad}`);
+    cy.get(`[data-testid="prioridad-${prioridad}"]`).click();
+
+    cy.get('[data-testid="input-descripcion"]').type(
+        'El sistema se congela después de realizar múltiples operaciones.');
+    cy.get('[data-testid="btn-enviar-reporte"]').click();
+
+    cy.loginAdmin();
+    cy.intercept('GET', '**/reportes').as('getReportes');
+    cy.get('#Navbar').contains('Reportes').click();
+
+    cy.wait('@getReportes').then((interception) => {
+        const reportes = interception.response.body;
+
+        // Busca el reporte con los datos que creaste
+        const reporte = reportes.find((r) => 
+            r.titulo === 'Error al generar pedidos' &&
+            r.descripcion === 'El sistema se congela después de realizar múltiples operaciones.'
+        );
+        console.log('Reporte completo:', reporte);
+        console.log('Tipo de resuelto:', typeof reporte.resuelto);
+        console.log('Valor de resuelto:', reporte.resuelto);
+
+        expect(reporte).to.exist;
+        expect(reporte.urgencia).to.be.oneOf([1, 2, 3]);
+        });
+
+  })
+});
+
+describe('PA04004. Notificaciones', () => {
+   beforeEach(() => {
+  cy.loginSucursal();
+  cy.intercept('PUT', '**/api/notificaciones/configuracion-notificaciones/**').as('updateConfig');
+  cy.intercept('GET', '**/api/notificaciones/configuracion-notificaciones/**').as('getConfig');
+  cy.get('#Navbar').contains('Notificaciones').click();
+});
+
+  it('Notificación Pedido Autorizado', () => {
+    cy.wait('@getConfig');
+
+    cy.get('[data-testid="switchNotificacionPedidoAutorizado"]').then(($switch) => {
+      const isChecked = $switch.prop('checked');
+
+      if (!isChecked) { //CASO 1: Switch está apagado
+        cy.log('Switch inicia apagado');
+        cy.get('[data-testid="switchNotificacionPedidoAutorizado"]').click();
+
+        cy.wait('@updateConfig');// Espera el PUT que guarda el cambio
+        cy.get('[data-testid="switchNotificacionPedidoAutorizado"]', { timeout: 8000 })
+          .should('have.prop', 'checked', true);
+
+        cy.reload();
+        cy.get('#Navbar').contains('Notificaciones').click();
+        cy.wait('@getConfig');
+
+        cy.get('[data-testid="switchNotificacionPedidoAutorizado"]', { timeout: 8000 })
+          .should('have.prop', 'checked', true);
+
+      } else {
+        cy.log('Switch inicia encendido'); //CASO 2: Switch está encendido
+        cy.get('[data-testid="switchNotificacionPedidoAutorizado"]').click();
+        cy.wait('@updateConfig');
+
+        cy.get('[data-testid="switchNotificacionPedidoAutorizado"]', { timeout: 8000 })
+          .should('have.prop', 'checked', false);
+
+        cy.reload();
+        cy.get('#Navbar').contains('Notificaciones').click();
+        cy.wait('@getConfig');
+
+        cy.get('[data-testid="switchNotificacionPedidoAutorizado"]', { timeout: 8000 })
+          .should('have.prop', 'checked', false);
       }
+    });
+  });
 
-      // 🟢 Buscar notificación específica
-      const pedidoAutorizado = notificaciones.find(n => n.idNotificacion === 1);
+it('Notificación Automatización de Pedidos', () => {
+    cy.wait('@getConfig');
 
-      if (!pedidoAutorizado) {
-        throw new Error('No se encontró idNotificacion: 1');
+    cy.get('[data-testid="switchNotificacionAutorizacion"]').then(($switch) => {
+      const isChecked = $switch.prop('checked');
+
+      if (!isChecked) { //CASO 1: Switch está apagado
+        cy.log('Switch inicia apagado');
+        cy.get('[data-testid="switchNotificacionAutorizacion"]').click();
+
+        cy.wait('@updateConfig');// Espera el PUT que guarda el cambio
+        cy.get('[data-testid="switchNotificacionAutorizacion"]', { timeout: 8000 })
+          .should('have.prop', 'checked', true);
+
+        cy.reload();
+        cy.get('#Navbar').contains('Notificaciones').click();
+        cy.wait('@getConfig');
+
+        cy.get('[data-testid="switchNotificacionAutorizacion"]', { timeout: 8000 })
+          .should('have.prop', 'checked', true);
+
+      } else {
+        cy.log('Switch inicia encendido'); //CASO 2: Switch está encendido
+        cy.get('[data-testid="switchNotificacionAutorizacion"]').click();
+        cy.wait('@updateConfig');
+
+        cy.get('[data-testid="switchNotificacionAutorizacion"]', { timeout: 8000 })
+          .should('have.prop', 'checked', false);
+
+        cy.reload();
+        cy.get('#Navbar').contains('Notificaciones').click();
+        cy.wait('@getConfig');
+
+        cy.get('[data-testid="switchNotificacionAutorizacion"]', { timeout: 8000 })
+          .should('have.prop', 'checked', false);
       }
+    });
+  });
 
-      // 🧪 Verificar estado actual
-      cy.log('Estado inicial desde API:', pedidoAutorizado.activo);
+  it('Notificación Estatus de Pedidos', () => {
+    cy.wait('@getConfig');
 
-      // 🧩 Validar que el switch refleja ese estado
-      cy.get('[data-testid="switchNotificacionAutorizado"]').should(`${pedidoAutorizado.activo ? '' : 'not.'}be.checked`);
+    cy.get('[data-testid="switchNotificacionEstatus"]').then(($switch) => {
+      const isChecked = $switch.prop('checked');
 
-      // 🛠️ Si está apagado, activarlo
-      if (!pedidoAutorizado.activo) {
-        cy.get('[data-testid="switchNotificacionAutorizado"]').click();
-        cy.get('[data-testid="switchNotificacionAutorizado"]').should('be.checked');
+      if (!isChecked) { //CASO 1: Switch está apagado
+        cy.log('Switch inicia apagado');
+        cy.get('[data-testid="switchNotificacionEstatus"]').click();
+
+        cy.wait('@updateConfig');// Espera el PUT que guarda el cambio
+        cy.get('[data-testid="switchNotificacionEstatus"]', { timeout: 8000 })
+          .should('have.prop', 'checked', true);
+
+        cy.reload();
+        cy.get('#Navbar').contains('Notificaciones').click();
+        cy.wait('@getConfig');
+
+        cy.get('[data-testid="switchNotificacionEstatus"]', { timeout: 8000 })
+          .should('have.prop', 'checked', true);
+
+      } else {
+        cy.log('Switch inicia encendido'); //CASO 2: Switch está encendido
+        cy.get('[data-testid="switchNotificacionEstatus"]').click();
+        cy.wait('@updateConfig');
+
+        cy.get('[data-testid="switchNotificacionEstatus"]', { timeout: 8000 })
+          .should('have.prop', 'checked', false);
+
+        cy.reload();
+        cy.get('#Navbar').contains('Notificaciones').click();
+        cy.wait('@getConfig');
+
+        cy.get('[data-testid="switchNotificacionAutorizacion"]', { timeout: 8000 })
+          .should('have.prop', 'checked', false);
       }
     });
   });
 });
+
+

@@ -49,7 +49,7 @@ describe('PA09003. UpdateUsuario: CRUD', () => {
     cy.get ('[data-testid="inputActualizar-correo"]').clear().type('kim@namjoon.kr')
     cy.get('#update-button').click()
 
-    cy.wait(8000)
+    cy.wait(6000)
 
     cy.logOut()
     cy.get('input').first().type('kim@namjoon.kr')
@@ -121,46 +121,5 @@ describe('PA09005. Seguimiento de Reportes', () => {
     }
   });
 });
-
-
-/*
-  it('Actualización de Estados', () => {
-    cy.loginAdmin()
-    cy.get('#Navbar').contains('Reportes').click();
-
-    cy.request('GET', 'http://localhost:3001/reportes').then((response) => {
-      const $children = response.body; 
-
-      if ($children.length > 0) {
-        cy.get('[data-testid="UpdateEstadoReport-button"]').should('exist');
-        
-        cy.get('#info-reporte').children().first().then($firstReport => {
-          const button = $firstReport.find('[data-testid="UpdateEstadoReport-button"]');
-          const h1 = button.find('h1');
-
-          if (h1.length > 0 && h1.text().trim() === 'Por resolver') {
-            cy.wrap(button).click();
-
-            cy.wait(500); // Espera para que el estado cambie en BD
-            cy.reload(); 
-            cy.get('#Navbar').contains('Reportes').click();
-
-            
-            cy.get('#info-reporte').children().first().then($updatedReport => {
-              const updatedButton = $updatedReport.find('[data-testid="UpdateEstadoReport-button"]');
-              cy.wrap(updatedButton).find('h1').should('not.have.text', 'Por resolver');
-              //cy.get('[data-testid="UpdateEstadoReport-button"] img').should('be.visible');
-              
-            });
-          } else {
-            cy.log('Existen reportes, pero estan todos resueltos');
-          }
-          });
-      } else {
-        cy.log('No existe reportes que se puedan actualizar');
-      }
-    });
-  });
-*/
 
 })
