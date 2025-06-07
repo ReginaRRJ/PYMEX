@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 
+const token = localStorage.getItem('token');
 function VentasCliente() {
   const [ventas, setVentas] = useState([]);
   const [error, setError] = useState("");
@@ -30,7 +31,11 @@ function VentasCliente() {
     }
 
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/ventasClient/${idPyme}`);
+      const response = await axios.get(`${API_BASE_URL}/api/ventasClient/${idPyme}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
 
       if (Array.isArray(response.data)) {
         const processedVentas = response.data.map(venta => ({

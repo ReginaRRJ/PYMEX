@@ -2,11 +2,12 @@ import { motion } from "framer-motion"
 import { useState, useEffect } from "react" 
 import sucursalesData from "./sucursales";
 import SucursalStock from "./SucursalStock.jsx";
-import sucursales from "./sucursales";
-import productsData from "./products";
+// import sucursales from "./sucursales";
+// import productsData from "./products";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const token = localStorage.getItem('token');
 function StockCliente() {
     const [productos, setProductos] = useState([]);
     const [producto, setProducto] = useState("")
@@ -29,7 +30,11 @@ function StockCliente() {
             }
 
             const response = await axios.get(
-            `http://localhost:3001/api/sucursales/pyme/${idPyme}`
+            `http://localhost:3001/api/sucursales/pyme/${idPyme}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
             );
             console.log("Sucursales recibidas:", response.data);
 
@@ -53,7 +58,11 @@ function StockCliente() {
     useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/sucursal/productos");
+        const res = await axios.get("http://localhost:3001/api/sucursal/productos", {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
         const productos = res.data || [];
 
         // Formatear para el select

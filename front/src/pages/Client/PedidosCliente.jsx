@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+const token = localStorage.getItem('token');
 
 function PedidosCliente() {
   const [pedidos, setPedidos] = useState([]);
@@ -27,7 +28,9 @@ function PedidosCliente() {
     try {
       const response = await axios.put(
         `${API_BASE_URL}/api/pedidosClient/${idPedido}/estatusCliente`,
-        { estatusCliente: statusForBackend } // This is 'Autorizado' or 'No autorizado'
+        { estatusCliente: statusForBackend},{headers: {
+    "Authorization": `Bearer ${token}`
+  } }
       );
 
       if (response.status === 200) {
@@ -66,7 +69,11 @@ function PedidosCliente() {
         return;
       }
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/pedidosClient/${idPyme}`);
+        const response = await axios.get(`${API_BASE_URL}/api/pedidosClient/${idPyme}`,{
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
 
         if (Array.isArray(response.data)) {
           const processedPedidos = response.data.map(pedido => {

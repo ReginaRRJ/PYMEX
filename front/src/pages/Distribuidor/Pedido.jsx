@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { StepperComp } from './StepperComp';
-
+const token = localStorage.getItem('token');
 function Pedido({ pedido, onClose }) {
   const [pedidoData, setPedidoData] = useState(null);
 
@@ -12,7 +12,11 @@ function Pedido({ pedido, onClose }) {
 
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/api/pedidos/detalle/${pedido.id}`);
+        const res = await fetch(`http://localhost:3001/api/pedidos/detalle/${pedido.id}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
         const data = await res.json();
 
         // Ya no es un array, sino un solo objeto

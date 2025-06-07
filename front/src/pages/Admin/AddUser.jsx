@@ -4,6 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+const token = localStorage.getItem('token');
 async function generarHash(contrasena) {
     const encoder = new TextEncoder();
     const data = encoder.encode(contrasena);
@@ -63,8 +64,13 @@ function AddUser({onClose}) {
             if (selectedRole === "Sucursal") {
                 datos.sucursal = sucursal;
             }
-        
-            const res = await axios.post(`http://localhost:3001/api/usuarios/admin`, datos);
+            
+
+            const res = await axios.post(`http://localhost:3001/api/usuarios/admin`, datos,{
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
             console.log("Usuario creado:", res.data);
             onClose(); // cerrar modal si todo sale bien
             toast.success("Usuario creado correctamente");

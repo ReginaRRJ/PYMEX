@@ -1,8 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react';
 import axios from 'axios';
+import Notification from '../components/Notification'
 
-function Notificaciones({onClose}) {
+function Notificaciones({onClose, notificaciones}) {
     const handleContentClick = (e) => {
         e.stopPropagation();
     };
@@ -18,7 +19,7 @@ function Notificaciones({onClose}) {
             initial={{ opacity: 0}}
             animate={{opacity: 1}}
             transition={{ duration: 0.2 }}>
-                <motion.div className="bg-white rounded-xl w-[50%] h-[70%]" onClick={handleContentClick}
+                <motion.div className="bg-white rounded-xl w-[60%] h-[80%]" onClick={handleContentClick}
                 initial={{ opacity: 0, scale: 0.3}}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, size: 0}}
@@ -27,9 +28,13 @@ function Notificaciones({onClose}) {
                         <h1 className='cursor-pointer text-[20px]' onClick={onClose}>x</h1>
                     </div>
                     <div className='h-[15%] w-full flex justify-center items-center text-[2rem]'>Notificaciones</div>
-                    <div className='h-[60%] w-full bg-slate-600'>
-                        
-                    </div>
+                    <div className='h-[75%] w-full px-10'>
+                        <div className="h-full overflow-y-auto">
+                            {notificaciones.map((notification, index) => (
+                            <Notification key={index} notification={notification} />
+                            ))}
+                        </div>
+                        </div>
                 
                 </motion.div>
             </motion.div>

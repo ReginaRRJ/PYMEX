@@ -1,8 +1,9 @@
 import express from "express";
 import { createUsuario, getUsuarios, updateUsuario, deleteUsuario } from "../controllers/adminCrud.js"; 
+import { verifyToken } from '../controllers/authMiddle.js';
 
 const router = express.Router();
-
+router.use(verifyToken);
 // Get all Usuarios
 router.get("/", async (req, res) => {
   try {

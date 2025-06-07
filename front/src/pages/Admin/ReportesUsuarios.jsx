@@ -3,13 +3,18 @@ import Report from "../../components/Report";
 import { motion } from 'framer-motion';
 import process from 'process';
 
+const token = localStorage.getItem('token');
 function ReportesUsuarios() {
     const [reportes, setReportes] = useState([]);
 
     useEffect(() => {
         const fetchReportes = async () => {
             try {
-                const response = await fetch("http://localhost:3001/reportes");
+                const response = await fetch("http://localhost:3001/reportes", {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
                 const data = await response.json();
                 console.log("Reportes recibidos:", data);
                 setReportes(data);

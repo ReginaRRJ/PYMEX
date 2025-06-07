@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import market from "/assets/market-color.png";
-
+const token = localStorage.getItem('token');
 function ReporteCliente() {
   const [prioridad, setPrioridad] = useState(0);
   const [titulo, setTitulo] = useState("");
@@ -35,7 +35,11 @@ function ReporteCliente() {
 
       const res = await axios.post(
         `http://localhost:3001/reportes/pedido`,
-        datos
+        datos, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
       );
       console.log("Reporte creado:", res.data);
       toast.success("Reporte creado correctamente");

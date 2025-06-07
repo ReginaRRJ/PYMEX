@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { useState, useEffect } from "react"
 
 import Switch from '@mui/material/Switch';
-
+const token = localStorage.getItem('token');
 function NotificacionesSucursal() {
     const [user, setUser] = useState(null);
     const [pedidoAutorizado, setPedidoAutorizado] = useState(false);
@@ -21,7 +21,11 @@ function NotificacionesSucursal() {
     
         const fetchNotificationConfig = async () => {
             try {
-                const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`);
+                const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
                 const contentType = response.headers.get("content-type");
         
                 if (!contentType || !contentType.includes("application/json")) {
@@ -68,6 +72,7 @@ function NotificacionesSucursal() {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     idNotificacion,

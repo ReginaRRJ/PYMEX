@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from "react";
 
 import Switch from '@mui/material/Switch';
-
+const token = localStorage.getItem('token');
 function NotificacionesCliente() {
     const [user, setUser] = useState(null);
     const [anticipacion, setAnticipacion] = useState(false);
@@ -37,7 +37,11 @@ function NotificacionesCliente() {
         const fetchNotificationConfig = async () => {
             console.log(`Attempting to fetch notification config for idUsuario: ${user.idUsuario}`);
             try {
-                const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`);
+                const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
                 const contentType = response.headers.get("content-type");
 
                 if (!response.ok) {
@@ -114,6 +118,7 @@ function NotificacionesCliente() {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     idNotificacion: idNotificacion,

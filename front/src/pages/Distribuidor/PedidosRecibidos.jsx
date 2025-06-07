@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 // Optional: Add prop-types for better prop validation
 // import PropTypes from 'prop-types';
-
+const token = localStorage.getItem('token');
 function PedidosRecibidos({ pedidoModal, setPedidoModal, pedidos, setPedido, setPedidos }) {
   // Prevent runtime errors if `pedidos` is not an array
   const safePedidos = Array.isArray(pedidos) ? pedidos : [];

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import market from "../../assets/market-color.png";
 import { toast } from "react-toastify";
-
+const token = localStorage.getItem('token');
 function StockSucursal() {
   const [producto, setProducto] = useState(null);
   const [montoStock, setMontoStock] = useState(null);
@@ -34,7 +34,11 @@ function StockSucursal() {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/sucursal/productos");
+        const res = await axios.get("http://localhost:3001/api/sucursal/productos", {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
         const productos = res.data || [];
 
         // Formatear para el select
@@ -78,7 +82,11 @@ function StockSucursal() {
         console.log("Cargando stock para producto:", sucursal, producto);
 
         const res = await axios.get(
-          `http://localhost:3001/api/sucursal/stock/${sucursal}/${idProducto}`
+          `http://localhost:3001/api/sucursal/stock/${sucursal}/${idProducto}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
         );
 
         const primerResultado = res.data?.[0];

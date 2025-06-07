@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
+const token = localStorage.getItem('token');
 function TicketModal({ onClose, onTicketCreated }) {
     const [user, setUser] = useState(null);
     const [productsOptions, setProductsOptions] = useState([]);
@@ -24,7 +24,11 @@ function TicketModal({ onClose, onTicketCreated }) {
         const fetchProducts = async () => {
             try {
                 // Fetch products available for the current branch
-                const response = await axios.get(`http://localhost:3001/api/products/branch/${user.idSucursal}`);
+                const response = await axios.get(`http://localhost:3001/api/products/branch/${user.idSucursal}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
                 // Map the fetched data to options suitable for the react-select component
                 const options = response.data.map((p) => ({
                     label: p.nombreProductoo, // Display product name
@@ -108,7 +112,11 @@ function TicketModal({ onClose, onTicketCreated }) {
                 cantidad: parseFloat(cantidad)
             };
 
-            const response = await axios.post('http://localhost:3001/api/tickets', ticketData);
+            const response = await axios.post('http://localhost:3001/api/tickets', ticketData, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
             console.log('Ticket created successfully:', response.data);
             // Using a console log instead of alert()
             console.log('Ticket creado exitosamente!');

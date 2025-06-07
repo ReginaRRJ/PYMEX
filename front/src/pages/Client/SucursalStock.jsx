@@ -2,7 +2,7 @@ import market from "/assets/market-color.png";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+const token = localStorage.getItem('token');
 function SucursalStock({ sucursal, producto }) {
   const [montoStock, setMontoStock] = useState(0);
 
@@ -13,7 +13,11 @@ function SucursalStock({ sucursal, producto }) {
     const fetchStock = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3001/api/sucursal/stock/${sucursal.id}/${producto}`
+          `http://localhost:3001/api/sucursal/stock/${sucursal.id}/${producto}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
         );
         const primerResultado = res.data?.[0];
         const monto = primerResultado?.cantidadDisponible ?? 0;

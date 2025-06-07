@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Stepper, Step, Typography } from "@material-tailwind/react";
 import { ClockIcon, TruckIcon, CheckIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
-
+const token = localStorage.getItem('token');
 export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
   const [activeStep, setActiveStep] = useState(0);  // Track active step
   const [currentStatus, setCurrentStatus] = useState(estadoActual || "Pendiente");  // Track current status with a fallback to "Pendiente"
@@ -14,7 +14,11 @@ export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
         if (!pedidoId) return;
 
         // Fetching the status using pedidoId
-        const response = await axios.get(`http://localhost:3001/api/pedidos/detalle/${pedidoId}`);
+        const response = await axios.get(`http://localhost:3001/api/pedidos/detalle/${pedidoId}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
         
         // Check the structure of the response
         console.log("Fetched response data:", response.data);
@@ -73,7 +77,11 @@ export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
       // Send the status update to the backend
       const response = await axios.put(
         `http://localhost:3001/api/pedidos/estatus/${pedidoId}`,
-        { estatusPedido: status }  // Ensure status is a string
+        { estatusPedido: status }, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
       );
 
       console.log("Pedido actualizado:", response.data);

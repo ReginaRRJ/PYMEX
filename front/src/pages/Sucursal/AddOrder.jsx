@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
+const token = localStorage.getItem('token');
 function AddOrder({onClose}) {
     const [nombre, setNombre] = useState("");
     const [producto, setProducto] = useState("");
@@ -53,7 +53,11 @@ function AddOrder({onClose}) {
                 estatusCliente: "Por aprobar"
             };
 
-            const res = await axios.post("http://localhost:3001/api/sucursal/pedidos", nuevoPedido);
+            const res = await axios.post("http://localhost:3001/api/sucursal/pedidos", nuevoPedido,{
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
             toast.success("Pedido creado correctamente");
 
             onClose(); // Cierra el modal
@@ -70,7 +74,11 @@ function AddOrder({onClose}) {
         const fetchProveedores = async () => {
             console.log("Fetching proveedores from API...");
             try {
-                const res = await axios.get("http://localhost:3001/api/sucursal/proveedores");
+                const res = await axios.get("http://localhost:3001/api/sucursal/proveedores",{
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
                 console.log("Proveedores:", res.data);
                 console.log("Proveedores length:", res.data.length);
                 setProveedores(res.data); // Guarda arreglo completo
@@ -90,7 +98,11 @@ function AddOrder({onClose}) {
 
         const fetchProductos = async () => {
             try {
-                const res = await axios.get(`http://localhost:3001/api/sucursal/productos/${proveedorSeleccionado.idProveedor}`);
+                const res = await axios.get(`http://localhost:3001/api/sucursal/productos/${proveedorSeleccionado.idProveedor}`,{
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
                 setProductos(res.data);
             } catch (error) {
                 console.error("Error al cargar productos:", error);

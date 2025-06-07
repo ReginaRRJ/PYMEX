@@ -1,8 +1,10 @@
 import express from 'express';
 import connection from '../config/db.js';
+import { verifyToken } from '../controllers/authMiddle.js';
 
 const router = express.Router();
 
+router.use(verifyToken);
 // VISTA GENERAL DEL PROVEEDOR
 router.get('/general', (req, res) => {
   const sql = `
