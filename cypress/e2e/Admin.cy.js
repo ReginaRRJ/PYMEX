@@ -1,4 +1,3 @@
-
 describe('PA09001. LeerUsuario: CRUD', () => {
   it('Visualización de los usuarios ', () => {
     cy.loginAdmin()
@@ -17,7 +16,6 @@ describe('PA09001. LeerUsuario: CRUD', () => {
     cy.get('#usuarios-list').should('contain', 'No se encontraron usuarios.');
   });
 })
-
 
 describe('PA09002. CrearUsuario: CRUD', () => {
   it('CrearUsuarioJin', () => {
@@ -39,8 +37,6 @@ describe('PA09002. CrearUsuario: CRUD', () => {
   })
 })
 
-
-
 describe('PA09003. UpdateUsuario: CRUD', () => {
   it('Actualizar Usuario Jin a Namjoon', () => {
     cy.loginAdmin()
@@ -58,7 +54,7 @@ describe('PA09003. UpdateUsuario: CRUD', () => {
     cy.url().should('include', '/vendedor')
 
     })
-  })
+})
 
 describe('PA09004. DeteleUsuario: CRUD', () => {
   it('Eliminar Usuario Namjoon', () => {
@@ -70,8 +66,6 @@ describe('PA09004. DeteleUsuario: CRUD', () => {
   })
 })
 
-
-//-----------------------------------------------------------------------------------------
 describe('PA09005. Seguimiento de Reportes', () => {
   it('Visualizar Reportes', () => {
     cy.loginAdmin()

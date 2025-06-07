@@ -15,7 +15,7 @@ describe('PA03002. LeerPedidos', () => {
     cy.wait('@getPedidosVacios');
     cy.get('#pedido-list').should('contain', 'No se encontraron pedidos.');
   });
-})
+});
 
 describe('PA03003. Detalles del Pedido', () => {
   it('UpdatePedidos Pendiente a Curso', () => {

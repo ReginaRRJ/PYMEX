@@ -63,7 +63,7 @@ Cypress.Commands.add('loginAdmin', () => {
     cy.url().should('include', '/vendedor')
   })
 
-
+//--------------------------------------------------------------------------------
   Cypress.Commands.add('logOut', () => { 
     cy.get('#logout-button').click()
     cy.url().should('include', '/')

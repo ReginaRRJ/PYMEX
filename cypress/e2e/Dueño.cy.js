@@ -1,4 +1,3 @@
-/*
 describe('PA02001. Visualización de Pedidos', () => {
   it('Lectura de Pedidos ', () => {
     cy.loginDueño()
@@ -20,7 +19,65 @@ describe('PA02001. Visualización de Pedidos', () => {
   });
 });
 
-*/
+describe('PA03005. Actualización de Pedidos', () => {
+  it('Autorizar Pedidos', () => {
+    cy.loginDueño();
+    cy.get('#pedido-list tr').should('have.length.greaterThan', 0);
+
+    cy.get('#pedido-list button')
+      .then(botones => {
+        const botonesAutorizar = [...botones].filter(b => b.innerText === 'Autorizar');
+
+        if (botonesAutorizar.length === 0) {
+          cy.log('Todos los pedidos ya han sido autorizados. No se requiere acción.');
+          return;
+        }
+
+        const totalAntes = botonesAutorizar.length;
+
+        cy.intercept('PUT', '**/api/pedidosClient/**/estatusCliente').as('actualizarEstatus');
+
+        // Hacer clic en el último botón "Autorizar"
+        cy.wrap(botonesAutorizar[botonesAutorizar.length - 1]).click();
+
+        cy.wait('@actualizarEstatus').its('response.statusCode').should('eq', 200);
+
+        // Volver a contar los botones "Autorizar" después de la actualización
+        cy.get('#pedido-list button')
+          .then(nuevosBotones => {
+            const nuevosAutorizar = [...nuevosBotones].filter(b => b.innerText === 'Autorizar');
+            const totalDespues = nuevosAutorizar.length;
+
+            expect(totalDespues).to.equal(totalAntes - 1);
+          });
+      });
+  });
+});
+
+describe('PA02001. Visualización de Ventas', () => {
+  it('Lectura de Ventas ', () => {
+    cy.loginDueño()
+    cy.get('#Navbar').contains('Ventas').click();
+    cy.get ('#ventas-list').find ('tr').should('have.length.greaterThan', 0)
+
+  })
+    it('Mensaje si no hay pedidos', () => {
+    cy.loginDueño()
+
+    // Interceptamos la solicitud GET para la ruta de nancyDueño con id=1
+    cy.intercept('GET', 'http://localhost:3001/api/ventasClient/1', (req) => {
+      req.reply({
+        statusCode: 200,
+        body: [],
+      });
+    }).as('getPedidosVacios');
+
+    cy.get('#Navbar').contains('Ventas').click();
+    cy.wait('@getPedidosVacios');
+    
+    cy.get('#ventas-list').should('contain', 'No se encontraron ventas.');
+  });
+});
 
 describe('PA08001. Realización de un Reporte', () => {
   it('Realización de Reporte ', () => {
@@ -58,7 +115,6 @@ describe('PA08001. Realización de un Reporte', () => {
         });
   })
 });
-
 
 describe('PA04002. Notificaciones', () => {
    beforeEach(() => {

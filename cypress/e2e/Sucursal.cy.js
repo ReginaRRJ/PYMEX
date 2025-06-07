@@ -19,7 +19,6 @@ describe('PA03004. LeerPedidos', () => {
   });
 });
 
-
 describe('PA02002. Creación de Pedidos', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/api/sucursal/proveedores').as('getProveedores');
@@ -228,5 +227,3 @@ it('Notificación Automatización de Pedidos', () => {
     });
   });
 });
-
-
