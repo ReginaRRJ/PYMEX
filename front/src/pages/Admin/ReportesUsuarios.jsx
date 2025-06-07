@@ -40,7 +40,8 @@ function ReportesUsuarios() {
                 </div>
             </div>
 
-            <div className="h-[70%] w-full overflow-y-auto">
+
+            <div id="info-reporte" className="h-[70%] w-full overflow-y-auto">
                 {Array.isArray(reportes) && reportes.length > 0 ? ( 
                 reportes
                     .sort((a, b) => a.resuelto - b.resuelto) // false (0) primero
@@ -50,11 +51,13 @@ function ReportesUsuarios() {
                             reporte={reporte} 
                             index={index} 
                         />
+
                     ))
             ) : (
                 <p>No hay reportes disponibles.</p>
             )}
             </div>
+            */}
         </motion.div>
     );
 }

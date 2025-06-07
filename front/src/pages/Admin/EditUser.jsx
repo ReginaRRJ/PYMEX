@@ -279,6 +279,7 @@ export default EditUser;
 //             datos.sucursal = sucursal;
 //           }
       
+
 //           const res = await axios.put(`http://localhost:3001/api/usuarios/${user.idUsuario}`, datos);
 //           console.log("Usuario actualizado:", res.data);
 //           toast.success("Usuario actualizado correctamente");
@@ -333,17 +334,17 @@ export default EditUser;
 //                         <div className='h-full w-[50%] flex flex-col justify-between pl-14 pr-5 pt-3 pb-5'>
 //                             <div className='h-20%'>
 //                                 <h1>Nombre</h1>
-//                                 <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.nombreUsuario} value={nombre}
+//                                 <input data-testid="inputActualizar-nombre" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.nombreUsuario} value={nombre}
 //   onChange={(e) => setNombre(e.target.value)} />
 //                             </div>
 //                             <div className='h-20%'>
 //                                 <h1>Correo</h1>
-//                                 <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.correo} value={correo}
+//                                 <input data-testid="inputActualizar-correo" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.correo} value={correo}
 //   onChange={(e) => setCorreo(e.target.value)}/>
 //                             </div>
 //                             <div className='h-20%'>
 //                                 <h1>Rol</h1>
-//                                 <select className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" 
+//                                 <select data-testid="selectActualizar-rol" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" 
 //                                 value={selectedRole} // Binding the state to the select value
 //                                 onChange={handleChange}> // Update state when selection changes
 //                                     {roles.map((role, index) => (
@@ -357,12 +358,12 @@ export default EditUser;
 //                         <div className='h-full w-[50%] flex flex-col justify-between pl-5 pr-14 pt-3 pb-5'>
 //                             <div className='h-20%'>
 //                                 <h1>Apellido</h1>
-//                                 <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.apellidoUsuario} value={apellido}
+//                                 <input data-testid="inputActualizar-apellido"  type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.apellidoUsuario} value={apellido}
 //   onChange={(e) => setApellido(e.target.value)}/>
 //                             </div>
 //                             <div className='h-20%'>
 //                                 <h1>Contraseña</h1>
-//                                 <input type="password" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.hashContrasena} value={contraseña} readOnly />
+//                                 <input type="password" type="password" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" defaultValue={user.hashContrasena} value={contraseña} readOnly />
 //                             </div>
 //                             <div className='h-20% relative'>
 //                                 <h1 className={`${selectedRole === "Sucursal" ? "" : "text-gray-300"}`}>Sucursal</h1>
@@ -378,6 +379,7 @@ export default EditUser;
 //                         >Eliminar</button>
 
 //                     </div>
+
                 
 //                 </motion.div>
 //             </motion.div>

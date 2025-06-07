@@ -5,6 +5,7 @@ const token = localStorage.getItem('token');
 function ReportButton({ reporte }) {
     const [isSelected, setIsSelected] = useState(reporte.resuelto === true); // Variable que ayuda a mantener el control de resuelto/no resuelto
 
+
     useEffect(() => {
         if (isSelected && !reporte.resuelto) {
             fetch(`http://localhost:3001/reportes/${reporte.idReporte}`, {
@@ -36,8 +37,10 @@ function ReportButton({ reporte }) {
         }
     };
     
+
     return (
-        <button
+        <button 
+            data-testid="UpdateEstadoReport-button"
             className={`relative group w-[70%] h-[50%] ${isSelected ? 'bg-slate-100' : 'bg-black'} 
             rounded-2xl font-sans text-white text-center overflow-hidden hover:bg-slate-100 duration-500`}
             onClick={handleClick}

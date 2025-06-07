@@ -97,25 +97,34 @@ export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
   return (
     <div className="w-full">
       <Stepper activeStep={activeStep}>
+
         {/* Pendiente Step */}
+        {/* ID para Pruebas  */}
         <Step
+          data-testid="StepPendiente"
           onClick={() => currentStatus !== "Entregado" && updateStatus("Pendiente")}
           className={`cursor-pointer ${activeStep >= 0 ? "!bg-blue-500" : "bg-black"}`}
         >
           <ClockIcon className="h-5 w-5" />
-          <div className="absolute -bottom-[2rem] w-max text-center">
+
+          
+          <div  className="absolute -bottom-[2rem] w-max text-center">
             <Typography variant="h6" color={activeStep >= 0 ? "black" : "gray"}>
               Pendiente
             </Typography>
           </div>
         </Step>
 
+
         {/* En Proceso Step */}
+        {/* ID para Pruebas  */}
         <Step
+          data-testid="StepCurso"
           onClick={() => currentStatus !== "Entregado" && updateStatus("Curso")}
           className={`cursor-pointer ${activeStep >= 1 ? "!bg-blue-500" : "bg-black"}`}
         >
           <TruckIcon className="h-5 w-5" />
+
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography variant="h6" color={activeStep >= 1 ? "black" : "gray"}>
               Curso
@@ -138,7 +147,6 @@ export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
       </Stepper>
     </div>
   );
-  
 }
 
 

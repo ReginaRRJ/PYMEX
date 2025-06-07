@@ -69,7 +69,9 @@ function PedidosSucursal({updateButton, setUpdateButton,newOrder, setNewOrder, s
                   <th className="w-[20%] px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Estado</th>
               </tr>
             </thead>
-            <tbody className="block w-full overflow-y-auto max-h-[55vh]">
+            <tbody 
+            id="pedido-list"
+            className="block w-full overflow-y-auto max-h-[55vh]">
               {pedidosSuc.length > 0 ? (
                 pedidosSuc.map((pedido, index) => (
                   <tr

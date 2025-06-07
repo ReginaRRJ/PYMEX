@@ -51,6 +51,7 @@ function SucursalMain() {
     };
 
     return (
+
       <>
         {updateButton && (
           <ActualizarPedido onClose={() => setUpdateButton(false)} />
@@ -77,6 +78,7 @@ function SucursalMain() {
                 selected={activeScreenSucursal === "pedidosSucursal"}
               />
               <NavbarIcon
+                
                 icon={notificacion}
                 text={"Notificaciones"}
                 onClick={() => setActiveScreenSucursal("notificacionesSucursal")}

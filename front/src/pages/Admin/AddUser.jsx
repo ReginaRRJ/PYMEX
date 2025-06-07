@@ -72,6 +72,7 @@ function AddUser({onClose}) {
   }
 });
             console.log("Usuario creado:", res.data);
+            window.location.reload(); //Nancy: Agregado para recargar la página después de la actualización
             onClose(); // cerrar modal si todo sale bien
             toast.success("Usuario creado correctamente");
         } catch (error) {
