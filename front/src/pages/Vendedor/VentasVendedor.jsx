@@ -18,6 +18,7 @@ function VentasVendedor({ ventaModal, setVentaModal, refreshTickets }) {
 
     const fetchTickets = async () => {
       try {
+        const token = localStorage.getItem('token');
         const response = await axios.get(`http://localhost:3001/api/tickets/branch/${user.idSucursal}`, {
   headers: {
     "Authorization": `Bearer ${token}`

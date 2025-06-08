@@ -57,8 +57,8 @@ Cypress.Commands.add('loginAdmin', () => {
   })
   Cypress.Commands.add('loginVendedor', () => { 
     cy.visit('http://localhost:5173/')
-    cy.get('input').first().type('kim@seokjin.kr')
-    cy.get('input').last().type('WHYK')
+    cy.get('input').first().type('vendedor@gmail.com')
+    cy.get('input').last().type('Vendedor123')
     cy.get('#login-button').click()
     cy.url().should('include', '/vendedor')
   })

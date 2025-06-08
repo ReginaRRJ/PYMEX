@@ -27,6 +27,7 @@ function PedidosCliente() {
 
   const updatePedidoStatusInBackend = useCallback(async (idPedido, statusForBackend) => {
     try {
+      const token = localStorage.getItem('token');
       const response = await axios.put(
         `${API_BASE_URL}/api/pedidosClient/${idPedido}/estatusCliente`,
         { estatusCliente: statusForBackend },
@@ -65,6 +66,7 @@ function PedidosCliente() {
     }
 
     try {
+      const token = localStorage.getItem('token');
       const response = await axios.get(`${API_BASE_URL}/api/pedidosClient/${idPyme}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
