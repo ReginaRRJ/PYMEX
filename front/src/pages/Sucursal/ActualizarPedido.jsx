@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
+const token = localStorage.getItem('token');
 function ActualizarPedido({onClose, idPedido}) {
     console.log("Recibiendo idPedido en modal:", idPedido);
     const handleContentClick = (e) => {
@@ -9,19 +10,41 @@ function ActualizarPedido({onClose, idPedido}) {
     };
 
     const handleActualizar = async () => {
-        try {
-        const response = await axios.put(`http://localhost:3001/api/sucursal/pedido/${idPedido}/estado`, {
-            estatusProveedor: "Entregado"
-        });
+  try {
+    const response = await axios.put(`http://localhost:3001/api/sucursal/pedido/${idPedido}/estado`, {
+      estatusProveedor: "Entregado"
+    });
 
-        console.log("Pedido actualizado:", response.data);
-        onClose(); // Cierra el modal después de actualizar
-        toast.success("Pedido actualizado exitosamente");
-        } catch (error) {
-        console.error("Error al actualizar pedido:", error);
-        toast.error("Error al actualizar el pedido");
-        }
-    };
+    console.log("Pedido actualizado:", response.data);
+    toast.success("Pedido actualizado exitosamente");
+
+    try {
+      const spResponse = await fetch(`http://localhost:3001/notificaciones/actualizar/${idPedido}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          idPedido: idPedido,
+          idTipoNotificacion: 9,
+          mensaje: "¡Tu pedido ha sido actualizado a Entregado!"
+        })
+      });
+
+     
+      console.log("LLAMADO CORRECTAMENTE AL STORED PROCEDURE");
+    } catch (error) {
+      console.log("ERROR EN STORE PROCEDURE ACTUALIZAR", error);
+    }
+
+    onClose(); // Mover esto hasta después de todo
+  } catch (error) {
+    console.error("Error al actualizar pedido:", error);
+    toast.error("Error al actualizar el pedido");
+  }
+};
+
 
     // Handle change event to update the selected role
     const handleChange = (e) => {

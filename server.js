@@ -16,6 +16,7 @@ import notifConfigRouter from "./routes/notifConfigRutas.js";
 import ticketRoutes from './routes/vendedorRutas.js'; 
 import clientVentasRoutes from './routes/clientVentasRutas.js'; 
 import pedidosPymeRoutes from './routes/clientPedidosRutas.js';
+import notificacionesRoutes from './routes/notificaciones.js';
 // Initialize dotenv configuration
 dotenv.config();
 
@@ -35,7 +36,7 @@ app.use("/api/notificaciones", notifConfigRouter);
 app.use('/api', ticketRoutes);
 app.use('/api/ventasClient', clientVentasRoutes);
 app.use('/api/pedidosClient', pedidosPymeRoutes); 
-
+app.use('/notificaciones',notificacionesRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

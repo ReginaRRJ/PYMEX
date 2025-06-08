@@ -57,7 +57,7 @@ function ReportesUsuarios() {
                 <p>No hay reportes disponibles.</p>
             )}
             </div>
-            */}
+            
         </motion.div>
     );
 }

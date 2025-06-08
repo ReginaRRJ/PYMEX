@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-// import pedidosSuc from './pedidosSuc'
-
+import { toast } from "react-toastify";
+const token = localStorage.getItem('token');
 function PedidosSucursal({updateButton, setUpdateButton,newOrder, setNewOrder, setPedidoSeleccionadoId}) {
   const [pedidosSuc, setPedidosSuc] = useState([]);
   const [user, setUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedPedidoId, setSelectedPedidoId] = useState(null);
+ 
 
 
   useEffect(() => {
@@ -27,6 +28,7 @@ function PedidosSucursal({updateButton, setUpdateButton,newOrder, setNewOrder, s
           throw new Error('Failed to fetch pedidos');
         }
         const data = await response.json();
+        console.log("Pedidos recibidos:", data);
         setPedidosSuc(data);
       } catch (error) {
         console.error("Error fetching pedidos:", error);
@@ -35,6 +37,47 @@ function PedidosSucursal({updateButton, setUpdateButton,newOrder, setNewOrder, s
   
     fetchPedidos();
   }, [user]);
+
+  useEffect(() => {
+  if (user && user.idUsuario) {
+    cargarUsuarioYAlertas();
+  }
+}, [user]);
+
+  const cargarUsuarioYAlertas = async () => {
+    if (user.idUsuario) {
+
+      console.log("Cargando notificaciones...", user.idUsuario);
+
+      try {
+        const id = parseInt(user.idUsuario, 10);
+        console.log("Obteniendo notificaciones no leídas para el usuario:", id);
+        const response = await fetch(
+          `http://localhost:3001/notificaciones/alertas/${id}`, {
+            headers:{
+              "Authorization": `Bearer ${token}`
+            }
+          }
+        );
+        const data = await response.json();
+        console.log("Notificaciones:", data);
+        notif(data.resultado || []);
+      } catch (error) {
+        console.error("Error al obtener notificaciones:", error);
+      }
+    }
+  };
+
+  const notif = async (notificaciones) => {
+    for (let i = 0; i < notificaciones.length; i++) {
+      const notificacion = notificaciones[i];
+      if (notificacion.leida === false) {
+        await new Promise(resolve => setTimeout(resolve, 6000));
+        toast.warn(`${notificacion.mensaje}`);
+      }
+    }
+  };
+
 
   if (!user) {
     return <div>Loading...</div>;
@@ -86,7 +129,7 @@ function PedidosSucursal({updateButton, setUpdateButton,newOrder, setNewOrder, s
                     <td className="w-[40%] px-4 py-2">{pedido.nombre}</td>
                     <td className="w-[20%] px-4 py-2">${pedido.total} MXN</td>
                     <td className="w-[20%] px-4 py-2">{pedido.cantidad}</td>
-                    <td className="w-[20%] px-4 py-2">{pedido.estado}</td>
+                    <td className="w-[20%] px-4 py-2">{pedido.estatusProveedor}</td>
                   </tr>
                 ))
               ) : (
@@ -109,7 +152,7 @@ export default PedidosSucursal
 
 // import React, { useState, useEffect } from "react";
 // import { motion } from "framer-motion";
-
+// // import pedidosSuc from './pedidosSuc'
 
 // function PedidosSucursal({updateButton, setUpdateButton,newOrder, setNewOrder, setPedidoSeleccionadoId}) {
 //   const [pedidosSuc, setPedidosSuc] = useState([]);
@@ -195,7 +238,7 @@ export default PedidosSucursal
 //                     <td className="w-[40%] px-4 py-2">{pedido.nombre}</td>
 //                     <td className="w-[20%] px-4 py-2">${pedido.total} MXN</td>
 //                     <td className="w-[20%] px-4 py-2">{pedido.cantidad}</td>
-//                     <td className="w-[20%] px-4 py-2">{pedido.estatusProveedor}</td>
+//                     <td className="w-[20%] px-4 py-2">{pedido.estado}</td>
 //                   </tr>
 //                 ))
 //               ) : (
@@ -213,3 +256,5 @@ export default PedidosSucursal
 // }
 
 // export default PedidosSucursal
+
+

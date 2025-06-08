@@ -12,6 +12,7 @@ import carrito from '/assets/carrito.png';
 import notificacion from '/assets/notificacion.png';
 
 let rol = "DISTRIBUIDOR";
+const token = localStorage.getItem('token');
 
 function DistribuidorMain() {
   const [activeScreenDist, setActiveScreenDist] = useState("pedidosRecibidos");
@@ -21,13 +22,14 @@ function DistribuidorMain() {
   const [notificationsModal, setNotificationsModal] = useState(false);
   const [notificaciones, setNotificaciones] = useState(notificacionesData)
 
-  const token = localStorage.getItem('token');
+  
   useEffect(() => {
     fetch("http://localhost:3001/api/pedidos/general", {
   headers: {
     "Authorization": `Bearer ${token}`
   }
 })
+      
       .then((res) => res.json())
       .then((data) => setPedidos(data))
       .catch((err) => console.error("Error fetching pedidos:", err));
@@ -52,6 +54,7 @@ function DistribuidorMain() {
   };
 
   return (
+    
     <>
       {pedidoModal && pedido && (
         <Pedido onClose={() => setPedidoModal(false)} pedido={pedido} />

@@ -30,13 +30,20 @@ function SucursalMain() {
     const [newOrder, setNewOrder] = useState(false)
     const [notificaciones, setNotificaciones] = useState(notificacionesData);
     const [notificationsModal, setNotificationsModal] = useState(false);
-    
+    const [pedidoSeleccionadoId, setPedidoSeleccionadoId] = useState(null);
+
+    const abrirActualizarPedido = (idPedido) => {
+      setPedidoSeleccionadoId(idPedido);
+      console.log("ID del pedido seleccionado:", idPedido);
+      setUpdateButton(true);
+    };
 
     const renderScreen = () => {
         switch (activeScreenSucursal) {
             case "pedidosSucursal":
                 return <PedidosSucursal updateButton={updateButton} setUpdateButton={setUpdateButton}
-                                        newOrder={newOrder} setNewOrder={setNewOrder}/>;
+                                        newOrder={newOrder} setNewOrder={setNewOrder} setPedidoSeleccionadoId={setPedidoSeleccionadoId}
+                onActualizarPedido={abrirActualizarPedido}/>;
             case "notificacionesSucursal":
                 return <NotificacionesSucursal />;
             case "ventasSucursal":
@@ -54,7 +61,13 @@ function SucursalMain() {
 
       <>
         {updateButton && (
-          <ActualizarPedido onClose={() => setUpdateButton(false)} />
+          <ActualizarPedido
+            idPedido={pedidoSeleccionadoId}
+            onClose={() => {
+              setUpdateButton(false);
+              setPedidoSeleccionadoId(null);
+            }}
+          />
         )}
 
         {newOrder && (

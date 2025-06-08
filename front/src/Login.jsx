@@ -12,24 +12,31 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
   
-    try {
+    try { 
       const response = await axios.post("http://localhost:3001/login", {
         correo: correo,
-        hashContrasena: contrasena,
+        hashContrasena: contrasena, 
       });
       localStorage.setItem("usuario", JSON.stringify(response.data.usuario));
-  
-      // try {
-      //   const response = await axios.post("http://localhost:3001/login", {
-      //     correo,hashContrasena})
-      //     .then(res=>{
-      //       localStorage.setItem("usuario", JSON.stringify(res.data.usuario))
-      //     });
+
       const { token, rol } = response.data;
   
       // Store token and role in localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("rol", rol);
+
+      try {
+        console.log("Login successful.");
+        const notiResponse = await axios.post("http://localhost:3001/login/notificacion", {
+          idUsuario: response.data.usuario.idUsuario,
+        });
+        console.log("Notificaciones correcto.", notiResponse.data);
+        console.log("Se llamó al store procedure de notificaciones.");
+      }
+      catch (error) {
+        console.error("Error configuraciones.:", error);
+        alert("Error configuring notifications. Please try again later.");
+      }
   
       // Redirect based on role
       if (rol === "Admin") {
@@ -99,7 +106,6 @@ const Login = () => {
 };
 
 export default Login;
-
 // import React, { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import axios from "axios";
@@ -201,3 +207,4 @@ export default Login;
 // };
 
 // export default Login;
+

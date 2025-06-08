@@ -1,13 +1,14 @@
 // PedidosCliente.jsx
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import {toast} from "react-toastify";
 import { motion } from "framer-motion";
 const token = localStorage.getItem('token');
 
 function PedidosCliente() {
   const [pedidos, setPedidos] = useState([]);
   const [error, setError] = useState("");
-
+  const [user, setUser]=useState(null);
   const storedUserString = localStorage.getItem('usuario');
   let idPyme = null;
 
@@ -156,7 +157,51 @@ function PedidosCliente() {
     // function's internal `setPedidos` will update the local state, changing the button.
     await updatePedidoStatusInBackend(idPedido, nextStatusForBackend);
   };
+  useEffect(() => {
+    const storedUser = localStorage.getItem("usuario");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
+useEffect(() => {
+    if (user && user.idUsuario) {
+      cargarUsuarioYAlertas();
+    }
+  }, [user]);
+
+const cargarUsuarioYAlertas = async () => {
+    if (user.idUsuario) {
+
+      console.log("Cargando notificaciones...", user.idUsuario);
+
+      try {
+        const id = parseInt(user.idUsuario, 10);
+        console.log("Obteniendo notificaciones no leídas para el usuario:", id);
+        const response = await fetch(
+          `http://localhost:3001/notificaciones/alertas/${id}`,{headers: {
+    "Authorization": `Bearer ${token}`
+  } }
+        );
+        const data = await response.json();
+        console.log("Notificaciones:", data);
+        notif(data.resultado || []);
+        console.log(data)
+      } catch (error) {
+        console.error("Error al obtener notificaciones:", error);
+      }
+    }
+  };
+const notif = async (notificaciones) => {
+    for (let i = 0; i < notificaciones.length; i++) {
+      const notificacion = notificaciones[i];
+      if (notificacion.leida === false) {
+        //await new Promise(resolve => setTimeout(resolve, 6000));
+        toast.warn(`${notificacion.mensaje}`);
+      
+      }
+    }
+  };
   return (
     <motion.div
       className="h-full w-full flex flex-col pt-[6vh] pr-[50px]"
