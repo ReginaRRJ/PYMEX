@@ -32,14 +32,14 @@ function ReporteCliente() {
         fechaReporte: new Date().toISOString(),
         fechaResolucion: null,
       };
-
+      const currentToken = localStorage.getItem('token');
       const res = await axios.post(
         `http://localhost:3001/reportes/pedido`,
         datos, {
-  headers: {
-    "Authorization": `Bearer ${token}`
-  }
-}
+          headers: {
+            "Authorization": `Bearer ${currentToken}`
+          }
+        }
       );
       console.log("Reporte creado:", res.data);
       toast.success("Reporte creado correctamente");

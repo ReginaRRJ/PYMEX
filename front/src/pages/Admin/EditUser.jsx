@@ -47,15 +47,17 @@ function EditUser({ user, onClose }) {
       if (selectedRole === "Sucursal") {
         datos.sucursal = sucursal;
       }
-      
 
+      
+      
+      const currentToken = localStorage.getItem('token');
       const res = await axios.put(
         `http://localhost:3001/api/usuarios/${user.idUsuario}`,
         datos, {
-  headers: {
-    "Authorization": `Bearer ${token}`
-  }
-}
+          headers: {
+            "Authorization": `Bearer ${currentToken}`
+          }
+        }
       );
       console.log("Usuario actualizado:", res.data);
       toast.success("Usuario actualizado correctamente");
@@ -82,11 +84,11 @@ function EditUser({ user, onClose }) {
       if (selectedRole === "Sucursal") {
         datos.sucursal = sucursal;
       }
-
+      const currentToken = localStorage.getItem('token');
       const res = await axios.delete(
         `http://localhost:3001/api/usuarios/${user.idUsuario}`, {
   headers: {
-    "Authorization": `Bearer ${token}`
+    "Authorization": `Bearer ${currentToken}`
   }
 }
       );

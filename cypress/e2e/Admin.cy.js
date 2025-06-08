@@ -19,7 +19,10 @@ describe('PA09001. LeerUsuario: CRUD', () => {
 
 describe('PA09002. CrearUsuario: CRUD', () => {
   it('CrearUsuarioJin', () => {
+
     cy.loginAdmin()
+    cy.window().its('localStorage.token').should('be.a', 'string').and('not.be.empty')
+
     cy.get("#add-user-button").click()
     cy.get('[data-testid="input-nombre"]').type('Kim')
     cy.get('[data-testid="input-apellido"]').type('SeokJin')
@@ -28,6 +31,8 @@ describe('PA09002. CrearUsuario: CRUD', () => {
     cy.get('[data-testid="select-rol"]').select('Vendedor')
 
     cy.get('#crearUsuario_button').click()
+    
+    
     cy.logOut()
 
     cy.get('input').first().type('kim@seokjin.kr')
@@ -92,28 +97,46 @@ describe('PA09005. Seguimiento de Reportes', () => {
   cy.loginAdmin(); 
   cy.get('#Navbar').contains('Reportes').click();
 
-  // Paso 1: Obtener todos los reportes
-  cy.request('GET', 'http://localhost:3001/reportes').then((response) => {
-    const reportes = response.body;
-    const pendiente = reportes.find(r => !r.resuelto); // Paso 2: Buscar uno que aún no esté resuelto
+  
+  cy.window().then((win) => {
+    const token = win.localStorage.getItem('token');
 
-    if (pendiente) {
-      const idReporte = pendiente.idReporte;
+    // Paso 1: Obtener todos los reportes con token
+  cy.request({
+      method: 'GET',
+      url: 'http://localhost:3001/reportes',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((response) => {
+      const reportes = response.body;
+      const pendiente = reportes.find(r => !r.resuelto);
 
-      cy.get(`[data-testid="reporte-row-${idReporte}"]`)
-        .find('[data-testid="UpdateEstadoReport-button"]')
-        .click();
+      if (pendiente) {
+        const idReporte = pendiente.idReporte;
 
-      cy.wait(500); 
-      cy.request('GET', 'http://localhost:3001/reportes').then((res) => {
-        const actualizado = res.body.find(r => r.idReporte === idReporte);
-        expect(actualizado).to.exist;
-        expect(actualizado.resuelto).to.be.true;
-      });
-    } else {
-      cy.log('No hay reportes pendientes por resolver');
-    }
+        cy.get(`[data-testid="reporte-row-${idReporte}"]`)
+          .find('[data-testid="UpdateEstadoReport-button"]')
+          .click();
+
+        cy.wait(500);
+
+        // Volver a hacer GET con token
+        cy.request({
+          method: 'GET',
+          url: 'http://localhost:3001/reportes',
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then((res) => {
+          const actualizado = res.body.find(r => r.idReporte === idReporte);
+          expect(actualizado).to.exist;
+          expect(actualizado.resuelto).to.be.true;
+        });
+      } else {
+        cy.log('No hay reportes pendientes por resolver');
+      }
+    });
   });
 });
-
 })

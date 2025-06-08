@@ -30,6 +30,8 @@ Cypress.Commands.add('loginAdmin', () => {
     cy.get('input').last().type('admin1234')
     cy.get('#login-button').click()
     cy.url().should('include', '/admin')
+
+
   })
 
   Cypress.Commands.add('loginDueño', () => { //cliente

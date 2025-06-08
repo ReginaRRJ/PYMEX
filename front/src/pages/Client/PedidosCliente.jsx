@@ -1,14 +1,15 @@
-// PedidosCliente.jsx
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+
 const token = localStorage.getItem('token');
 
 function PedidosCliente() {
   const [pedidos, setPedidos] = useState([]);
   const [error, setError] = useState("");
-  const [user, setUser]=useState(null);
+  const [user, setUser] = useState(null);
+
   const storedUserString = localStorage.getItem('usuario');
   let idPyme = null;
 
@@ -24,19 +25,15 @@ function PedidosCliente() {
 
   const API_BASE_URL = 'http://localhost:3001';
 
-  // Función para actualizar el estado del pedido en backend y frontend local
   const updatePedidoStatusInBackend = useCallback(async (idPedido, statusForBackend) => {
     try {
       const response = await axios.put(
         `${API_BASE_URL}/api/pedidosClient/${idPedido}/estatusCliente`,
-        { estatusCliente: statusForBackend},{headers: {
-    "Authorization": `Bearer ${token}`
-  } }
-
+        { estatusCliente: statusForBackend },
+        { headers: { "Authorization": `Bearer ${token}` } }
       );
 
       if (response.status === 200) {
-        // Actualiza el estado local para cambio visual inmediato
         const newFrontendStatus = statusForBackend === 'No autorizado' ? 'Por autorizar' : 'Autorizado';
         setPedidos(prevPedidos =>
           prevPedidos.map(pedido =>
@@ -60,19 +57,21 @@ function PedidosCliente() {
     }
   }, []);
 
-  // Función para obtener pedidos desde backend
   const fetchPedidos = useCallback(async () => {
     if (!idPyme) {
       setError("ID de PYME no disponible. Por favor, inicia sesión para ver los pedidos.");
       setPedidos([]);
       return;
     }
+
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/pedidosClient/${idPyme}`);
+      const response = await axios.get(`${API_BASE_URL}/api/pedidosClient/${idPyme}`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
 
       if (Array.isArray(response.data)) {
         const processedPedidos = response.data.map(pedido => {
-          let rawEstatusClienteFromDB = pedido.ESTATUSCLIENTE;
+          const rawEstatusClienteFromDB = pedido.ESTATUSCLIENTE;
           const rawEstatusProveedorFromDB = pedido.ESTATUSGENERALPEDIDO;
 
           const isProveedorLocked = (rawEstatusProveedorFromDB !== 'Pendiente' && rawEstatusProveedorFromDB !== 'Por autorizar');
@@ -101,77 +100,15 @@ function PedidosCliente() {
         setPedidos([]);
         setError("El formato de datos de pedidos recibido es incorrecto.");
       }
+    } catch (err) {
+      console.error("Error fetching pedidos:", err);
+      setError("Error al cargar los pedidos. Inténtalo de nuevo más tarde.");
+    }
+  }, []);
 
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/pedidosClient/${idPyme}`,{
-  headers: {
-    "Authorization": `Bearer ${token}`
-  }
-});
-
-        if (Array.isArray(response.data)) {
-          const processedPedidos = response.data.map(pedido => {
-            // Reverted to original casing for data fields to ensure correct display
-            // This is crucial for fixing the "0" display issue.
-            let rawEstatusClienteFromDB = pedido.ESTATUSCLIENTE;
-            const rawEstatusProveedorFromDB = pedido.ESTATUSGENERALPEDIDO;
-
-            const isProveedorLocked = (rawEstatusProveedorFromDB !== 'Pendiente' && rawEstatusProveedorFromDB !== 'Por autorizar');
-
-            let finalEstatusClienteForFrontend;
-            // Removed automatic backend update here, as it was problematic and
-            // not directly related to the button's visual state change.
-            // The button's state is handled by updatePedidoStatusInBackend and local state.
-
-            if (isProveedorLocked) {
-                finalEstatusClienteForFrontend = 'Autorizado';
-                // If the supplier has locked it and the client's status isn't 'Autorizado'
-                // you might still *want* to call the backend to set it.
-                // However, doing it *during a fetch* can cause infinite loops.
-                // It's better to let the "Autorizar" button handle this user action.
-                // For now, we'll just display it as 'Autorizado' on the frontend.
-            } else {
-                if (rawEstatusClienteFromDB === 'Autorizado') {
-                    finalEstatusClienteForFrontend = 'Autorizado';
-                } else {
-                    finalEstatusClienteForFrontend = 'Por autorizar';
-                }
-            }
-
-            return {
-                ...pedido,
-                sucursal: pedido.nombreSucursal,
-                producto: pedido.nombreProductoo,
-                cantidad: pedido.CANTIDADPEDIDO, // Reverted to original casing
-                precio: pedido.TOTALPEDIDOPRODUCTO, // Reverted to original casing
-                estado: finalEstatusClienteForFrontend, // This drives the button text and disabled state
-                estatusProveedor: rawEstatusProveedorFromDB,
-                idPedido: pedido.idPedido
-            };
-          });
-          setPedidos(processedPedidos); // No filter(Boolean) needed if all are valid
-        } else {
-          console.warn("API response for pedidos is not an array:", response.data);
-          setPedidos([]);
-          setError("El formato de datos de pedidos recibido es incorrecto.");
-        }
-      } catch (err) {
-        console.error("Error fetching pedidos:", err);
-        setError("Error al cargar los pedidos. Inténtalo de nuevo más tarde.");
-      }
-    };
-
-    fetchPedidos();
-  }, [fetchPedidos]);
-
-  // Función que maneja click en autorizar pedido
   const handleAuthorizeOrder = async (idPedido) => {
     const pedidoToUpdate = pedidos.find(p => p.idPedido === idPedido);
-
-    if (!pedidoToUpdate) {
-      console.error("Pedido no encontrado para actualizar:", idPedido);
-      return;
-    }
+    if (!pedidoToUpdate) return;
 
     const currentProveedorStatus = pedidoToUpdate.estatusProveedor;
     const isProveedorLocked = (currentProveedorStatus !== 'Pendiente' && currentProveedorStatus !== 'Por autorizar');
@@ -182,60 +119,44 @@ function PedidosCliente() {
       return;
     }
 
-    const nextStatusForBackend = 'Autorizado';
-
-    const success = await updatePedidoStatusInBackend(idPedido, nextStatusForBackend);
-
-    if (success) {
-      // Refresca datos para actualizar la lista visualmente
-      await fetchPedidos();
-    }
+    const success = await updatePedidoStatusInBackend(idPedido, 'Autorizado');
+    if (success) await fetchPedidos();
   };
+
   useEffect(() => {
     const storedUser = localStorage.getItem("usuario");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
-useEffect(() => {
-    if (user && user.idUsuario) {
-      cargarUsuarioYAlertas();
-    }
+  useEffect(() => {
+    if (user && user.idUsuario) cargarUsuarioYAlertas();
   }, [user]);
 
-const cargarUsuarioYAlertas = async () => {
+  const cargarUsuarioYAlertas = async () => {
     if (user.idUsuario) {
-
-      console.log("Cargando notificaciones...", user.idUsuario);
-
       try {
         const id = parseInt(user.idUsuario, 10);
-        console.log("Obteniendo notificaciones no leídas para el usuario:", id);
-        const response = await fetch(
-          `http://localhost:3001/notificaciones/alertas/${id}`,{headers: {
-    "Authorization": `Bearer ${token}`
-  } }
-        );
+        const response = await fetch(`http://localhost:3001/notificaciones/alertas/${id}`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
         const data = await response.json();
-        console.log("Notificaciones:", data);
         notif(data.resultado || []);
-        console.log(data)
       } catch (error) {
         console.error("Error al obtener notificaciones:", error);
       }
     }
   };
-const notif = async (notificaciones) => {
-    for (let i = 0; i < notificaciones.length; i++) {
-      const notificacion = notificaciones[i];
-      if (notificacion.leida === false) {
-        //await new Promise(resolve => setTimeout(resolve, 6000));
-        toast.warn(`${notificacion.mensaje}`);
-      
-      }
+
+  const notif = async (notificaciones) => {
+    for (const notificacion of notificaciones) {
+      if (!notificacion.leida) toast.warn(`${notificacion.mensaje}`);
     }
   };
+
+  useEffect(() => {
+    fetchPedidos();
+  }, [fetchPedidos]);
+
   return (
     <motion.div
       className="h-full w-full flex flex-col pt-[6vh] pr-[50px]"
@@ -257,14 +178,14 @@ const notif = async (notificaciones) => {
           <table className="table-fixed w-full h-full border-spacing-0">
             <thead className="block bg-slate-100 w-full">
               <tr className="w-full flex">
-                <th className="w-1/5 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Sucursal</th>
+                <th className="w-1/5 px-4 py-2 text-left">Sucursal</th>
                 <th className="w-1/5 px-4 py-2 text-left">Producto</th>
                 <th className="w-1/5 px-4 py-2 text-left">Cantidad</th>
                 <th className="w-1/5 px-4 py-2 text-left">Precio</th>
-                <th className="w-1/5 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Estado</th>
+                <th className="w-1/5 px-4 py-2 text-left">Estado</th>
               </tr>
             </thead>
-            <tbody 
+            <tbody
               id="pedido-list"
               className="block w-full overflow-y-auto max-h-[55vh]"
             >
@@ -272,12 +193,7 @@ const notif = async (notificaciones) => {
                 [...pedidos]
                   .sort((a, b) => (a.estado === 'Por autorizar' ? -1 : 1))
                   .map((pedido, index) => {
-                    const currentClientStatus = pedido.estado;
-                    const currentProveedorStatus = pedido.estatusProveedor;
-
-                    const isProveedorLocked = (currentProveedorStatus !== 'Pendiente' && currentProveedorStatus !== 'Por autorizar');
-
-                    const buttonDisabled = currentClientStatus === 'Autorizado' || isProveedorLocked;
+                    const buttonDisabled = pedido.estado === 'Autorizado' || (pedido.estatusProveedor !== 'Pendiente' && pedido.estatusProveedor !== 'Por autorizar');
 
                     return (
                       <tr
@@ -286,8 +202,8 @@ const notif = async (notificaciones) => {
                       >
                         <td className="w-1/5 px-4 py-2">{pedido.sucursal}</td>
                         <td className="w-1/5 px-4 py-2">{pedido.producto}</td>
-                        <td className="w-1/5 px-4 py-2">{(pedido.cantidad || 'N/A')} unidades</td>
-                        <td className="w-1/5 px-4 py-2">${(pedido.precio || '0.00')} MXN</td>
+                        <td className="w-1/5 px-4 py-2">{pedido.cantidad || 'N/A'} unidades</td>
+                        <td className="w-1/5 px-4 py-2">${pedido.precio || '0.00'} MXN</td>
                         <td className="w-1/5 px-4 py-1 flex justify-start items-center">
                           <button
                             onClick={() => handleAuthorizeOrder(pedido.idPedido)}
@@ -320,87 +236,3 @@ const notif = async (notificaciones) => {
 }
 
 export default PedidosCliente;
-
-
-
-
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import { motion } from "framer-motion";
-// import pedidosData from './pedidos'
-
-// function PedidosCliente() {
-//   const [pedidos, setPedidos] = useState(pedidosData);
-//   const [error, setError] = useState("");
-
-//   return (
-//     <motion.div
-//       className="h-full w-full flex flex-col pt-[6vh] pr-[50px]"
-//       initial={{ opacity: 0 }}
-//       animate={{ opacity: 1 }}
-//       transition={{ duration: 0.5 }}
-//     >
-//       <div className="h-[20%] w-full">
-//         <h1 className="text-[40px]">Pedidos</h1>
-//         <div className="h-[50px] w-full flex justify-between items-center">
-//           <h1>Pedidos que se han realizado a distribuidor</h1>  
-//         </div>
-//       </div>
-
-//       <div className="w-full h-[75%]">
-//         {error ? (
-//           <div className="text-red-500 text-center py-4">{error}</div>
-//         ) : (
-//           <table className="table-fixed w-full h-full border-spacing-0">
-//           <thead className="block bg-slate-100 w-full">
-//               <tr className="w-full flex">
-//                   <th className="w-1/5 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Sucursal</th>
-//                   <th className="w-1/5 px-4 py-2 text-left">Producto</th>
-//                   <th className="w-1/5 px-4 py-2 text-left">Cantidad</th>
-//                   <th className="w-1/5 px-4 py-2 text-left">Precio</th>
-//                   <th className="w-1/5 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Estado</th>
-//               </tr>
-//             </thead>
-//             <tbody className="block w-full overflow-y-auto max-h-[55vh]">
-//               {pedidos.length > 0 ? (
-//                 [...pedidos]
-//                   .sort((a, b) => (a.estado === 'No autorizado' ? -1 : 1))
-//                   .map((pedido, index) => (
-//                     <tr
-//                       key={index}
-//                       className="w-full h-[4rem] flex rounded-md cursor-pointer hover:bg-slate-200 duration-200"
-//                     >
-//                     <td className="w-1/5 px-4 py-2">{pedido.sucursal}</td>
-//                     <td className="w-1/5 px-4 py-2">{pedido.producto} MXN</td>
-//                     <td className="w-1/5 px-4 py-2">{pedido.cantidad} unidades</td>
-//                     <td className="w-1/5 px-4 py-2">${pedido.precio} MXN</td>
-//                     <td className="w-1/5 px-4 py-1 flex justify-start items-center">
-//                       <button
-//                         className={`w-[70%] h-[2.5rem] rounded-2xl ${
-//                           pedido.estado === 'Autorizado'
-//                             ? 'bg-blue-200 cursor-not-allowed'
-//                             : 'bg-blue-500 text-white hover:bg-blue-300 duration-200'
-//                         }`}
-//                       >
-//                         {pedido.estado === 'No autorizado' ? 'Autorizar' : 'Autorizado'}
-//                       </button>
-//                     </td>
-//                   </tr>
-//                 ))
-//               ) : (
-//               <tr className="w-full flex">
-//                 <td colSpan="3" className="text-center w-full py-4 text-gray-500">
-//                   No se encontraron pedidos.
-//                 </td>
-//               </tr>
-//             )}
-
-//             </tbody>
-//           </table>
-//         )}
-//       </div>
-//     </motion.div>
-//   );
-// }
-
-// export default PedidosCliente;

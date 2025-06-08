@@ -8,11 +8,12 @@ function ReportButton({ reporte }) {
 
     useEffect(() => {
         if (isSelected && !reporte.resuelto) {
+            const currentToken = localStorage.getItem('token');
             fetch(`http://localhost:3001/reportes/${reporte.idReporte}`, {
                 method: 'PUT', // O PATCH si solo actualizas un campo
                 headers: {
                     'Content-Type': 'application/json',
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${currentToken}`
                 },
                 body: JSON.stringify({ resuelto: true }),
             })
