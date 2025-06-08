@@ -24,6 +24,7 @@ function DistribuidorMain() {
 
   
   useEffect(() => {
+    const token = localStorage.getItem('token');
     fetch("http://localhost:3001/api/pedidos/general", {
   headers: {
     "Authorization": `Bearer ${token}`

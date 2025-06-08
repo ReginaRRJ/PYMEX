@@ -37,6 +37,7 @@ function NotificacionesCliente() {
         const fetchNotificationConfig = async () => {
             console.log(`Attempting to fetch notification config for idUsuario: ${user.idUsuario}`);
             try {
+                const token = localStorage.getItem('token');
                 const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
   headers: {
     Authorization: `Bearer ${token}`
@@ -114,6 +115,7 @@ function NotificacionesCliente() {
         console.log(`Sending PUT for idNotificacion: ${idNotificacion}, activo: ${newValue}`);
 
         try {
+            const token = localStorage.getItem('token');
             const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
                 method: "PUT",
                 headers: {

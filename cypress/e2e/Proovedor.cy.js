@@ -18,6 +18,7 @@ describe('PA03002. LeerPedidos', () => {
 });
 
 describe('PA03003. Detalles del Pedido', () => {
+
   it('UpdatePedidos Pendiente a Curso', () => {
     cy.loginProveedor();
     
@@ -35,9 +36,15 @@ describe('PA03003. Detalles del Pedido', () => {
     cy.get('[data-testid="StepPendiente"]').should('have.class', '!bg-blue-500');
     cy.get('[data-testid="StepCurso"]').click();
 
+    // Esperamos a que el cambio se refleje y usamos el alias correctamente
     cy.get('@pedidoId').then((savedId) => {
-      cy.request(`http://localhost:3001/api/pedidos/detalle/${savedId}`)
-      .then((response) => {
+      cy.request({
+        method: 'GET',
+        url: `http://localhost:3001/api/pedidos/detalle/${savedId}`,
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('token')}` // O usa una variable si ya tienes el token almacenado
+        }
+      }).then((response) => {
         expect(response.status).to.eq(200);
         expect(response.body.Estado).to.eq('En curso');
       });
@@ -62,8 +69,13 @@ describe('PA03003. Detalles del Pedido', () => {
     cy.get('[data-testid="StepPendiente"]').click();
 
     cy.get('@pedidoId').then((savedId) => {
-      cy.request(`http://localhost:3001/api/pedidos/detalle/${savedId}`)
-      .then((response) => {
+      cy.request({
+        method: 'GET',
+        url: `http://localhost:3001/api/pedidos/detalle/${savedId}`,
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('token')}`
+        }
+      }).then((response) => {
         expect(response.status).to.eq(200);
         expect(response.body.Estado).to.eq('Pendiente');
       });
