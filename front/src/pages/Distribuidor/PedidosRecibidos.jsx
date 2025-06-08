@@ -19,10 +19,12 @@ function PedidosRecibidos({ pedidoModal, setPedidoModal, pedidos, setPedido, set
       try {
         const id = parseInt(user.idUsuario, 10);
         console.log("Obteniendo notificaciones no leídas para el usuario:", id);
+        
+        const currentToken = localStorage.getItem('token');
         const response = await fetch(
           `http://localhost:3001/notificaciones/alertas/${id}`, {
             headers: {
-              "Authorization": `Bearer ${token}`
+              "Authorization": `Bearer ${currentToken}`
             }
           }
         );

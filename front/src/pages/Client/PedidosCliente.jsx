@@ -136,8 +136,9 @@ function PedidosCliente() {
     if (user.idUsuario) {
       try {
         const id = parseInt(user.idUsuario, 10);
+        const currentToken = localStorage.getItem('token');
         const response = await fetch(`http://localhost:3001/notificaciones/alertas/${id}`, {
-          headers: { "Authorization": `Bearer ${token}` }
+          headers: { "Authorization": `Bearer ${currentToken}` }
         });
         const data = await response.json();
         notif(data.resultado || []);

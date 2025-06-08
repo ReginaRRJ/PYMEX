@@ -74,6 +74,7 @@ function AddOrder({onClose}) {
         const fetchProveedores = async () => {
             console.log("Fetching proveedores from API...");
             try {
+                const token = localStorage.getItem('token');
                 const res = await axios.get("http://localhost:3001/api/sucursal/proveedores",{
   headers: {
     "Authorization": `Bearer ${token}`
@@ -98,6 +99,7 @@ function AddOrder({onClose}) {
 
         const fetchProductos = async () => {
             try {
+                const token = localStorage.getItem('token');
                 const res = await axios.get(`http://localhost:3001/api/sucursal/productos/${proveedorSeleccionado.idProveedor}`,{
   headers: {
     "Authorization": `Bearer ${token}`

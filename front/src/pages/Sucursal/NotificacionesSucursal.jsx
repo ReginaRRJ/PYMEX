@@ -21,6 +21,7 @@ function NotificacionesSucursal() {
     
         const fetchNotificationConfig = async () => {
             try {
+                const token = localStorage.getItem('token');
                 const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
   headers: {
     "Authorization": `Bearer ${token}`
@@ -68,6 +69,7 @@ function NotificacionesSucursal() {
         if (idNotificacion === 3) setEstatusPedido(value);
     
         try {
+            const token = localStorage.getItem('token');
             await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
                 method: "PUT",
                 headers: {

@@ -79,7 +79,6 @@ describe('PA09005. Seguimiento de Reportes', () => {
     cy.get('#info-reporte').find('[data-testid="UpdateEstadoReport-button"]').should('exist');
   })
 
-
   it('Mensaje si no hay reportes', () => {
     cy.intercept('GET', 'http://localhost:3001/reportes', {
       statusCode: 200,
@@ -91,7 +90,6 @@ describe('PA09005. Seguimiento de Reportes', () => {
     cy.wait('@getReportesVacios');
     cy.get('#info-reporte').should('contain', 'No hay reportes disponibles.');
   });  
-
 
   it('Actualización de Estado de un Reporte', () => {
   cy.loginAdmin(); 
