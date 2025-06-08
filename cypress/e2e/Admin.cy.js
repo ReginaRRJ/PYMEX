@@ -1,4 +1,3 @@
-
 describe('PA09001. LeerUsuario: CRUD', () => {
   it('Visualización de los usuarios ', () => {
     cy.loginAdmin()
@@ -17,7 +16,6 @@ describe('PA09001. LeerUsuario: CRUD', () => {
     cy.get('#usuarios-list').should('contain', 'No se encontraron usuarios.');
   });
 })
-
 
 describe('PA09002. CrearUsuario: CRUD', () => {
   it('CrearUsuarioJin', () => {
@@ -39,8 +37,6 @@ describe('PA09002. CrearUsuario: CRUD', () => {
   })
 })
 
-
-
 describe('PA09003. UpdateUsuario: CRUD', () => {
   it('Actualizar Usuario Jin a Namjoon', () => {
     cy.loginAdmin()
@@ -49,26 +45,27 @@ describe('PA09003. UpdateUsuario: CRUD', () => {
     cy.get ('[data-testid="inputActualizar-correo"]').clear().type('kim@namjoon.kr')
     cy.get('#update-button').click()
 
+    cy.wait(6000)
+
     cy.logOut()
     cy.get('input').first().type('kim@namjoon.kr')
     cy.get('input').last().type('WHYK')
     cy.get('#login-button').click()
-    //cy.url().should('include', '/vendedor')
+    cy.url().should('include', '/vendedor')
 
     })
-  })
+})
 
 describe('PA09004. DeteleUsuario: CRUD', () => {
   it('Eliminar Usuario Namjoon', () => {
     cy.loginAdmin()
     cy.get ('#usuarios-list').find ('tr').contains('td', 'kim@namjoon.kr').click()
     cy.get('#delete-button').click()
+    cy.reload()
     cy.get ('#usuarios-list').find ('tr').contains('td', 'kim@namjoon.kr').should('not.exist');
   })
 })
 
-
-//-----------------------------------------------------------------------------------------
 describe('PA09005. Seguimiento de Reportes', () => {
   it('Visualizar Reportes', () => {
     cy.loginAdmin()
@@ -91,41 +88,32 @@ describe('PA09005. Seguimiento de Reportes', () => {
   });  
 
 
-  it('Actualización de Estados', () => {
-    cy.loginAdmin()
-    cy.get('#Navbar').contains('Reportes').click();
+  it('Actualización de Estado de un Reporte', () => {
+  cy.loginAdmin(); 
+  cy.get('#Navbar').contains('Reportes').click();
 
-    cy.request('GET', 'http://localhost:3001/reportes').then((response) => {
-      const $children = response.body; 
+  // Paso 1: Obtener todos los reportes
+  cy.request('GET', 'http://localhost:3001/reportes').then((response) => {
+    const reportes = response.body;
+    const pendiente = reportes.find(r => !r.resuelto); // Paso 2: Buscar uno que aún no esté resuelto
 
-      if ($children.length > 0) {
-        cy.get('[data-testid="UpdateEstadoReport-button"]').should('exist');
-        
-        cy.get('#info-reporte').children().first().then($firstReport => {
-          const button = $firstReport.find('[data-testid="UpdateEstadoReport-button"]');
-          const h1 = button.find('h1');
+    if (pendiente) {
+      const idReporte = pendiente.idReporte;
 
-          if (h1.length > 0 && h1.text().trim() === 'Por resolver') {
-            cy.wrap(button).click();
+      cy.get(`[data-testid="reporte-row-${idReporte}"]`)
+        .find('[data-testid="UpdateEstadoReport-button"]')
+        .click();
 
-            cy.wait(500); // Espera para que el estado cambie en BD
-            cy.reload(); 
-            cy.get('#Navbar').contains('Reportes').click();
-
-            
-            cy.get('#info-reporte').children().first().then($updatedReport => {
-              const updatedButton = $updatedReport.find('[data-testid="UpdateEstadoReport-button"]');
-              cy.wrap(updatedButton).find('h1').should('not.have.text', 'Por resolver');
-              //cy.get('[data-testid="UpdateEstadoReport-button"] img').should('be.visible');
-              
-            });
-          } else {
-            cy.log('Existen reportes, pero estan todos resueltos');
-          }
-          });
-      } else {
-        cy.log('No existe reportes que se puedan actualizar');
-      }
-    });
+      cy.wait(500); 
+      cy.request('GET', 'http://localhost:3001/reportes').then((res) => {
+        const actualizado = res.body.find(r => r.idReporte === idReporte);
+        expect(actualizado).to.exist;
+        expect(actualizado.resuelto).to.be.true;
+      });
+    } else {
+      cy.log('No hay reportes pendientes por resolver');
+    }
   });
+});
+
 })

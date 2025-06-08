@@ -101,7 +101,6 @@ function NotificacionesSucursal() {
             <div className="w-full h-[75%]">
                 {/* ID para Pruebas */}
                 <div 
-                data-testid="notificacionAutorizado-container"
                 className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
 
                     <div className='w-[80px] h-full flex flex-col justify-center'>
@@ -109,7 +108,7 @@ function NotificacionesSucursal() {
                         size='large' 
                         checked={pedidoAutorizado} 
                         onChange={(e) => handleSwitchChange(1, e.target.checked)}
-                        inputProps={{ 'data-testid': 'switchNotificacionAutorizado' }}
+                        inputProps={{ 'data-testid': 'switchNotificacionPedidoAutorizado' }}
                         />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
@@ -120,7 +119,6 @@ function NotificacionesSucursal() {
                 <br />
                 {/* ID para Pruebas */}
                 <div 
-                data-testid="notificacionAutorizacion-container"
                 className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
                         <Switch 

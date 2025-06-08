@@ -158,7 +158,7 @@ function NotificacionesCliente() {
                 {/* Anticipacion de pedidos a distribuidor (ID 7) */}
                 <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
-                        <Switch size='large' checked={anticipacion} onChange={(e) => handleSwitchChange(7, e.target.checked)} />
+                        <Switch inputProps={{ 'data-testid': 'switchAnticipación' }} size='large' checked={anticipacion} onChange={(e) => handleSwitchChange(7, e.target.checked)} />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
                         <h1 className='text-[18px] font-bold'>Anticipación de pedidos a distribuidor</h1>
@@ -169,7 +169,7 @@ function NotificacionesCliente() {
                 {/* Automatización de pedidos (ID 8) */}
                 <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
-                        <Switch size='large' checked={automatizacion} onChange={(e) => handleSwitchChange(8, e.target.checked)} />
+                        <Switch inputProps={{ 'data-testid': 'switchAutomatización' }} size='large' checked={automatizacion} onChange={(e) => handleSwitchChange(8, e.target.checked)} />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
                         <h1 className='text-[18px] font-bold'>Automatización de pedidos</h1>
@@ -180,7 +180,7 @@ function NotificacionesCliente() {
                 {/* Estatus del pedido (ID 9) */}
                 <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
-                        <Switch size='large' checked={estatus} onChange={(e) => handleSwitchChange(9, e.target.checked)} />
+                        <Switch inputProps={{ 'data-testid': 'switchEstatus' }} size='large' checked={estatus} onChange={(e) => handleSwitchChange(9, e.target.checked)} />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
                         <h1 className='text-[18px] font-bold'>Estatus del pedido</h1>
@@ -191,7 +191,7 @@ function NotificacionesCliente() {
                 {/* Solicitudes de autorización (ID 10) */}
                 <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
-                        <Switch size='large' checked={solicitudes} onChange={(e) => handleSwitchChange(10, e.target.checked)} />
+                        <Switch inputProps={{ 'data-testid': 'switchSolicitudes' }} size='large' checked={solicitudes} onChange={(e) => handleSwitchChange(10, e.target.checked)} />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
                         <h1 className='text-[18px] font-bold'>Solicitudes de autorización</h1>
