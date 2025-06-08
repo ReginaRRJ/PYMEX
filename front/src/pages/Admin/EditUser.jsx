@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const token = localStorage.getItem('token');
 async function generarHash(contrasena) {
   const encoder = new TextEncoder();
   const data = encoder.encode(contrasena);
@@ -46,10 +47,15 @@ function EditUser({ user, onClose }) {
       if (selectedRole === "Sucursal") {
         datos.sucursal = sucursal;
       }
+      
 
       const res = await axios.put(
         `http://localhost:3001/api/usuarios/${user.idUsuario}`,
-        datos
+        datos, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
       );
       console.log("Usuario actualizado:", res.data);
       toast.success("Usuario actualizado correctamente");
@@ -78,7 +84,11 @@ function EditUser({ user, onClose }) {
       }
 
       const res = await axios.delete(
-        `http://localhost:3001/api/usuarios/${user.idUsuario}`
+        `http://localhost:3001/api/usuarios/${user.idUsuario}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
       );
       console.log("Usuario actualizado:", res.data);
       onClose(); // cerrar modal si todo sale bien

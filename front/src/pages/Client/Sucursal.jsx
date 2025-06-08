@@ -1,7 +1,7 @@
 import market from "/assets/market-color.png";
 import { useState, useEffect } from "react"; 
 import axios from "axios";
-
+const token = localStorage.getItem('token');
 function Sucursal({ sucursal, mode, periodo }) {
   const [montoVentas, setMontoVentas] = useState(0);
 
@@ -19,7 +19,11 @@ function Sucursal({ sucursal, mode, periodo }) {
           endpoint = `${rutaBase}/ventas-semanales/${sucursal.id}`;
         }
 
-        const res = await axios.get(endpoint);
+        const res = await axios.get(endpoint, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
         const primerResultado = res.data?.[0];
         const monto = primerResultado?.totalVentas ?? 0;
         setMontoVentas(monto);

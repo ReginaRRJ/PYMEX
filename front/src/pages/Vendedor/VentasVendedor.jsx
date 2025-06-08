@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-
+const token = localStorage.getItem('token');
 function VentasVendedor({ ventaModal, setVentaModal, refreshTickets }) {
   const [user, setUser] = useState(null);
   const [tickets, setTickets] = useState([]);
@@ -18,7 +18,11 @@ function VentasVendedor({ ventaModal, setVentaModal, refreshTickets }) {
 
     const fetchTickets = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/tickets/branch/${user.idSucursal}`);
+        const response = await axios.get(`http://localhost:3001/api/tickets/branch/${user.idSucursal}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
         setTickets(response.data);
       } catch (error) {
         console.error("Error fetching tickets:", error);

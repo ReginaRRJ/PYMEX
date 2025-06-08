@@ -1,12 +1,14 @@
 // PedidosCliente.jsx
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import {toast} from "react-toastify";
 import { motion } from "framer-motion";
+const token = localStorage.getItem('token');
 
 function PedidosCliente() {
   const [pedidos, setPedidos] = useState([]);
   const [error, setError] = useState("");
-
+  const [user, setUser]=useState(null);
   const storedUserString = localStorage.getItem('usuario');
   let idPyme = null;
 
@@ -27,7 +29,10 @@ function PedidosCliente() {
     try {
       const response = await axios.put(
         `${API_BASE_URL}/api/pedidosClient/${idPedido}/estatusCliente`,
-        { estatusCliente: statusForBackend } 
+        { estatusCliente: statusForBackend},{headers: {
+    "Authorization": `Bearer ${token}`
+  } }
+
       );
 
       if (response.status === 200) {
@@ -96,14 +101,66 @@ function PedidosCliente() {
         setPedidos([]);
         setError("El formato de datos de pedidos recibido es incorrecto.");
       }
-    } catch (err) {
-      console.error("Error fetching pedidos:", err);
-      setError("Error al cargar los pedidos. Inténtalo de nuevo más tarde.");
-    }
-  }, [idPyme]);
 
-  // Se ejecuta al montar y cada vez que cambia fetchPedidos (que depende de idPyme)
-  useEffect(() => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/pedidosClient/${idPyme}`,{
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
+
+        if (Array.isArray(response.data)) {
+          const processedPedidos = response.data.map(pedido => {
+            // Reverted to original casing for data fields to ensure correct display
+            // This is crucial for fixing the "0" display issue.
+            let rawEstatusClienteFromDB = pedido.ESTATUSCLIENTE;
+            const rawEstatusProveedorFromDB = pedido.ESTATUSGENERALPEDIDO;
+
+            const isProveedorLocked = (rawEstatusProveedorFromDB !== 'Pendiente' && rawEstatusProveedorFromDB !== 'Por autorizar');
+
+            let finalEstatusClienteForFrontend;
+            // Removed automatic backend update here, as it was problematic and
+            // not directly related to the button's visual state change.
+            // The button's state is handled by updatePedidoStatusInBackend and local state.
+
+            if (isProveedorLocked) {
+                finalEstatusClienteForFrontend = 'Autorizado';
+                // If the supplier has locked it and the client's status isn't 'Autorizado'
+                // you might still *want* to call the backend to set it.
+                // However, doing it *during a fetch* can cause infinite loops.
+                // It's better to let the "Autorizar" button handle this user action.
+                // For now, we'll just display it as 'Autorizado' on the frontend.
+            } else {
+                if (rawEstatusClienteFromDB === 'Autorizado') {
+                    finalEstatusClienteForFrontend = 'Autorizado';
+                } else {
+                    finalEstatusClienteForFrontend = 'Por autorizar';
+                }
+            }
+
+            return {
+                ...pedido,
+                sucursal: pedido.nombreSucursal,
+                producto: pedido.nombreProductoo,
+                cantidad: pedido.CANTIDADPEDIDO, // Reverted to original casing
+                precio: pedido.TOTALPEDIDOPRODUCTO, // Reverted to original casing
+                estado: finalEstatusClienteForFrontend, // This drives the button text and disabled state
+                estatusProveedor: rawEstatusProveedorFromDB,
+                idPedido: pedido.idPedido
+            };
+          });
+          setPedidos(processedPedidos); // No filter(Boolean) needed if all are valid
+        } else {
+          console.warn("API response for pedidos is not an array:", response.data);
+          setPedidos([]);
+          setError("El formato de datos de pedidos recibido es incorrecto.");
+        }
+      } catch (err) {
+        console.error("Error fetching pedidos:", err);
+        setError("Error al cargar los pedidos. Inténtalo de nuevo más tarde.");
+      }
+    };
+
     fetchPedidos();
   }, [fetchPedidos]);
 
@@ -134,7 +191,51 @@ function PedidosCliente() {
       await fetchPedidos();
     }
   };
+  useEffect(() => {
+    const storedUser = localStorage.getItem("usuario");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
+useEffect(() => {
+    if (user && user.idUsuario) {
+      cargarUsuarioYAlertas();
+    }
+  }, [user]);
+
+const cargarUsuarioYAlertas = async () => {
+    if (user.idUsuario) {
+
+      console.log("Cargando notificaciones...", user.idUsuario);
+
+      try {
+        const id = parseInt(user.idUsuario, 10);
+        console.log("Obteniendo notificaciones no leídas para el usuario:", id);
+        const response = await fetch(
+          `http://localhost:3001/notificaciones/alertas/${id}`,{headers: {
+    "Authorization": `Bearer ${token}`
+  } }
+        );
+        const data = await response.json();
+        console.log("Notificaciones:", data);
+        notif(data.resultado || []);
+        console.log(data)
+      } catch (error) {
+        console.error("Error al obtener notificaciones:", error);
+      }
+    }
+  };
+const notif = async (notificaciones) => {
+    for (let i = 0; i < notificaciones.length; i++) {
+      const notificacion = notificaciones[i];
+      if (notificacion.leida === false) {
+        //await new Promise(resolve => setTimeout(resolve, 6000));
+        toast.warn(`${notificacion.mensaje}`);
+      
+      }
+    }
+  };
   return (
     <motion.div
       className="h-full w-full flex flex-col pt-[6vh] pr-[50px]"

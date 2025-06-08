@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+const token = localStorage.getItem('token');
 function ReporteSucursal() {
   const [prioridad, setPrioridad] = useState(0);
   const [titulo, setTitulo] = useState("");
@@ -33,7 +33,11 @@ function ReporteSucursal() {
 
       const res = await axios.post(
         `http://localhost:3001/reportes/pedido`,
-        datos
+        datos, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
       );
       console.log("Reporte creado:", res.data);
       toast.success("Reporte creado correctamente");

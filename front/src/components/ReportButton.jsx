@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import checkmark from '../assets/checkmark.png'
+const token = localStorage.getItem('token');
 
 function ReportButton({ reporte }) {
     const [isSelected, setIsSelected] = useState(reporte.resuelto === true); // Variable que ayuda a mantener el control de resuelto/no resuelto
@@ -11,6 +12,7 @@ function ReportButton({ reporte }) {
                 method: 'PUT', // O PATCH si solo actualizas un campo
                 headers: {
                     'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({ resuelto: true }),
             })

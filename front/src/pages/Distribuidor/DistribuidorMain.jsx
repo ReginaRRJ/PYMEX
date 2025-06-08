@@ -6,20 +6,30 @@ import { motion } from 'framer-motion';
 import PedidosRecibidos from "./PedidosRecibidos";
 import NotificacionesDist from "./NotificacionesDist";
 import Pedido from "./Pedido";
-
+import notificacionesData from "./notificaciones";
+import Notificaciones from "../../components/Notifications";
 import carrito from '/assets/carrito.png';
 import notificacion from '/assets/notificacion.png';
 
 let rol = "DISTRIBUIDOR";
+const token = localStorage.getItem('token');
 
 function DistribuidorMain() {
   const [activeScreenDist, setActiveScreenDist] = useState("pedidosRecibidos");
   const [pedidoModal, setPedidoModal] = useState(false);
   const [pedido, setPedido] = useState(null);
   const [pedidos, setPedidos] = useState([]);
+  const [notificationsModal, setNotificationsModal] = useState(false);
+  const [notificaciones, setNotificaciones] = useState(notificacionesData)
 
+  
   useEffect(() => {
-    fetch("http://localhost:3001/api/pedidos/general")
+    fetch("http://localhost:3001/api/pedidos/general", {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+})
+      
       .then((res) => res.json())
       .then((data) => setPedidos(data))
       .catch((err) => console.error("Error fetching pedidos:", err));
@@ -44,13 +54,17 @@ function DistribuidorMain() {
   };
 
   return (
+    
     <>
       {pedidoModal && pedido && (
         <Pedido onClose={() => setPedidoModal(false)} pedido={pedido} />
       )}
-
+      {notificationsModal && (
+        <Notificaciones onClose={() => setNotificationsModal(false)} 
+      notificaciones={notificaciones}></Notificaciones>
+      )}
       <div className="w-screen h-screen flex flex-col items-center">
-        <Header rol={rol} />
+        <Header rol={rol}bell={true} notificaciones={notificaciones} setNotificationsModal={setNotificationsModal} />
         <hr className="w-[95%]" />
         <div className="w-full h-[90%] flex">
           <div className="w-[25%] h-full">

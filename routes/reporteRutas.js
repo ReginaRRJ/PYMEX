@@ -1,9 +1,9 @@
 import express from "express";
 import { getAllReportes, updateResueltoReporte } from "../controllers/adminReport.js";
 import { createReporte } from "../controllers/reporteAdminController.js";
-
+import { verifyToken } from '../controllers/authMiddle.js';
 const router = express.Router();
-
+router.use(verifyToken);
 // Obtener todos los reportes
 router.get("/", async (req, res) => {
   try {

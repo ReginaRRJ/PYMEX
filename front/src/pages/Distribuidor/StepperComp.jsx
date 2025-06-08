@@ -3,29 +3,27 @@ import { Stepper, Step, Typography } from "@material-tailwind/react";
 import { ClockIcon, TruckIcon, CheckIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 
-export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
-  const [activeStep, setActiveStep] = useState(0);  // Track active step
-  const [currentStatus, setCurrentStatus] = useState(estadoActual || "Pendiente");  // Track current status with a fallback to "Pendiente"
+const token = localStorage.getItem('token');
 
-  // Fetch the initial status from the backend
+export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
+  const [activeStep, setActiveStep] = useState(0);
+  const [currentStatus, setCurrentStatus] = useState(estadoActual || "Pendiente");
+
   useEffect(() => {
     const fetchStatus = async () => {
       try {
         if (!pedidoId) return;
 
-        // Fetching the status using pedidoId
-        const response = await axios.get(`http://localhost:3001/api/pedidos/detalle/${pedidoId}`);
-        
-        // Check the structure of the response
+        const response = await axios.get(`http://localhost:3001/api/pedidos/detalle/${pedidoId}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
         console.log("Fetched response data:", response.data);
-
-        // Now using "Estado" based on the response structure.
-        const { Estado } = response.data;  // Get the correct status from the backend
-
-        // Log the fetched status
+        const { Estado } = response.data;
         console.log("Fetched Estado from backend:", Estado);
 
-        // Update the status in the state based on the backend response
         setCurrentStatus(Estado || "Pendiente");
       } catch (error) {
         console.error("Error fetching order status:", error);
@@ -33,90 +31,107 @@ export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
     };
 
     fetchStatus();
-  }, [pedidoId]);  // Fetch status when pedidoId changes
+  }, [pedidoId]);
 
-  // Automatically update the active step based on the current status (Estado)
   useEffect(() => {
-    if (!currentStatus) {
-      return; // Don't proceed if the currentStatus is undefined
-    }
+    if (!currentStatus) return;
 
-    // Normalize current status to handle potential discrepancies (like whitespace or casing)
-    const normalizedStatus = currentStatus.trim(); // Remove any surrounding spaces
-    console.log("Normalized Status:", normalizedStatus); // Debugging log
+    const normalizedStatus = currentStatus.trim();
+    console.log("Normalized Status:", normalizedStatus);
 
-    // Mapping status to step index
     const stepMap = {
-      "Pendiente": 0,    // First step should be active
-      "En curso": 1,     // First and second steps should be active
-      "Curso": 1,        // First and second steps should be active
-      "Entregado": 2,    // All steps should be active
+      "Pendiente": 0,
+      "En curso": 1,
+      "Curso": 1,
+      "Entregado": 2
     };
 
-    // Set active step based on normalized status
-    setActiveStep(stepMap[normalizedStatus] ?? 0);  // Default to step 0 if status is unrecognized
-  }, [currentStatus]);  // Re-run the effect when the status changes
+    setActiveStep(stepMap[normalizedStatus] ?? 0);
+  }, [currentStatus]);
 
-  // Function to update the status of the order in the backend
-  const updateStatus = async (status) => {
-    try {
-      if (!pedidoId) return;
+const updateStatus = async (status) => {
+  try {
+    if (!pedidoId) return;
 
-      const validStatuses = ["Pendiente", "En curso", "Curso", "Entregado"]; // String-based status values
-
-      // Validate the status before updating
-      if (!validStatuses.includes(status)) {
-        console.error("Estatus inválido:", status);
-        return;
-      }
-
-      // Send the status update to the backend
-      const response = await axios.put(
-        `http://localhost:3001/api/pedidos/estatus/${pedidoId}`,
-        { estatusPedido: status }  // Ensure status is a string
-      );
-
-      console.log("Pedido actualizado:", response.data);
-
-      // Update the current status in the parent component if needed
-      setCurrentStatus(status);
-      if (onStatusChange) onStatusChange(status);
-    } catch (error) {
-      console.error("Error al actualizar el estado del pedido:", error);
+    const validStatuses = ["Pendiente", "En curso", "Curso", "Entregado"];
+    if (!validStatuses.includes(status)) {
+      console.error("Estatus inválido:", status);
+      return;
     }
-  };
+
+    const response = await axios.put(
+      `http://localhost:3001/api/pedidos/estatus/${pedidoId}`,
+      { estatusPedido: status },
+      {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      }
+    );
+
+    setCurrentStatus(status);
+    if (onStatusChange) onStatusChange(status);
+
+    // 👉 Notificación personalizada según el estatus
+    let mensaje = "";
+    if (status === "Curso" || status === "En curso") {
+      mensaje = "¡Tu pedido ha sido actualizado a En curso!";
+    } else if (status === "Pendiente") {
+      mensaje = "¡Tu pedido ha sido actualizado a Pendiente!";
+    } else {
+      mensaje = `¡Tu pedido ha sido actualizado a ${status}!`;
+    }
+
+    try {
+      console.log("Pedido ID ",pedidoId)
+      console.log("Mensaje", mensaje)
+      const spResponse = await fetch(`http://localhost:3001/notificaciones/actualizarProveedor/${pedidoId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          idPedido: pedidoId,
+          idTipoNotificacion: 6,
+          mensaje: mensaje
+        })
+      });
+
+      console.log("LLAMADO CORRECTAMENTE AL STORED PROCEDURE");
+    } catch (error) {
+      console.log("ERROR EN STORE PROCEDURE ACTUALIZAR", error);
+    }
+
+    // onClose(); // ✅ Only after all is successful
+  } catch (error) {
+    console.error("Error al actualizar el estado del pedido:", error);
+  }
+};
+
 
   return (
     <div className="w-full">
       <Stepper activeStep={activeStep}>
-
-        {/* Pendiente Step */}
-        {/* ID para Pruebas  */}
         <Step
           data-testid="StepPendiente"
           onClick={() => currentStatus !== "Entregado" && updateStatus("Pendiente")}
           className={`cursor-pointer ${activeStep >= 0 ? "!bg-blue-500" : "bg-black"}`}
         >
           <ClockIcon className="h-5 w-5" />
-
-          
-          <div  className="absolute -bottom-[2rem] w-max text-center">
+          <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography variant="h6" color={activeStep >= 0 ? "black" : "gray"}>
               Pendiente
             </Typography>
           </div>
         </Step>
 
-
-        {/* En Proceso Step */}
-        {/* ID para Pruebas  */}
         <Step
           data-testid="StepCurso"
           onClick={() => currentStatus !== "Entregado" && updateStatus("Curso")}
           className={`cursor-pointer ${activeStep >= 1 ? "!bg-blue-500" : "bg-black"}`}
         >
           <TruckIcon className="h-5 w-5" />
-
           <div className="absolute -bottom-[2rem] w-max text-center">
             <Typography variant="h6" color={activeStep >= 1 ? "black" : "gray"}>
               Curso
@@ -124,9 +139,7 @@ export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
           </div>
         </Step>
 
-        {/* Entregado Step */}
         <Step
-          //onClick={() => currentStatus !== "Entregado" && updateStatus("Entregado")}
           className={`cursor-not-allowed ${activeStep >= 2 ? "!bg-blue-500" : "bg-black"}`}
         >
           <CheckIcon className="h-5 w-5" />
@@ -140,6 +153,3 @@ export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
     </div>
   );
 }
-
-
-

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import market from "../../assets/market-color.png";
-
+const token = localStorage.getItem('token');
 function VentasSucursal() {
   const [ventas, setVentas] = useState("anual");
   const [montoVentas, setMontoVentas] = useState(null);
@@ -43,7 +43,11 @@ function VentasSucursal() {
       if (ventas === "anual") {
         try {
           const res = await axios.get(
-            `http://localhost:3001/api/sucursal/ventas-anuales/${sucursal}`
+            `http://localhost:3001/api/sucursal/ventas-anuales/${sucursal}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
           );
           console.log("Respuesta de ventas anuales:", res.data); // 🔍 inspecciona estructura
           const primerResultado = res.data?.[0];
@@ -55,7 +59,11 @@ function VentasSucursal() {
       } else if (ventas === "mensual") {
         try {
           const res = await axios.get(
-            `http://localhost:3001/api/sucursal/ventas-mensuales/${sucursal}`
+            `http://localhost:3001/api/sucursal/ventas-mensuales/${sucursal}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
           );
 
           console.log("Respuesta de ventas mensuales:", res.data); // 🔍 inspecciona estructura
@@ -68,7 +76,11 @@ function VentasSucursal() {
       } else {
         try {
           const res = await axios.get(
-            `http://localhost:3001/api/sucursal/ventas-semanales/${sucursal}`
+            `http://localhost:3001/api/sucursal/ventas-semanales/${sucursal}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
           );
 
           console.log("Respuesta de ventas semanales:", res.data); // 🔍 inspecciona estructura

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+const token = localStorage.getItem('token');
 
 function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEditUserModal, setUsuarioSeleccionado }) {
   const [usuarios, setUsuarios] = useState([]);
@@ -12,7 +13,11 @@ function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEdi
 
     const fetchUsuarios = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/usuarios", { signal });
+        const res = await axios.get("http://localhost:3001/api/usuarios", { signal: signal,
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+});
 
         if (res.data && Array.isArray(res.data)) {
           setUsuarios(res.data);

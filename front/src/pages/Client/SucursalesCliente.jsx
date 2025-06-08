@@ -1,9 +1,11 @@
 import { motion } from "framer-motion"; 
 import { useState, useEffect } from "react";
+//Estado inicial (cambia a base de datos)
 import sucursalesData from "./sucursales";
 import Sucursal from "./Sucursal";
 import axios from "axios";
 
+const token = localStorage.getItem('token');
 function SucursalCliente() {
   const [periodo, setPeriodo] = useState("Ventas mensuales");
   const [sucursales, setSucursales] = useState(sucursalesData);
@@ -30,7 +32,11 @@ function SucursalCliente() {
         }
 
         const response = await axios.get(
-          `http://localhost:3001/api/sucursales/pyme/${idPyme}`
+          `http://localhost:3001/api/sucursales/pyme/${idPyme}`, {
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
         );
         console.log("Sucursales recibidas:", response.data);
 
