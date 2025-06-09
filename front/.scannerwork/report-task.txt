@@ -2,5 +2,5 @@ projectKey=BTP_front
 serverUrl=http://20.115.80.90:9002
 serverVersion=25.5.0.107428
 dashboardUrl=http://20.115.80.90:9002/dashboard?id=BTP_front
-ceTaskId=aa8b7cbf-5df4-45e2-84b1-f1bedbf6c0f1
-ceTaskUrl=http://20.115.80.90:9002/api/ce/task?id=aa8b7cbf-5df4-45e2-84b1-f1bedbf6c0f1
+ceTaskId=045fc7b4-038b-4504-8933-0980df5db885
+ceTaskUrl=http://20.115.80.90:9002/api/ce/task?id=045fc7b4-038b-4504-8933-0980df5db885

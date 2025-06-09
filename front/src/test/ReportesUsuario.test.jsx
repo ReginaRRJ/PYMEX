@@ -1,9 +1,12 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import ReportesUsuarios from '../../pages/Admin/ReportesUsuarios';
+import ReportesUsuarios from '../pages/Admin/ReportesUsuarios';
 import '@testing-library/jest-dom';
-import * as fetchMock from 'node-fetch';
-import { Response } from 'node-fetch';
+
+// Mock del componente Report para evitar renderización real
+jest.mock('../components/Report', () => ({ reporte, index }) => (
+  <div data-testid={`reporte-${index}`}>{reporte.descripcion}</div>
+));
 
 // Simula localStorage
 beforeAll(() => {
@@ -22,29 +25,38 @@ describe('ReportesUsuarios', () => {
     ];
 
     global.fetch = jest.fn(() =>
-      Promise.resolve(
-        new Response(JSON.stringify(reportesMock), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        })
-      )
+      Promise.resolve({
+        json: () => Promise.resolve(reportesMock)
+      })
     );
 
     render(<ReportesUsuarios />);
 
-    // Espera que se muestre el reporte
     await waitFor(() => {
       expect(screen.getByText('Error de carga')).toBeInTheDocument();
       expect(screen.getByText('Bug en UI')).toBeInTheDocument();
     });
   });
 
-  test('muestra mensaje de error si falla el fetch', async () => {
+  test('muestra mensaje si no hay reportes', async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve([])
+      })
+    );
+
+    render(<ReportesUsuarios />);
+
+    await waitFor(() => {
+      expect(screen.getByText('No hay reportes disponibles.')).toBeInTheDocument();
+    });
+  });
+
+  test('maneja error si falla el fetch', async () => {
     global.fetch = jest.fn(() => Promise.reject(new Error('Network error')));
 
     render(<ReportesUsuarios />);
 
-    // Espera a que se renderice fallback
     await waitFor(() => {
       expect(screen.getByText('No hay reportes disponibles.')).toBeInTheDocument();
     });
