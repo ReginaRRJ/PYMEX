@@ -1,8 +1,7 @@
-// Import necessary modules using ES Module syntax
 import Reporte from "../Classes/ReportFollowUpClass.js"; 
 import sql from 'mssql';
 
-// Create a Reporte
+// Crear reporte
 async function createReporte(reporte) {
     try {
         const pool = await sql.connect(config);
@@ -17,9 +16,8 @@ async function createReporte(reporte) {
             .query('INSERT INTO Reportes (titulo, descripcion, urgencia, resuelto, detallesResolucion, fechaReporte, fechaResolucion) VALUES (@titulo, @descripcion, @urgencia, @resuelto, @detallesResolucion, @fechaReporte, @fechaResolucion)');
         return result;
     } catch (error) {
-        console.error('Error creating Reporte:', error);
+        console.error('Error creando reporte:', error);
     }
 }
 
-// Export the function using ES Module export
 export { createReporte };

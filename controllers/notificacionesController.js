@@ -1,4 +1,3 @@
-// Import necessary modules using ES Module syntax
 import hana from '@sap/hana-client';
 import dotenv from 'dotenv';
 
@@ -10,7 +9,7 @@ const connParams = {
     pwd: process.env.DB_PASSWORD
 };
 
-// Pendiente por desarrollar (get de notificaciones por usuario)
+//Obtener notificaciones de cada usuario
 export const notificacionesByUser = async (req, res) => {
   const { idUsuario } = req.params;
 
@@ -27,8 +26,7 @@ export const notificacionesByUser = async (req, res) => {
         return res.status(500).json({ message: "Error preparando la consulta", error: err.toString() });
       }
 
-      // El segundo parámetro es OUT, lo dejamos como null
-      statement.exec([parseInt(idUsuario)], (err, results) => { // ojo acá agregué null para el OUT
+      statement.exec([parseInt(idUsuario)], (err, results) => { 
         statement.drop();
         conn.disconnect();
 
@@ -36,16 +34,25 @@ export const notificacionesByUser = async (req, res) => {
           return res.status(500).json({ message: "Error ejecutando el procedimiento", error: err.toString() });
         }
 
-        // results[0] es un objeto con la propiedad RESULTADO_JSON (string JSON)
         const jsonString = results?.[0]?.RESULTADO;
 
         if (!jsonString) {
           console.log("Resultados:", results);
+          res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+          res.set('Pragma', 'no-cache');
+          res.set('Expires', '0');
+          res.set('Surrogate-Control', 'no-store');
+
           return res.json({ message: "Sin notificaciones", resultado: [] });
         }
 
         try {
           const resultado = JSON.parse(jsonString);
+          res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+          res.set('Pragma', 'no-cache');
+          res.set('Expires', '0');
+          res.set('Surrogate-Control', 'no-store');
+
           res.json({ message: "Notificaciones obtenidas", resultado });
         } catch (parseErr) {
           res.status(500).json({ message: "Error parseando JSON", error: parseErr.message });
@@ -59,7 +66,7 @@ export const notificacionesByUser = async (req, res) => {
 };
 
 
-// Pendiente por desarrollar (get de notificaciones por mostrar)
+//Obtener notificaciones para mostrar
 export const alertsByUser = (req, res) => {
   const { idUsuario } = req.params;
 
@@ -72,7 +79,7 @@ export const alertsByUser = (req, res) => {
       return res.status(500).json({ error: "Conexión fallida: " + err.message });
     }
 
-    const sql = `CALL "BACKPYMEX"."GETNotUsuario"(?, ?)`; // IN, OUT
+    const sql = `CALL "BACKPYMEX"."GETNotUsuario"(?, ?)`; 
 
     conn.prepare(sql, (err, statement) => {
       if (err) {
@@ -81,7 +88,6 @@ export const alertsByUser = (req, res) => {
         return res.status(500).json({ message: "Error preparando consulta", error: err.message });
       }
 
-      // Solo pasamos el parámetro IN (idUsuario)
       statement.exec([parseInt(idUsuario)], (err, rows, outParams) => {
         statement.drop();
         conn.disconnect();
@@ -91,16 +97,25 @@ export const alertsByUser = (req, res) => {
           return res.status(500).json({ message: "Error ejecutando", error: err.message });
         }
 
-        // El OUT viene en outParams (a veces en la propiedad OUT0 o con el nombre definido)
-        // Si no funciona con RESULTADO_JSON, intenta con outParams[0] o outParams.OUT0
         const resultadoJson = outParams?.RESULTADO_JSON || outParams?.OUT0 || outParams?.[0];
 
         if (!resultadoJson) {
+          res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+          res.set('Pragma', 'no-cache');
+          res.set('Expires', '0');
+          res.set('Surrogate-Control', 'no-store');
+
           return res.json({ message: "Sin notificaciones", resultado: [] });
+
         }
 
         try {
           const resultado = JSON.parse(resultadoJson);
+          res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+          res.set('Pragma', 'no-cache');
+          res.set('Expires', '0');
+          res.set('Surrogate-Control', 'no-store');
+
           res.json({ message: "Notificaciones obtenidas", resultado });
         } catch (jsonErr) {
           console.error("Error parseando JSON:", jsonErr);
@@ -110,6 +125,8 @@ export const alertsByUser = (req, res) => {
     });
   });
 };
+
+//Generación de notificaciones
 export const notifyClients = (req, res) => {
   const { idPedido, idTipoNotificacion, mensaje } = req.body;
 
@@ -124,7 +141,7 @@ export const notifyClients = (req, res) => {
       return res.status(500).json({ error: "Conexión fallida: " + err.message });
     }
 
-    const sql = `CALL "BACKPYMEX"."N9Cliente"(?, ?, ?)`; // IN, IN, IN
+    const sql = `CALL "BACKPYMEX"."N9Cliente"(?, ?, ?)`; 
 
     conn.prepare(sql, (err, statement) => {
       if (err) {
@@ -133,7 +150,7 @@ export const notifyClients = (req, res) => {
         return res.status(500).json({ message: "Error preparando consulta", error: err.message });
       }
 
-      // Ejecutar la stored procedure con los tres parámetros
+
       statement.exec([parseInt(idPedido), parseInt(idTipoNotificacion), mensaje], (err) => {
         statement.drop();
         conn.disconnect();
@@ -149,14 +166,117 @@ export const notifyClients = (req, res) => {
   });
 };
 
+//Generar notificación de cambios hechos por el cliente
+export const actualizarPedidoCliente=(req,res)=>{
+const { idPedido, idTipoNotificacion, mensaje } = req.body;
 
+  if (!idPedido || !idTipoNotificacion || !mensaje) {
+    return res.status(400).json({ error: "Faltan parámetros requeridos" });
+  }
 
+  const conn = hana.createConnection();
+  conn.connect(connParams, (err) => {
+    if (err) {
+      console.error("Conexión fallida:", err);
+      return res.status(500).json({ error: "Conexión fallida: " + err.message });
+    }
 
-//Get switch 1 (Entrega estimada) state
-//Get switch 2 (Automatización) state
-//Get time alert button
-//Get proveedor-cliente button state
-//Change switch 1 (Entrega estimada) state
-//Change switch 2 (Automatización) state
-//Change time alert button
-//Change proveedor-cliente button state
+    const sql = `CALL "BACKPYMEX"."N5Proveedor"(?, ?, ?)`; 
+
+    conn.prepare(sql, (err, statement) => {
+      if (err) {
+        console.error("Error preparando consulta:", err);
+        conn.disconnect();
+        return res.status(500).json({ message: "Error preparando consulta", error: err.message });
+      }
+
+      statement.exec([parseInt(idPedido), parseInt(idTipoNotificacion), mensaje], (err) => {
+        statement.drop();
+        conn.disconnect();
+
+        if (err) {
+          console.error("Error ejecutando:", err);
+          return res.status(500).json({ message: "Error ejecutando procedimiento", error: err.message });
+        }
+
+        res.json({ message: "Notificaciones enviadas correctamente" });
+      });
+    });
+  });
+};
+
+//Cambiar estado de notificación a leída
+export const notificacionLeida = async (req, res) => {
+  
+  const idMensaje = parseInt(req.params.idMensaje, 10);
+
+  const conn = hana.createConnection();
+  try {
+    conn.connect(connParams);
+
+    const sqlGet = `
+      SELECT "leida"
+      FROM "BACKPYMEX"."NotificacionMensajeUsuario"
+      WHERE "id_mensaje" = ?
+    `;
+    const getStmt = await new Promise((resolve, reject) =>
+      conn.prepare(sqlGet, (err, stmt) => err ? reject(err) : resolve(stmt))
+    );
+    const rows = await new Promise((resolve, reject) =>
+      getStmt.exec([idMensaje], (err, result) => {
+        getStmt.drop();
+        if (err) return reject(err);
+        resolve(result);
+      })
+    );
+
+    if (rows.length === 0) {
+      conn.disconnect();
+      return res.status(404).json({ message: 'Notificación no encontrada' });
+    }
+
+    const leidaActual = rows[0].leida;
+    if (leidaActual === true || leidaActual === 'true') {
+      conn.disconnect();
+      return res.status(200).json({ message: 'Ya estaba marcada como leída', leida: true });
+    }
+
+    const sqlUpdate = `
+      UPDATE "BACKPYMEX"."NotificacionMensajeUsuario"
+      SET "leida" = TRUE
+      WHERE "id_mensaje" = ?
+    `;
+    const updStmt = await new Promise((resolve, reject) =>
+      conn.prepare(sqlUpdate, (err, stmt) => err ? reject(err) : resolve(stmt))
+    );
+    await new Promise((resolve, reject) =>
+      updStmt.exec([idMensaje], (err) => {
+        updStmt.drop();
+        if (err) return reject(err);
+        resolve();
+      })
+    );
+
+    await new Promise((resolve, reject) => {
+      conn.commit((err) => {
+        if (err) return reject(err);
+        resolve();
+      });
+    });
+
+    conn.disconnect();
+    return res.status(200).json({ message: 'Marcada como leída', leida: true });
+  } catch (error) {
+    console.error('Error actualizando notificación:', error);
+    if (conn) {
+      conn.rollback(() => {
+        console.error("Transacción fallida debido a un error.");
+      });
+      conn.disconnect();
+    }
+    return res.status(500).json({
+      message: 'Error al actualizar notificación',
+      error: error.toString()
+    });
+  }
+};

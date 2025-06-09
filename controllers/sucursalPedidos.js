@@ -46,7 +46,7 @@ async function getProductoss() {
   });
 }
 
-// sucursalPedidos.js
+//Obtener productos por proveedor
 function getProductosPorProveedor(idProveedor) {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();
@@ -70,6 +70,7 @@ function getProductosPorProveedor(idProveedor) {
   });
 }
 
+//Crear pedidos
 function crearPedido(pedidoData) {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();
@@ -128,6 +129,7 @@ function crearPedido(pedidoData) {
   });
 }
 
+//Actualizar estado de los pedidos
 async function updatePedidoEstado(idPedido, nuevoEstado) {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();

@@ -5,13 +5,13 @@ import sapLogo from "../assets/sapLogo.png";
 import bellIcon from "/assets/bell.png";
 
 function Header({ rol, bell, notificaciones, setNotificationsModal }) {
+    console.log("Header received notificaciones:", notificaciones);
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("rol");
         window.location.href = "/";
     };
 
-    // Check if any object of the json has the attribute "read": false
     const hasUnread = notificaciones?.some(notif => notif.read === false);
 
     return (
@@ -55,37 +55,3 @@ function Header({ rol, bell, notificaciones, setNotificationsModal }) {
 }
 
 export default Header;
-// import { useState } from "react"
-// import { motion } from "framer-motion";
-// import React from "react";
-// import sapLogo from "../assets/sapLogo.png";
-// import bellIcon from "/assets/bell.png";
-
-// function Header({rol, bell, notificaciones, setNotificationsModal}) {
-//     const handleLogout = () => {
-//         localStorage.removeItem("token");
-//         localStorage.removeItem("rol");
-//         window.location.href = "/"; 
-//       };
-//       const hasUnread = notificaciones?.some(notif => notif.read === false);
-//     return (
-//         <div className="h-[10%] w-screen pl-[50px] pr-[50px] flex items-center justify-betwee relative">
-//             <div className="w-[15%] h-full flex items-center justify-start">
-//                 <img className="h-[50%]" src={sapLogo} alt="Example" />
-//                 <h1 className="text-blue-600 font-medium">{rol}</h1>
-//             </div>
-//             {bell === true ? (
-//                 <div className="w-[15%] h-full flex items-center justify-between">
-//                     {/* THIS IS THE FIX: Changed onClick={{}} to onClick={() => {}} */}
-//                     <img src={bellIcon} alt="" className="h-[50%] cursor-pointer" onClick={() => {}}></img>
-//                     <button onClick={handleLogout} className="w-[70%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
-
-//                 </div>
-//             ) : (
-//                 <button onClick={handleLogout} className="w-[10%] h-[50%] bg-red-500 rounded-2xl text-white hover:bg-red-700 duration-300">Cerrar sesión</button>
-//             )}
-//         </div>
-//     )
-// }
-
-// export default Header;

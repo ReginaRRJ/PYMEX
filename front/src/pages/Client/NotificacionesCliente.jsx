@@ -1,15 +1,17 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from "react";
-
 import Switch from '@mui/material/Switch';
-const token = localStorage.getItem('token');
+
+
+
 function NotificacionesCliente() {
     const [user, setUser] = useState(null);
     const [anticipacion, setAnticipacion] = useState(false);
     const [automatizacion, setAutomatizacion] = useState(false);
     const [estatus, setEstatus] = useState(false);
     const [solicitudes, setSolicitududes] = useState(false);
-
+    const token = localStorage.getItem('token');
+    
     useEffect(() => {
         const storedUser = localStorage.getItem("usuario");
         if (storedUser) {
@@ -26,7 +28,7 @@ function NotificacionesCliente() {
 
     useEffect(() => {
         if (!user || !user.idUsuario) {
-            console.warn("User or idUsuario not available. Skipping notification config fetch.");
+            console.warn("Usuario no disponigle o inválido.");
             setAnticipacion(false);
             setAutomatizacion(false);
             setEstatus(false);
@@ -35,41 +37,36 @@ function NotificacionesCliente() {
         }
 
         const fetchNotificationConfig = async () => {
-            console.log(`Attempting to fetch notification config for idUsuario: ${user.idUsuario}`);
+           
             try {
                 const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
   headers: {
-    Authorization: `Bearer ${token}`
+    "Authorization": `Bearer ${token}`
   }
 });
                 const contentType = response.headers.get("content-type");
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error(`HTTP error fetching config! Status: ${response.status}, Message: ${errorText}`);
+                    console.error(`Error HTTP: ${response.status}, Mensaje: ${errorText}`);
                     return;
                 }
 
                 if (!contentType || !contentType.includes("application/json")) {
                     const text = await response.text();
-                    console.error('Expected JSON response for config, but received:', text);
+                    console.error('Esperando archivo JSON. Se recibió:', text);
                     return;
                 }
 
                 const data = await response.json();
-                console.log("Successfully fetched notification config data (raw):", data);
-
+                
                 if (!Array.isArray(data)) {
-                    console.error("Fetched data for config is not an array:", data);
+                    console.error("Los datos obtenidos no sun un arreglo:", data);
                     return;
                 }
 
                 data.forEach(config => {
-                    // --- Using config.activo directly, assuming it's now a strict boolean ---
-                    // This will only work correctly if your backend's GET endpoint
-                    // for these specific IDs (7, 8, 9, 10) returns `activo` as `true` or `false`
-                    // and not as 0/1 or "true"/"false" strings.
-                    console.log(`Processing config: idNotificacion=${config.idNotificacion}, activo_value_from_backend=${config.activo}`);
+                    
 
                     switch (config.idNotificacion) {
                         case 7:
@@ -85,12 +82,12 @@ function NotificacionesCliente() {
                             setSolicitududes(config.activo);
                             break;
                         default:
-                            console.warn(`Unknown idNotificacion in fetched config: ${config.idNotificacion}`);
+                            console.warn(`Notificación desconocida: ${config.idNotificacion}`);
                             break;
                     }
                 });
             } catch (error) {
-                console.error("Error fetching notification configuration:", error);
+                console.error("Error obteniendo configuración de la notificación:", error);
             }
         };
 
@@ -99,19 +96,18 @@ function NotificacionesCliente() {
 
     const handleSwitchChange = async (idNotificacion, value) => {
         if (!user || !user.idUsuario) {
-            console.error("User or idUsuario not available. Cannot update notification.");
-            alert("User data not loaded. Please log in again.");
+            console.error("Usuario no disponible. No se puede actualizar la notificación.");
+            alert("Datos del usuario no disponibles. Inicie sesión de nuevo");
             return;
         }
 
-        const newValue = value; // `value` from e.target.checked is already a boolean
+        const newValue = value; 
 
         if (idNotificacion === 7) setAnticipacion(newValue);
         else if (idNotificacion === 8) setAutomatizacion(newValue);
         else if (idNotificacion === 9) setEstatus(newValue);
         else if (idNotificacion === 10) setSolicitududes(newValue);
 
-        console.log(`Sending PUT for idNotificacion: ${idNotificacion}, activo: ${newValue}`);
 
         try {
             const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
@@ -122,7 +118,7 @@ function NotificacionesCliente() {
                 },
                 body: JSON.stringify({
                     idNotificacion: idNotificacion,
-                    activo: newValue, // Send the boolean value to the backend
+                    activo: newValue, 
                 }),
             });
 
@@ -130,20 +126,20 @@ function NotificacionesCliente() {
                 const errorText = await response.text();
                 throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
             }
-            console.log("Notification update successful.");
+            console.log("Notificación actualizada exitosamente.");
 
         } catch (error) {
-            console.error("Error updating notification:", error);
+            console.error("Error actualizando notificación:", error);
             if (idNotificacion === 7) setAnticipacion(!newValue);
             else if (idNotificacion === 8) setAutomatizacion(!newValue);
             else if (idNotificacion === 9) setEstatus(!newValue);
             else if (idNotificacion === 10) setSolicitududes(!newValue);
-            alert("Failed to update notification. Please try again.");
+            alert("Error actualizando notificación. Por favor intente de nuevo");
         }
     };
 
     if (!user) {
-        return <div>Loading user data...</div>;
+        return <div>Cargando datos del usuario...</div>;
     }
 
     return (
@@ -155,7 +151,7 @@ function NotificacionesCliente() {
                 </div>
             </div>
             <div className="w-full h-[75%]">
-                {/* Anticipacion de pedidos a distribuidor (ID 7) */}
+               
                 <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
                         <Switch size='large' checked={anticipacion} onChange={(e) => handleSwitchChange(7, e.target.checked)} />
@@ -166,7 +162,7 @@ function NotificacionesCliente() {
                     </div>
                 </div>
                 <br />
-                {/* Automatización de pedidos (ID 8) */}
+               
                 <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
                         <Switch size='large' checked={automatizacion} onChange={(e) => handleSwitchChange(8, e.target.checked)} />
@@ -177,7 +173,7 @@ function NotificacionesCliente() {
                     </div>
                 </div>
                 <br />
-                {/* Estatus del pedido (ID 9) */}
+               
                 <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
                         <Switch size='large' checked={estatus} onChange={(e) => handleSwitchChange(9, e.target.checked)} />
@@ -188,7 +184,7 @@ function NotificacionesCliente() {
                     </div>
                 </div>
                 <br />
-                {/* Solicitudes de autorización (ID 10) */}
+                
                 <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
                         <Switch size='large' checked={solicitudes} onChange={(e) => handleSwitchChange(10, e.target.checked)} />

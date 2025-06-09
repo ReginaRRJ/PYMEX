@@ -3,17 +3,18 @@ import { Stepper, Step, Typography } from "@material-tailwind/react";
 import { ClockIcon, TruckIcon, CheckIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 
-const token = localStorage.getItem('token');
+
 
 export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
   const [activeStep, setActiveStep] = useState(0);
   const [currentStatus, setCurrentStatus] = useState(estadoActual || "Pendiente");
-
+  const token = localStorage.getItem('token');
+  
   useEffect(() => {
     const fetchStatus = async () => {
       try {
         if (!pedidoId) return;
-
+          
         const response = await axios.get(`http://localhost:3001/api/pedidos/detalle/${pedidoId}`, {
           headers: {
             "Authorization": `Bearer ${token}`
@@ -72,19 +73,19 @@ const updateStatus = async (status) => {
     setCurrentStatus(status);
     if (onStatusChange) onStatusChange(status);
 
-    // 👉 Notificación personalizada según el estatus
-    let mensaje = "";
+    let mensaje2 = "";
     if (status === "Curso" || status === "En curso") {
-      mensaje = "¡Tu pedido ha sido actualizado a En curso!";
+      mensaje2 = "¡Tu pedido ha sido actualizado a En curso!";
     } else if (status === "Pendiente") {
-      mensaje = "¡Tu pedido ha sido actualizado a Pendiente!";
+      mensaje2 = "¡Tu pedido ha sido actualizado a Pendiente!";
     } else {
-      mensaje = `¡Tu pedido ha sido actualizado a ${status}!`;
+      mensaje2 = `¡Tu pedido ha sido actualizado a ${status}!`;
     }
 
     try {
-      console.log("Pedido ID ",pedidoId)
-      console.log("Mensaje", mensaje)
+      console.log("typeof idPedido:", typeof idPedido); 
+      console.log("typeof idTipoNotificacion:", typeof idTipoNotificacion);
+      console.log("typeof mensaje:", typeof mensaje);
       const spResponse = await fetch(`http://localhost:3001/notificaciones/actualizarProveedor/${pedidoId}`, {
         method: "POST",
         headers: {
@@ -93,8 +94,8 @@ const updateStatus = async (status) => {
         },
         body: JSON.stringify({
           idPedido: pedidoId,
-          idTipoNotificacion: 6,
-          mensaje: mensaje
+          idTipoNotificacion: 9,
+          mensaje: mensaje2
         })
       });
 
@@ -103,9 +104,13 @@ const updateStatus = async (status) => {
       console.log("ERROR EN STORE PROCEDURE ACTUALIZAR", error);
     }
 
-    // onClose(); // ✅ Only after all is successful
   } catch (error) {
     console.error("Error al actualizar el estado del pedido:", error);
+     if (error.response) {
+    console.error("Backend response error:", error.response.data);
+  } else {
+    console.error("Network or other error:", error.message);
+  }
   }
 };
 

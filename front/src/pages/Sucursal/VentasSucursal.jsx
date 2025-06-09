@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
 import market from "../../assets/market-color.png";
-const token = localStorage.getItem('token');
+
+
 function VentasSucursal() {
   const [ventas, setVentas] = useState("anual");
   const [montoVentas, setMontoVentas] = useState(null);
   const [user, setUser] = useState(null);
   const [sucursal, setSucursal] = useState("");
+  const token = localStorage.getItem('token');
 
   const handleInterval = (event) => {
     setVentas(event.target.value);
@@ -49,7 +50,7 @@ function VentasSucursal() {
   }
 }
           );
-          console.log("Respuesta de ventas anuales:", res.data); // 🔍 inspecciona estructura
+          console.log("Respuesta de ventas anuales:", res.data); 
           const primerResultado = res.data?.[0];
           const monto = primerResultado?.totalVentas ?? 0;
           setMontoVentas(monto);
@@ -66,7 +67,7 @@ function VentasSucursal() {
 }
           );
 
-          console.log("Respuesta de ventas mensuales:", res.data); // 🔍 inspecciona estructura
+          console.log("Respuesta de ventas mensuales:", res.data); 
           const primerResultado = res.data?.[0];
           const monto = primerResultado?.totalVentas ?? 0;
           setMontoVentas(monto);
@@ -83,7 +84,7 @@ function VentasSucursal() {
 }
           );
 
-          console.log("Respuesta de ventas semanales:", res.data); // 🔍 inspecciona estructura
+          console.log("Respuesta de ventas semanales:", res.data); 
           const primerResultado = res.data?.[0];
           const monto = primerResultado?.totalVentas ?? 0;
           setMontoVentas(monto);

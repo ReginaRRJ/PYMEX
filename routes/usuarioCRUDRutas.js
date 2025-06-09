@@ -4,17 +4,18 @@ import { verifyToken } from '../controllers/authMiddle.js';
 
 const router = express.Router();
 router.use(verifyToken);
-// Get all Usuarios
+
+//Obtener usuarios
 router.get("/", async (req, res) => {
   try {
-    const usuarios = await getUsuarios(); // Fetch all users
-    res.json(usuarios);  // Return the list of users
+    const usuarios = await getUsuarios(); 
+    res.json(usuarios);  
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Create a new Usuario
+//Crear nuevo usuario
 router.post("/admin", async (req, res) => {
   try {
     const usuario = req.body;
@@ -25,7 +26,7 @@ router.post("/admin", async (req, res) => {
   }
 });
 
-// Update a Usuario by ID
+//Actualizar usuario
 router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -37,7 +38,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Delete a Usuario by ID
+//Eliminar usuario
 router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;

@@ -2,13 +2,16 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-const token = localStorage.getItem('token');
+
+
+
 function ReporteSucursal() {
   const [prioridad, setPrioridad] = useState(0);
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [user, setUser] = useState(null);
-
+  const token = localStorage.getItem('token');
+  
   useEffect(() => {
     const storedUser = localStorage.getItem("usuario");
     if (storedUser) {

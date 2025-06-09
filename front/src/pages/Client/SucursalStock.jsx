@@ -2,10 +2,11 @@ import market from "/assets/market-color.png";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-const token = localStorage.getItem('token');
+
 function SucursalStock({ sucursal, producto }) {
   const [montoStock, setMontoStock] = useState(0);
-
+  const token = localStorage.getItem('token');
+  
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("usuario"));
     if (!user || !producto) return;

@@ -1,14 +1,16 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect } from "react"
-
 import Switch from '@mui/material/Switch';
-const token = localStorage.getItem('token');
+
+
+
 function NotificacionesSucursal() {
     const [user, setUser] = useState(null);
     const [pedidoAutorizado, setPedidoAutorizado] = useState(false);
     const [automatizacionPedidos, setAutomatizacionPedidos] = useState(false);
     const [estatusPedido, setEstatusPedido] = useState(false);
-
+    const token = localStorage.getItem('token');
+    
     useEffect(() => {
         const storedUser = localStorage.getItem("usuario");
         if (storedUser) {
@@ -36,7 +38,7 @@ function NotificacionesSucursal() {
         
                 const data = await response.json();
         
-                // Use ID mapping to assign correct states
+                
                 data.forEach(config => {
                     switch (config.idNotificacion) {
                         case 1:
@@ -62,7 +64,7 @@ function NotificacionesSucursal() {
     }, [user]);
 
     const handleSwitchChange = async (idNotificacion, value) => {
-        // Optimistically update local state first
+       
         if (idNotificacion === 1) setPedidoAutorizado(value);
         if (idNotificacion === 2) setAutomatizacionPedidos(value);
         if (idNotificacion === 3) setEstatusPedido(value);
@@ -80,13 +82,13 @@ function NotificacionesSucursal() {
                 }),
             });
         } catch (error) {
-            console.error("Error updating notification:", error);
+            console.error("Error actualizando notifiación:", error);
         }
     };
     
 
     if (!user) {
-        return <div>Loading...</div>;
+        return <div>Cargando...</div>;
     }
 
     return (
@@ -99,7 +101,7 @@ function NotificacionesSucursal() {
             </div>
 
             <div className="w-full h-[75%]">
-                {/* ID para Pruebas */}
+               
                 <div 
                 data-testid="notificacionAutorizado-container"
                 className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
@@ -118,7 +120,7 @@ function NotificacionesSucursal() {
                     </div>
                 </div>
                 <br />
-                {/* ID para Pruebas */}
+            
                 <div 
                 data-testid="notificacionAutorizacion-container"
                 className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
@@ -136,7 +138,7 @@ function NotificacionesSucursal() {
                     </div>
                 </div>
                 <br />
-                {/* ID para Pruebas */}
+              
                 <div 
                 data-testid="notificacionEstatus-container"
                 className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>

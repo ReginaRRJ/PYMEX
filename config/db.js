@@ -1,16 +1,15 @@
-// Import necessary modules using ES Module syntax
 import hana from "@sap/hana-client";
 import dotenv from "dotenv";
 
-// Configure dotenv to load environment variables
+
 dotenv.config();
 
 const connParams = {
   serverNode: process.env.DB_HOST,
   uid: process.env.DB_USER,
   pwd: process.env.DB_PASSWORD,
-  encrypt: "true", // Important for cloud connections
-  sslValidateCertificate: "false", // Avoid certificate issues
+  encrypt: "true", 
+  sslValidateCertificate: "false", 
 };
 
 const connection = hana.createConnection();
@@ -23,5 +22,4 @@ connection.connect(connParams, (err) => {
   }
 });
 
-// Export the connection object
 export default connection;

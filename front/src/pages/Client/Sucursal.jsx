@@ -1,10 +1,12 @@
 import market from "/assets/market-color.png";
 import { useState, useEffect } from "react"; 
 import axios from "axios";
-const token = localStorage.getItem('token');
+
+
+
 function Sucursal({ sucursal, mode, periodo }) {
   const [montoVentas, setMontoVentas] = useState(0);
-
+  const token = localStorage.getItem('token');
   useEffect(() => {
     const fetchVentas = async () => { 
       try {

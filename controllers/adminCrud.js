@@ -12,7 +12,7 @@ const connParams = {
   sslValidateCertificate: "false",
 };
 
-// Obtener todos los usuarios
+//Obtener todos los usuarios
 async function getUsuarios() {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();
@@ -29,7 +29,7 @@ async function getUsuarios() {
   });
 }
 
-// Crear un nuevo usuario
+//Crear un nuevo usuario
 async function createUsuario(usuario) {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();
@@ -69,7 +69,7 @@ async function createUsuario(usuario) {
   });
 }
 
-// Actualizar un usuario por ID
+//Actualizar un usuario por ID
 async function updateUsuario(id, usuario) {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();
@@ -112,7 +112,7 @@ async function updateUsuario(id, usuario) {
   });
 }
 
-// Eliminar un usuario por ID
+//Eliminar un usuario por ID
 async function deleteUsuario(id) {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();
