@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Report from "../../components/Report";
+import Report from "../../components/ReportesUsuarios";
 import { motion } from 'framer-motion';
 import process from 'process';
 
