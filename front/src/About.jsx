@@ -1,3 +1,4 @@
+import React from 'react';
 import LoginHeader from "./components/LoginHeader"
 import Circle from "./components/Circle"
 

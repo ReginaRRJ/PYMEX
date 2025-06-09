@@ -1,8 +1,18 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
-import About from '../About';  
+import { BrowserRouter } from 'react-router-dom';
+import '@testing-library/jest-dom';
+import About from '../About';
 
-test('renderiza el componente About y muestra el texto Sobre nosotros', () => {
-  render(<About />);
-  const texto = screen.getByText(/Sobre nosotros/i);
-  expect(texto).toBeInTheDocument();
+test('renderiza el componente About y muestra el texto principal Sobre nosotros', () => {
+  render(
+    <BrowserRouter>
+      <About />
+    </BrowserRouter>
+  );
+
+  const titulo = screen.getByText((content, element) =>
+    element.tagName.toLowerCase() === 'p' && /sobre nosotros/i.test(content)
+  );
+  expect(titulo).toBeInTheDocument();
 });
