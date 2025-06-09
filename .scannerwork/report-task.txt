@@ -1,0 +1,6 @@
+projectKey=BTP_back
+serverUrl=http://20.115.80.90:9002
+serverVersion=25.5.0.107428
+dashboardUrl=http://20.115.80.90:9002/dashboard?id=BTP_back
+ceTaskId=a647a95a-5202-4864-8d9b-574334d8c3f2
+ceTaskUrl=http://20.115.80.90:9002/api/ce/task?id=a647a95a-5202-4864-8d9b-574334d8c3f2
