@@ -10,7 +10,9 @@
         "dev:front": "cd front && npm run dev",
         "all": "concurrently \"npm run dev:backend\" \"npm run dev:front\"",
         "cypress:open": "cypress open",
-        "test": "jest --coverage"
+        "test": "npm run test:front && npm run test:back",
+        "test:front": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.front.cjs --rootDir=. --coverage",
+        "test:back": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.back.cjs --rootDir=. --coverage"
     },
     "jest": {
         "collectCoverage": true,
@@ -21,7 +23,11 @@
         ],
         "testMatch": [
             "**/?(*.)+(test).[jt]s?(x)"
-        ]
+        ],
+        "moduleNameMapper": {
+            "\\.(png|jpg|jpeg|gif|svg)$": "<rootDir>/__mocks__/fileMock.js"
+        },
+        "transform": {}
     },
     "keywords": [],
     "author": "",
@@ -63,6 +69,12 @@
         "vite": "^6.2.5"
     },
     "devDependencies": {
+        "@babel/core": "^7.27.4",
+        "@babel/preset-env": "^7.27.2",
+        "@babel/preset-react": "^7.27.1",
+        "@testing-library/jest-dom": "^6.6.3",
+        "@testing-library/react": "^16.3.0",
+        "babel-jest": "^30.0.0-beta.3",
         "concurrently": "^9.1.2",
         "jest": "^29.7.0",
         "nodemon": "^3.1.9",

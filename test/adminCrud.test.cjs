@@ -1,4 +1,4 @@
-import { getUsuarios, createUsuario, updateUsuario, deleteUsuario } from '../controllers/adminCrud.js';
+const { getUsuarios, createUsuario, updateUsuario, deleteUsuario } = require('../controllers/adminCrud.js');
 import hana from '@sap/hana-client';
 
 jest.mock('@sap/hana-client', () => {
