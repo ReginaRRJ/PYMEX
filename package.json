@@ -11,8 +11,8 @@
         "all": "concurrently \"npm run dev:backend\" \"npm run dev:front\"",
         "cypress:open": "cypress open",
         "test": "npm run test:front && npm run test:back",
-        "test:front": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.front.cjs --rootDir=. --coverage",
-        "test:back": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.back.cjs --rootDir=. --coverage"
+        "test:front": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.front.js --coverage",
+        "test:back": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.back.js --coverage"
     },
     "jest": {
         "collectCoverage": true,
