@@ -13,13 +13,16 @@
         "test": "jest --coverage"
     },
     "jest": {
-  "collectCoverage": true,
-  "coverageDirectory": "./coverage",
-  "coverageReporters": ["lcov", "text"],
-  "testMatch": [
-    "**/?(*.)+(test).[jt]s?(x)"
-  ]
-},
+        "collectCoverage": true,
+        "coverageDirectory": "./coverage",
+        "coverageReporters": [
+            "lcov",
+            "text"
+        ],
+        "testMatch": [
+            "**/?(*.)+(test).[jt]s?(x)"
+        ]
+    },
     "keywords": [],
     "author": "",
     "license": "ISC",
