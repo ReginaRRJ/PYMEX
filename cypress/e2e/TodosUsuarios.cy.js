@@ -32,8 +32,8 @@ describe('PA01001. Inicio sesión', () => {
   
   it('Vendedor', () => {
     cy.contains('Iniciar sesión')
-    cy.get('input').first().type('kim@seokjin.kr')
-    cy.get('input').last().type('WHYK')
+    cy.get('input').first().type('vendedor@gmail.com')
+    cy.get('input').last().type('Vendedor123')
     cy.get('#login-button').click()
     cy.url().should('include', '/vendedor')
   })
