@@ -1,21 +1,28 @@
-const { getUsuarios, createUsuario, updateUsuario, deleteUsuario } = require('../controllers/adminCrud.js');
-import hana from '@sap/hana-client';
+// adminCrud.test.js
+import { jest } from '@jest/globals';
 
-jest.mock('@sap/hana-client', () => {
+// Mock para @sap/hana-client
+jest.unstable_mockModule('@sap/hana-client', () => {
   const mockExec = jest.fn((queryOrValues, cb) => cb(null, [{ idUsuario: 1, nombreUsuario: 'Test' }]));
   const mockDrop = jest.fn();
   const mockPrepare = jest.fn((query, cb) => cb(null, { exec: mockExec, drop: mockDrop }));
   const mockConnect = jest.fn((params, cb) => cb(null));
   const mockDisconnect = jest.fn();
+
   return {
-    createConnection: jest.fn(() => ({
-      connect: mockConnect,
-      disconnect: mockDisconnect,
-      exec: mockExec,
-      prepare: mockPrepare
-    }))
+    default: {
+      createConnection: () => ({
+        connect: mockConnect,
+        disconnect: mockDisconnect,
+        exec: mockExec,
+        prepare: mockPrepare
+      })
+    }
   };
 });
+
+// Importaciones reales luego del mock
+const { getUsuarios, createUsuario, updateUsuario, deleteUsuario } = await import('../controllers/adminCrud.js');
 
 describe('adminCrud controller', () => {
   test('getUsuarios debe retornar una lista de usuarios', async () => {
