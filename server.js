@@ -22,6 +22,9 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 
+app.get('/', (req, res) => {
+  res.send('¡PYMEX backend está funcionando correctamente!');
+});
 
 app.use("/users", userRoutes);  
 app.use("/login", loginRoutes);  
@@ -34,10 +37,6 @@ app.use('/api', ticketRoutes);
 app.use('/api/ventasClient', clientVentasRoutes);
 app.use('/api/pedidosClient', pedidosPymeRoutes); 
 app.use('/notificaciones',notificacionesRoutes);
-
-app.get('/', (req, res) => {
-  res.send('¡PYMEX backend está funcionando correctamente!');
-});
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
