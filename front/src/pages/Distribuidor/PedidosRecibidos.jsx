@@ -18,10 +18,11 @@ function PedidosRecibidos({ pedidoModal, setPedidoModal, pedidos, setPedido, set
     if (user.idUsuario) {
       try {
         const id = parseInt(user.idUsuario, 10);
+
         const response = await fetch(
           `http://localhost:3001/notificaciones/alertas/${id}`, {
             headers: {
-              "Authorization": `Bearer ${token}`
+              "Authorization": `Bearer ${currentToken}`
             }
           }
         );

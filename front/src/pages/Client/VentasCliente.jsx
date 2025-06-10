@@ -96,7 +96,9 @@ function VentasCliente() {
                 <th className="w-1/5 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Fecha de entrega</th>
               </tr>
             </thead>
-            <tbody className="block w-full overflow-y-auto max-h-[55vh]">
+            <tbody 
+            id="ventas-list"
+            className="block w-full overflow-y-auto max-h-[55vh]">
               {ventas.length > 0 ? (
                 ventas.map((venta, index) => (
                   <tr

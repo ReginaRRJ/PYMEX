@@ -103,6 +103,7 @@ function TicketModal({ onClose, onTicketCreated }) {
         }
 
         try {
+            const token = localStorage.getItem('token');
             const ticketData = {
                 idSucursal: user.idSucursal,
                 product: {

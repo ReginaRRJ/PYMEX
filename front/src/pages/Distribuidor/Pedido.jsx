@@ -2,6 +2,39 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { StepperComp } from './StepperComp';
 
+function Pedido({ pedido, onClose }) {
+  const [pedidoData, setPedidoData] = useState(null);
+
+  useEffect(() => {
+    if (!pedido?.id) return;
+
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`http://localhost:3001/api/pedidos/detalle/${pedido.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+        setPedidoData(data); // Ya no es array, sino objeto directo
+      } catch (err) {
+        console.error('Error fetching detailed pedido:', err);
+      }
+    };
+
+    fetchData();
+  }, [pedido]);
+
+  const handleContentClick = (e) => e.stopPropagation();
+
+/*
+
+import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { StepperComp } from './StepperComp';
+
 
 
 function Pedido({ pedido, onClose }) {
@@ -19,6 +52,7 @@ function Pedido({ pedido, onClose }) {
 
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem('token');
         const res = await fetch(`http://localhost:3001/api/pedidos/detalle/${pedido.id}`, {
           headers: {
             "Authorization": `Bearer ${token}`
@@ -37,6 +71,8 @@ function Pedido({ pedido, onClose }) {
   }, [pedido]);
 
   const handleContentClick = (e) => e.stopPropagation();
+
+  */
 
   if (!pedidoData) {
     return (

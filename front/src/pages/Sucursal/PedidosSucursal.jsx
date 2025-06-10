@@ -58,10 +58,11 @@ function PedidosSucursal({updateButton, setUpdateButton,newOrder, setNewOrder, s
       try {
         const id = parseInt(user.idUsuario, 10);
         console.log("Obteniendo notificaciones no leídas para el usuario:", id);
+        const currentToken = localStorage.getItem('token');
         const response = await fetch(
           `http://localhost:3001/notificaciones/alertas/${id}`, {
             headers:{
-              "Authorization": `Bearer ${token}`
+              "Authorization": `Bearer ${currentToken}`
             }
           }
         );
@@ -100,6 +101,7 @@ function PedidosSucursal({updateButton, setUpdateButton,newOrder, setNewOrder, s
         <div className="h-[50px] w-full flex justify-between items-center">
           <h1>Pedidos que se han hecho a distribuidor</h1>  
           <button
+            id="add-pedido-button"
             className="w-[18%] h-full bg-slate-900 rounded-2xl text-white"
             onClick={() => setNewOrder(!newOrder)}
           >

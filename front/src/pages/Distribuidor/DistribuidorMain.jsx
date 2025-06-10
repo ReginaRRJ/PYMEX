@@ -47,6 +47,7 @@ function DistribuidorMain() {
   };
 
   useEffect(() => {
+
     if (!idUsuario) {
       console.error("No se pudo obtener idUsuario desde el token.");
       return;
@@ -61,6 +62,7 @@ function DistribuidorMain() {
     .then((data) => setPedidos(data))
     .catch((err) => console.error("Error fetching pedidos:", err));
   }, [idUsuario]);
+
 
   const renderScreen = () => {
     switch (activeScreenDist) {

@@ -23,6 +23,7 @@ function NotificacionesSucursal() {
     
         const fetchNotificationConfig = async () => {
             try {
+                const token = localStorage.getItem('token');
                 const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
   headers: {
     "Authorization": `Bearer ${token}`
@@ -70,6 +71,7 @@ function NotificacionesSucursal() {
         if (idNotificacion === 3) setEstatusPedido(value);
     
         try {
+            const token = localStorage.getItem('token');
             await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
                 method: "PUT",
                 headers: {
@@ -103,7 +105,6 @@ function NotificacionesSucursal() {
             <div className="w-full h-[75%]">
                
                 <div 
-                data-testid="notificacionAutorizado-container"
                 className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
 
                     <div className='w-[80px] h-full flex flex-col justify-center'>
@@ -111,7 +112,7 @@ function NotificacionesSucursal() {
                         size='large' 
                         checked={pedidoAutorizado} 
                         onChange={(e) => handleSwitchChange(1, e.target.checked)}
-                        inputProps={{ 'data-testid': 'switchNotificacionAutorizado' }}
+                        inputProps={{ 'data-testid': 'switchNotificacionPedidoAutorizado' }}
                         />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
@@ -122,7 +123,6 @@ function NotificacionesSucursal() {
                 <br />
             
                 <div 
-                data-testid="notificacionAutorizacion-container"
                 className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
                         <Switch 

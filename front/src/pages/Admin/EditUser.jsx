@@ -46,15 +46,17 @@ function EditUser({ user, onClose }) {
       if (selectedRole === "Sucursal") {
         datos.sucursal = sucursal;
       }
-      
 
+      
+      
+      const currentToken = localStorage.getItem('token');
       const res = await axios.put(
         `http://localhost:3001/api/usuarios/${user.idUsuario}`,
         datos, {
-  headers: {
-    "Authorization": `Bearer ${token}`
-  }
-}
+          headers: {
+            "Authorization": `Bearer ${currentToken}`
+          }
+        }
       );
       console.log("Usuario actualizado:", res.data);
       toast.success("Usuario actualizado correctamente");
@@ -81,11 +83,11 @@ function EditUser({ user, onClose }) {
       if (selectedRole === "Sucursal") {
         datos.sucursal = sucursal;
       }
-
+      const currentToken = localStorage.getItem('token');
       const res = await axios.delete(
         `http://localhost:3001/api/usuarios/${user.idUsuario}`, {
   headers: {
-    "Authorization": `Bearer ${token}`
+    "Authorization": `Bearer ${currentToken}`
   }
 }
       );
@@ -136,6 +138,7 @@ function EditUser({ user, onClose }) {
               <div className="h-20%">
                 <h1>Correo</h1>
                 <input
+                  data-testid="inputActualizar-correo"
                   type="text"
                   className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"
                   defaultValue={user.correo}
@@ -166,6 +169,7 @@ function EditUser({ user, onClose }) {
               <div className="h-20%">
                 <h1>Apellido</h1>
                 <input
+                  data-testid="inputActualizar-apellido"
                   type="text"
                   className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200"
                   defaultValue={user.apellidoUsuario}

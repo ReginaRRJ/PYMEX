@@ -15,9 +15,10 @@ describe('PA03002. LeerPedidos', () => {
     cy.wait('@getPedidosVacios');
     cy.get('#pedido-list').should('contain', 'No se encontraron pedidos.');
   });
-})
+});
 
 describe('PA03003. Detalles del Pedido', () => {
+
   it('UpdatePedidos Pendiente a Curso', () => {
     cy.loginProveedor();
     
@@ -35,9 +36,15 @@ describe('PA03003. Detalles del Pedido', () => {
     cy.get('[data-testid="StepPendiente"]').should('have.class', '!bg-blue-500');
     cy.get('[data-testid="StepCurso"]').click();
 
+    // Esperamos a que el cambio se refleje y usamos el alias correctamente
     cy.get('@pedidoId').then((savedId) => {
-      cy.request(`http://localhost:3001/api/pedidos/detalle/${savedId}`)
-      .then((response) => {
+      cy.request({
+        method: 'GET',
+        url: `http://localhost:3001/api/pedidos/detalle/${savedId}`,
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('token')}` // O usa una variable si ya tienes el token almacenado
+        }
+      }).then((response) => {
         expect(response.status).to.eq(200);
         expect(response.body.Estado).to.eq('En curso');
       });
@@ -62,8 +69,13 @@ describe('PA03003. Detalles del Pedido', () => {
     cy.get('[data-testid="StepPendiente"]').click();
 
     cy.get('@pedidoId').then((savedId) => {
-      cy.request(`http://localhost:3001/api/pedidos/detalle/${savedId}`)
-      .then((response) => {
+      cy.request({
+        method: 'GET',
+        url: `http://localhost:3001/api/pedidos/detalle/${savedId}`,
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('token')}`
+        }
+      }).then((response) => {
         expect(response.status).to.eq(200);
         expect(response.body.Estado).to.eq('Pendiente');
       });
@@ -71,74 +83,134 @@ describe('PA03003. Detalles del Pedido', () => {
   });
 });
 
-describe('PA03002. Notificaciones', () => {
+describe('PA04003. Notificaciones', () => {
+  beforeEach(() => {
+  cy.loginProveedor();
+  cy.intercept('PUT', '**/api/notificaciones/configuracion-notificaciones/**').as('updateConfig');
+  cy.intercept('GET', '**/api/notificaciones/configuracion-notificaciones/**').as('getConfig');
+  cy.get('#Navbar').contains('Notificaciones').click();
+});
+
   it('Notificacion Entrega_Estimada', () => {
-    cy.loginProveedor()
-    cy.get('#Navbar').contains('Notificaciones').click();
-    cy.get('[data-testid="notificacionEntrega-container"]').then(($switch) => {
+  cy.wait('@getConfig');
+
+  cy.get('[data-testid="switchNotificacionEntrega"]').then(($switch) => {
+    const isChecked = $switch.prop('checked');
+
+    if (!isChecked) { //CASO 1: Switch está apagado
+      cy.log('Switch inicia apagado');
+      cy.get('[data-testid="switchNotificacionEntrega"]').click();
+
+      cy.wait('@updateConfig');// Espera el PUT que guarda el cambio
+      cy.get('[data-testid="switchNotificacionEntrega"]', { timeout: 8000 })
+        .should('have.prop', 'checked', true);
+
+      cy.reload();
+      cy.get('#Navbar').contains('Notificaciones').click();
+      cy.wait('@getConfig');
+
+      cy.get('[data-testid="switchNotificacionEntrega"]', { timeout: 8000 })
+        .should('have.prop', 'checked', true);
+
+    } else {
+      cy.log('Switch inicia encendido'); //CASO 2: Switch está encendido
+      cy.get('[data-testid="switchNotificacionEntrega"]').click();
+      cy.wait('@updateConfig');
+
+      cy.get('[data-testid="switchNotificacionEntrega"]', { timeout: 8000 })
+        .should('have.prop', 'checked', false);
+
+      cy.reload();
+      cy.get('#Navbar').contains('Notificaciones').click();
+      cy.wait('@getConfig');
+
+      cy.get('[data-testid="switchNotificacionEntrega"]', { timeout: 8000 })
+        .should('have.prop', 'checked', false);
+    }
+  });
+});
+
+
+  it('Notificacion Automatización', () => {
+    cy.wait('@getConfig');
+
+    cy.get('[data-testid="switchNotificacionAutomatizacion"]').then(($switch) => {
       const isChecked = $switch.prop('checked');
 
       if (!isChecked) {
         cy.log('Switch inicia apagado'); //CASO 1: Switch está apagado
-        cy.get('[data-testid="10h"]').should('be.disabled');
-        cy.get('[data-testid="15h"]').should('be.disabled');
-        cy.get('[data-testid="20h"]').should('be.disabled');
+        cy.get('[data-testid="switchNotificacionAutomatizacion"]').click();
 
-        cy.get('[data-testid="switchNotificacionEntrega"]').click();
-        cy.get('[data-testid="switchNotificacionEntrega"]').should('be.checked');
+        cy.wait('@updateConfig')
 
-        cy.get('[data-testid="10h"]').should('not.be.disabled').click();
-        cy.get('[data-testid="10h"]').should('have.class', 'Mui-selected');
+        cy.get('[data-testid="switchNotificacionAutomatizacion"]', { timeout: 8000 })
+        .should('have.prop', 'checked', true);
+
 
         cy.reload();
         cy.get('#Navbar').contains('Notificaciones').click();
+        cy.wait('@getConfig');
 
-        cy.get('[data-testid="switchNotificacionEntrega"]').should('be.checked');
-        cy.get('[data-testid="10h"]').should('have.class', 'Mui-selected');
+        cy.get('[data-testid="switchNotificacionAutomatizacion"]', { timeout: 8000 })
+        .should('have.prop', 'checked', true);
+
 
       } else {
         cy.log('Switch inicia encendido'); //CASO 2: Switch está encendido
-        cy.get('[data-testid="switchNotificacionEntrega"]').click();
-        cy.get('[data-testid="switchNotificacionEntrega"]').should('not.be.checked');
+        cy.get('[data-testid="switchNotificacionAutomatizacion"]').click();
+        cy.wait('@updateConfig');
 
-        cy.get('[data-testid="10h"]').should('be.disabled');
-        cy.get('[data-testid="15h"]').should('be.disabled');
-        cy.get('[data-testid="20h"]').should('be.disabled');
+        cy.get('[data-testid="switchNotificacionAutomatizacion"]', { timeout: 8000 })
+          .should('have.prop', 'checked', false);
 
         cy.reload();
         cy.get('#Navbar').contains('Notificaciones').click();
+        cy.wait('@getConfig');
 
-        cy.get('[data-testid="switchNotificacionEntrega"]').should('not.be.checked');
-        cy.get('[data-testid="10h"]').should('be.disabled');
+        cy.get('[data-testid="switchNotificacionAutomatizacion"]', { timeout: 8000 })
+          .should('have.prop', 'checked', false);
       }
     });  
   });
 
-  it('Notificacion Automatización', () => {
-    cy.loginProveedor()
-    cy.get('#Navbar').contains('Notificaciones').click();
-    cy.get('[data-testid="notificacionAutomatizacion-container"]').then(($switch) => {
+  it('Notificacion Estatus', () => {
+    cy.wait('@getConfig');
+
+    cy.get('[data-testid="switchNotificacionEstatus"]').then(($switch) => {
       const isChecked = $switch.prop('checked');
 
       if (!isChecked) {
         cy.log('Switch inicia apagado'); //CASO 1: Switch está apagado
+        cy.get('[data-testid="switchNotificacionEstatus"]').click();
 
-        cy.get('[data-testid="switchNotificacionAutomatizacion"]').click();
-        cy.get('[data-testid="switchNotificacionAutomatizacion"]').should('be.checked');
+        cy.wait('@updateConfig')
+
+        cy.get('[data-testid="switchNotificacionEstatus"]', { timeout: 8000 })
+        .should('have.prop', 'checked', true);
+
 
         cy.reload();
         cy.get('#Navbar').contains('Notificaciones').click();
-        cy.get('[data-testid="switchNotificacionAutomatizacion"]').should('be.checked');
+        cy.wait('@getConfig');
+
+        cy.get('[data-testid="switchNotificacionEstatus"]', { timeout: 8000 })
+        .should('have.prop', 'checked', true);
+
 
       } else {
         cy.log('Switch inicia encendido'); //CASO 2: Switch está encendido
-        cy.get('[data-testid="switchNotificacionAutomatizacion"]').click();
-        cy.get('[data-testid="switchNotificacionAutomatizacion"]').should('not.be.checked');
+        cy.get('[data-testid="switchNotificacionEstatus"]').click();
+        cy.wait('@updateConfig');
+
+        cy.get('[data-testid="switchNotificacionEstatus"]', { timeout: 8000 })
+          .should('have.prop', 'checked', false);
 
         cy.reload();
         cy.get('#Navbar').contains('Notificaciones').click();
-        cy.get('[data-testid="switchNotificacionAutomatizacion"]').should('not.be.checked');
-      
+        cy.wait('@getConfig');
+
+        cy.get('[data-testid="switchNotificacionEstatus"]', { timeout: 8000 })
+          .should('have.prop', 'checked', false);
       }
     });  
   });

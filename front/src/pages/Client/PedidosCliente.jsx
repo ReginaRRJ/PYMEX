@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 
 
 function PedidosCliente() {
   const [pedidos, setPedidos] = useState([]);
   const [error, setError] = useState("");
-  const [user, setUser]=useState(null);
+  const [user, setUser] = useState(null);
+
   const storedUserString = localStorage.getItem('usuario');
 
   const token = localStorage.getItem('token');
@@ -45,6 +46,7 @@ const updatePedidoStatusInBackend = useCallback(async (idPedido, statusForBacken
         prevPedidos.map(pedido =>
           pedido.idPedido === idPedido ? { ...pedido, estado: newFrontendStatus } : pedido
         )
+
       );
       setError(""); 
       console.log("Pedido actualizado:", response.data);
@@ -72,6 +74,7 @@ const updatePedidoStatusInBackend = useCallback(async (idPedido, statusForBacken
       return true;
     } else {
       setError(`Error inesperado al actualizar el pedido: ${response.data.message || response.data || 'Mensaje desconocido'}`);
+
       return false;
     }
   } catch (err) {
@@ -145,13 +148,10 @@ const updatePedidoStatusInBackend = useCallback(async (idPedido, statusForBacken
     fetchPedidos();
   }, [idPyme, updatePedidoStatusInBackend]); 
 
+
   const handleAuthorizeOrder = async (idPedido) => {
     const pedidoToUpdate = pedidos.find(p => p.idPedido === idPedido);
-
-    if (!pedidoToUpdate) {
-      console.error("Pedido no encontrado para actualizar:", idPedido);
-      return;
-    }
+    if (!pedidoToUpdate) return;
 
     const currentProveedorStatus = pedidoToUpdate.estatusProveedor;
     const isProveedorLocked = (currentProveedorStatus !== 'Pendiente' && currentProveedorStatus !== 'Por autorizar');
@@ -159,50 +159,41 @@ const updatePedidoStatusInBackend = useCallback(async (idPedido, statusForBacken
 
 
     if (currentClientStatusFrontend === 'Autorizado' || isProveedorLocked) {
-        setError("El estado de este pedido no puede ser modificado.");
-        return;
+      setError("El estado de este pedido no puede ser modificado.");
+      return;
     }
+
 
     const nextStatusForBackend = 'Autorizado';
-
-    
     await updatePedidoStatusInBackend(idPedido, nextStatusForBackend);
+
   };
+
   useEffect(() => {
     const storedUser = localStorage.getItem("usuario");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
-useEffect(() => {
-    if (user && user.idUsuario) {
-      cargarUsuarioYAlertas();
-    }
+  useEffect(() => {
+    if (user && user.idUsuario) cargarUsuarioYAlertas();
   }, [user]);
 
-const cargarUsuarioYAlertas = async () => {
+  const cargarUsuarioYAlertas = async () => {
     if (user.idUsuario) {
-
-      console.log("Cargando notificaciones...", user.idUsuario);
-
       try {
         const id = parseInt(user.idUsuario, 10);
-        console.log("Obteniendo notificaciones no leídas para el usuario:", id);
-        const response = await fetch(
-          `http://localhost:3001/notificaciones/alertas/${id}`,{headers: {
-    "Authorization": `Bearer ${token}`
-  } }
-        );
+        const currentToken = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:3001/notificaciones/alertas/${id}`, {
+          headers: { "Authorization": `Bearer ${currentToken}` }
+        });
         const data = await response.json();
-        console.log("Notificaciones:", data);
         notif(data.resultado || []);
-        console.log(data)
       } catch (error) {
         console.error("Error al obtener notificaciones:", error);
       }
     }
   };
+
 const notif = async (notificaciones) => {
     for (let i = 0; i < notificaciones.length; i++) {
       const notificacion = notificaciones[i];
@@ -210,8 +201,14 @@ const notif = async (notificaciones) => {
         toast.warn(`${notificacion.mensaje}`);
       
       }
+
     }
   };
+
+  useEffect(() => {
+    fetchPedidos();
+  }, [fetchPedidos]);
+
   return (
     <motion.div
       className="h-full w-full flex flex-col pt-[6vh] pr-[50px]"
@@ -233,18 +230,22 @@ const notif = async (notificaciones) => {
           <table className="table-fixed w-full h-full border-spacing-0">
             <thead className="block bg-slate-100 w-full">
               <tr className="w-full flex">
-                <th className="w-1/5 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Sucursal</th>
+                <th className="w-1/5 px-4 py-2 text-left">Sucursal</th>
                 <th className="w-1/5 px-4 py-2 text-left">Producto</th>
                 <th className="w-1/5 px-4 py-2 text-left">Cantidad</th>
                 <th className="w-1/5 px-4 py-2 text-left">Precio</th>
-                <th className="w-1/5 px-4 py-2 text-left first:rounded-tl-lg last:rounded-tr-lg">Estado</th>
+                <th className="w-1/5 px-4 py-2 text-left">Estado</th>
               </tr>
             </thead>
-            <tbody className="block w-full overflow-y-auto max-h-[55vh]">
+            <tbody
+              id="pedido-list"
+              className="block w-full overflow-y-auto max-h-[55vh]"
+            >
               {pedidos.length > 0 ? (
                 [...pedidos]
                   .sort((a, b) => (a.estado === 'Por autorizar' ? -1 : 1))
                   .map((pedido, index) => {
+
                     const currentClientStatus = pedido.estado;
                     const currentProveedorStatus = pedido.estatusProveedor;
 
@@ -253,6 +254,7 @@ const notif = async (notificaciones) => {
                    
                     const buttonDisabled = currentClientStatus === 'Autorizado' || isProveedorLocked;
 
+
                     return (
                       <tr
                         key={index}
@@ -260,19 +262,21 @@ const notif = async (notificaciones) => {
                       >
                         <td className="w-1/5 px-4 py-2">{pedido.sucursal}</td>
                         <td className="w-1/5 px-4 py-2">{pedido.producto}</td>
-                        <td className="w-1/5 px-4 py-2">{(pedido.cantidad || 'N/A')} unidades</td>
-                        <td className="w-1/5 px-4 py-2">${(pedido.precio || '0.00')} MXN</td>
+                        <td className="w-1/5 px-4 py-2">{pedido.cantidad || 'N/A'} unidades</td>
+                        <td className="w-1/5 px-4 py-2">${pedido.precio || '0.00'} MXN</td>
                         <td className="w-1/5 px-4 py-1 flex justify-start items-center">
                           <button
                             onClick={() => handleAuthorizeOrder(pedido.idPedido)}
                             disabled={buttonDisabled}
                             className={`w-[70%] h-[2.5rem] rounded-2xl ${
+
                               buttonDisabled 
+
                                 ? 'bg-blue-200 cursor-not-allowed'
                                 : 'bg-blue-500 text-white hover:bg-blue-300 duration-200'
                             }`}
                           >
-                            
+
                             {buttonDisabled ? 'Autorizado' : 'Autorizar'}
                           </button>
                         </td>

@@ -29,16 +29,15 @@ describe('PA01001. Inicio sesión', () => {
     cy.url().should('include', '/dist')
   })
   
-   /*
+  
   it('Vendedor', () => {
     cy.contains('Iniciar sesión')
-    cy.get('input').first().type('regina@vendedor.com')
-    cy.get('input').last().type('vendedorRe')
+    cy.get('input').first().type('vendedor@gmail.com')
+    cy.get('input').last().type('Vendedor123')
     cy.get('#login-button').click()
-    //cy.url().should('include', '/vendedor')
+    cy.url().should('include', '/vendedor')
   })
 
-  */
 
   it('Sucursal', () => {
     cy.contains('Iniciar sesión')
@@ -57,9 +56,7 @@ describe('PA01001. Inicio sesión', () => {
 
   })
 
-})
-
-// -----------------------------------------------------------------------------------
+});
 
 describe('PA01002. Cerrar Sesión', () => {
   it('Administrador', () => {
@@ -73,7 +70,6 @@ describe('PA01002. Cerrar Sesión', () => {
     cy.url().should('include', '/')
   })
 
-   /*
   it('Dueño/Cliente', () => {
     cy.loginDueño()
     cy.get('#logout-button').click()
@@ -90,10 +86,7 @@ describe('PA01002. Cerrar Sesión', () => {
     cy.url().should('include', '/')
   })
 
-  */
-})
-
-// -----------------------------------------------------------------------------------
+});
 
 describe('PA01003.Perfiles', () => {
   it('AdminPerfil', () => {
@@ -102,4 +95,4 @@ describe('PA01003.Perfiles', () => {
   })
 
 
-})
+});
