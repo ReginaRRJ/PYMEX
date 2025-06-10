@@ -1,3 +1,4 @@
+//addOrder.jsx
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -43,7 +44,7 @@ function AddOrder({onClose}) {
                 fechaEntregaEstimada: new Date("2025-06-01").toISOString(),
                 fechaEntrega: new Date("2025-06-03").toISOString(),
                 idProveedor: proveedores.find(p => p.nombreProveedor === nombre).idProveedor,
-                idProducto: productos.find(p => p.nombreProductoo === producto).idProducto,
+                idProducto: productos.find(p => p.nombreProducto === producto).idProducto,
                 idSucursal: idSucursal,
                 idUsuario: localStorage.getItem("idUsuario"),
                 estatusProveedor: "Pendiente",
@@ -127,8 +128,9 @@ function AddOrder({onClose}) {
                     <div className='h-[60%] w-full flex'>
                         <div className='h-full w-[50%] flex flex-col justify-between pl-14 pr-5 pt-3 pb-5'>
                             <div className='h-20%'>
-                                <h1>Nombre del Proveedor</h1>
+                                <label htmlFor="nombreProveedor">Nombre del Proveedor</label>   
                                 <select 
+                                    id="nombreProveedor"
                                     className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" 
                                     value={nombre} 
                                     onChange={(e) => setNombre(e.target.value)}
@@ -142,12 +144,17 @@ function AddOrder({onClose}) {
                                 </select>
                             </div>
                             <div className='h-20%'>
-                                <h1>Numero de piezas</h1>
-                                <input type="number" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={pieces} onChange={(e) => setPieces(e.target.value)}/>
+                                <label htmlFor="numeroPiezas">Número de piezas</label>
+                                <input 
+                                id="numeroPiezas" 
+                                type="number" 
+                                className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" 
+                                value={pieces} 
+                                onChange={(e) => setPieces(e.target.value)}/>
                             </div>
                             <div className='h-20%'>
-                                <h1>Tipo pedido</h1>
-                                <select className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={tipoPedido} onChange={(e) => setTipoPedido(e.target.value)}> 
+                                <label htmlFor="tipoPedido">Tipo pedido</label>
+                                <select id="tipoPedido" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={tipoPedido} onChange={(e) => setTipoPedido(e.target.value)}> 
                                     <option value="">Selecciona una categoría</option>
                                     <option value="Electrónica">Electrónica</option>
                                     <option value="Telefonía">Telefonía</option>
@@ -159,22 +166,22 @@ function AddOrder({onClose}) {
                         </div>
                         <div className='h-full w-[50%] flex flex-col justify-between pl-5 pr-14 pt-3 pb-5'>
                             <div className='h-20%'>
-                                <h1>Producto</h1>
-                                <select className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={producto} onChange={(e) => setProducto(e.target.value)}>
+                                <label htmlFor="producto">Producto</label>
+                                <select id="producto"  className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={producto} onChange={(e) => setProducto(e.target.value)}>
                                     <option value="">Selecciona un producto</option>
                                     {productos.map((prod, idx) => (
-                                        <option key={idx} value={prod.nombreProductoo}>{prod.nombreProductoo}</option>
+                                        <option key={idx} value={prod.nombreProducto}>{prod.nombreProducto}</option>
                                     ))}
                                 </select>
 
                             </div>
                             <div className='h-20%'>
-                                <h1>Teléfono</h1>
-                                <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={telefono} onChange={(e) => setTelefono(e.target.value)}/>
+                                <label htmlFor="telefono">Teléfono</label>
+                                <input id="telefono" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={telefono} onChange={(e) => setTelefono(e.target.value)}/>
                             </div>
                             <div className='h-20% relative'>
-                                <h1>Correo</h1>
-                                <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={correo} onChange={(e) => setCorreo(e.target.value)}/>
+                                <label htmlFor="correo">Correo</label>
+                                <input id="correo" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={correo} onChange={(e) => setCorreo(e.target.value)}/>
                             </div>
                         </div>
                     </div>

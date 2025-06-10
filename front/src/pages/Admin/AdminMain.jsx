@@ -1,3 +1,4 @@
+//Admin
 import { useState } from "react"
 import Header from "../../components/Header";
 import React from "react";
@@ -14,12 +15,16 @@ let rol = "ADMINISTRADOR"
 import userImg from '../../assets/users.png'
 import reportImg from '../../assets/report.png'
 
-function AdminMain() {
-    const [activeScreenAdmin, setActiveScreenAdmin] = useState("permisosUsuarios");
-
-    const [addUserModal, setAddUserModal] = useState(false); 
-    const [editUserModal, setEditUserModal] = useState(false);
-    const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
+function AdminMain({ 
+  initialScreen = "permisosUsuarios", 
+  showAddUserModal = false, 
+  showEditUserModal = false, 
+  initialUser = null 
+}) {
+    const [activeScreenAdmin, setActiveScreenAdmin] = useState(initialScreen);
+    const [addUserModal, setAddUserModal] = useState(showAddUserModal); 
+    const [editUserModal, setEditUserModal] = useState(showEditUserModal);
+    const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(initialUser);
     const [newUserData, setNewUserData] = useState({
         nombres: '',
         apellidos: '',

@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 
+
 function ActualizarPedido({onClose, idPedido}) {
     const token = localStorage.getItem('token');
     console.log("Recibiendo idPedido en modal:", idPedido);
@@ -59,10 +60,12 @@ function ActualizarPedido({onClose, idPedido}) {
     return (
         <AnimatePresence>
             <motion.div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" onClick={onClose}
+            data-testid="modal-backdrop"
             initial={{ opacity: 0}}
             animate={{opacity: 1}}
             transition={{ duration: 0.2 }}>
                 <motion.div className="bg-white rounded-xl w-[50%] h-[30%] relative text-center" onClick={handleContentClick}
+                data-testid="modal-content"
                 initial={{ opacity: 0, scale: 0.3}}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, size: 0}}
