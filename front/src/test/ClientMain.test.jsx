@@ -57,6 +57,9 @@ describe('ClientMain', () => {
 
     fireEvent.click(screen.getByText('Reportar'));
     expect(screen.getByText('Pantalla ReporteCliente')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Pedidos'));
+    expect(screen.getByText('Pantalla PedidosCliente')).toBeInTheDocument()
   });
 
   test('muestra pantalla no encontrada con estado inválido', () => {
