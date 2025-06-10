@@ -4,15 +4,16 @@ describe('PA02001. Visualización de Pedidos', () => {
     cy.get ('#pedido-list').find ('tr').should('have.length.greaterThan', 0)
   })
     it('Mensaje si no hay pedidos', () => {
-    cy.loginDueño()
-
-    // Interceptamos la solicitud GET para la ruta de nancyDueño con id=1
+        // Interceptamos la solicitud GET para la ruta de nancyDueño con id=1
     cy.intercept('GET', 'http://localhost:3001/api/pedidosClient/1', (req) => {
       req.reply({
         statusCode: 200,
         body: [],
       });
     }).as('getPedidosVacios');
+    cy.loginDueño()
+
+    // Interceptamos la solicitud GET para la ruta de nancyDueño con id=1
 
     cy.wait('@getPedidosVacios');
     cy.get('#pedido-list').should('contain', 'No se encontraron pedidos.');
