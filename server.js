@@ -35,6 +35,10 @@ app.use('/api/ventasClient', clientVentasRoutes);
 app.use('/api/pedidosClient', pedidosPymeRoutes); 
 app.use('/notificaciones',notificacionesRoutes);
 
+app.get('/', (req, res) => {
+  res.send('¡PYMEX backend está funcionando correctamente!');
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
