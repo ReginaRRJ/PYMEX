@@ -4,6 +4,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import ClientMain from '../pages/Client/ClientMain';
 import '@testing-library/jest-dom';
 
+
 jest.mock('../pages/Client/PedidosCliente', () => () => <div>Pantalla PedidosCliente</div>);
 jest.mock('../pages/Client/VentasCliente', () => () => <div>Pantalla VentasCliente</div>);
 jest.mock('../pages/Client/NotificacionesCliente', () => () => <div>Pantalla NotificacionesCliente</div>);

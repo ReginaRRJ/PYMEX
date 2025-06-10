@@ -4,6 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DistribuidorMain from '../pages/Distribuidor/DistribuidorMain';
 import '@testing-library/jest-dom';
 
+
 jest.mock('../components/Header', () => ({ setNotificationsModal }) => (
   <button onClick={() => setNotificationsModal(true)}>Mock Header (abre modal)</button>
 ));
