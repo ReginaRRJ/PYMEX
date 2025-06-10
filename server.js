@@ -22,6 +22,9 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 
+app.get('/', (req, res) => {
+  res.send('¡PYMEX backend está funcionando correctamente!');
+});
 
 app.use("/users", userRoutes);  
 app.use("/login", loginRoutes);  
