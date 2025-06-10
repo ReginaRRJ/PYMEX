@@ -17,11 +17,21 @@ import notificacion from '/assets/notificacion.png';
 import market from '/assets/market.png'
 import stock from '/assets/stock.png'
 import report from '/assets/report.png'
+import analytics from '/assets/analytics.png'
 import sell from '/assets/sell.png'
 
 let rol = "CLIENTE";
 
 function ClientMain() {
+
+  function openInNewTab(url) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  const handleClick = () => {
+    openInNewTab('https://www.apple.com/mx/iphone/');
+  }
+
     const [activeScreenCliente, setActiveScreenCliente] = useState("pedidosCliente");
     const [notificationsModal, setNotificationsModal] = useState(false);
     const [notificaciones, setNotificaciones] = useState(notificacionesData)
@@ -92,6 +102,11 @@ function ClientMain() {
                 text={"Reportar"}
                 onClick={() => setActiveScreenCliente("reporteCliente")}
                 selected={activeScreenCliente === "reporteCliente"}
+              />
+              <NavbarIcon
+                icon={analytics}
+                text={"Analiticas"}
+                onClick={() => handleClick()}
               />
             </div>
             <div className="w-full h-[20%]">
