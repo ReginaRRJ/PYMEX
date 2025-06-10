@@ -29,7 +29,7 @@ function ClientMain() {
   }
 
   const handleClick = () => {
-    openInNewTab('https://www.apple.com/mx/iphone/');
+    openInNewTab('https://basic-trial-sac.cfapps.us10.hana.ondemand.com/sap/fpa/ui/tenants/f9f30/bo/story/2F309D041797F86B26437DA2F896C327');
   }
 
     const [activeScreenCliente, setActiveScreenCliente] = useState("pedidosCliente");
