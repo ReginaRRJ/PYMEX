@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/About.jsx</title>
+    <title>Code coverage report for src/components/Profile.jsx</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../prettify.css" />
-    <link rel="stylesheet" href="../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">src</a> About.jsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/components</a> Profile.jsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -91,12 +91,36 @@
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -117,37 +141,46 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
-import LoginHeader from "./components/LoginHeader"
-import Circle from "./components/Circle"
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from "react";  
+import axios from "axios";
+import pic from '../assets/user.png';
+import process from 'process';
 &nbsp;
-const About = () =&gt; {
+function Profile() {
+    const [user, setUser] = useState(null); 
+&nbsp;
+    useEffect(()=&gt; {
+        const storedUser=localStorage.getItem("usuario");
+        if (storedUser){
+            setUser(JSON.parse(storedUser));
+        }
+    },[]);
+    if (!user){
+        return &lt;div&gt;Loading...&lt;/div&gt;
+    }
+   
     return (
-        &lt;&gt;
-            &lt;Circle/&gt;
-            &lt;div className="absolute w-full h-[15%] z-50"&gt;
-                &lt;LoginHeader /&gt;
-            &lt;/div&gt;
-            &lt;div className="h-screen w-screen flex justify-center items-center flex-col relative"&gt;
-                &lt;p className="text-[40px]"&gt;Sobre nosotros&lt;/p&gt;
-                &lt;br /&gt;
-                &lt;br /&gt;
-                &lt;br /&gt;
-                &lt;div className="h-[250px] w-3/5 bg-blue-700 rounded-[50px] flex flex-col justify-center items-center"&gt;
-                    &lt;p className="text-white"&gt;Nancy Silva Alvarez - A00833627&lt;/p&gt;
-                    &lt;p className="text-white"&gt;Carolina De los Santos - A01174992&lt;/p&gt;
-                    &lt;p className="text-white"&gt;Michelle González - A00837313&lt;/p&gt;
-                    &lt;p className="text-white"&gt;Santiago Miguel Lozano Cedillo - A01198114&lt;/p&gt;
-                    &lt;p className="text-white"&gt;Regina Reyes Juárez - A01275790&lt;/p&gt;
+        &lt;div className="w-full h-full flex justify-center pt-[20px]"&gt;
+            &lt;div className="w-[80%] h-[50%] flex bg-slate-200 rounded-2xl"&gt;
+                &lt;div className="w-[20%] h-full flex justify-center items-center"&gt;
+                    &lt;img src={pic} alt="User" className='w-[60%]' /&gt;
+                &lt;/div&gt;
+                &lt;div className="w-[80%] h-full"&gt;
+                    &lt;div className='w-full h-[50%] flex flex-col justify-end'&gt;
+                        &lt;h1 className='text-[15px]'&gt;{user.nombreCompleto}&lt;/h1&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;div id="perfil-info" className='w-full h-[50%]'&gt; 
+                        &lt;h1 className='text-[15px]'&gt;{user.correo}&lt;/h1&gt;
+                    &lt;/div&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
-        &lt;/&gt;
-    )
+        &lt;/div&gt;
+    );
 }
 &nbsp;
-export default About</pre></td></tr></table></pre>
+export default Profile;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
@@ -156,14 +189,14 @@ export default About</pre></td></tr></table></pre>
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
                 at 2025-06-11T08:32:19.191Z
             </div>
-        <script src="../prettify.js"></script>
+        <script src="../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../sorter.js"></script>
-        <script src="../block-navigation.js"></script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
     </body>
 </html>
     
