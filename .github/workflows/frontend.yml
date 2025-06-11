@@ -45,7 +45,8 @@ jobs:
         working-directory: ./front
         run: npm run build
       
-      - name: Verificar dist
+      - ⁠name: Verificar dist
+        working-directory: ./front
         run: ls -la dist
       
       - name: Create .nojekyll file
