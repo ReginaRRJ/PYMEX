@@ -94,3 +94,5 @@ describe('ClientMain', () => {
     expect(screen.queryByText('Modal Notificaciones')).not.toBeInTheDocument();
   });
 });
+
+
