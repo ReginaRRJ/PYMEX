@@ -34,3 +34,9 @@ jobs:
         working-directory: ./front
         run: npm test
         continue-on-error: true
+
+      - name: Run SonarQube Scan
+        working-directory: ./front
+        run: |
+          npm install -g sonar-scanner
+          sonar-scanner 
