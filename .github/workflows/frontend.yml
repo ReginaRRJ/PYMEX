@@ -30,20 +30,7 @@ jobs:
         run: npm run lint
         continue-on-error: true
 
-      - name: Build frontend
-        working-directory: ./front
-        run: npm run build
-      
-      - name: Create .nojekyll file
-        run: echo "" > ./front/dist/.nojekyll
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./front/dist
-
-       - name: Run frontend tests
+      - name: Run frontend tests
         working-directory: ./front
         run: npm test
         continue-on-error: true
@@ -53,3 +40,19 @@ jobs:
         run: |
           npm install -g sonar-scanner
           sonar-scanner 
+
+      - name: Build frontend
+        working-directory: ./front
+        run: npm run build
+      
+      - name: Verificar dist
+        run: ls -la dist
+      
+      - name: Create .nojekyll file
+        run: echo "" > ./front/dist/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./front/dist
