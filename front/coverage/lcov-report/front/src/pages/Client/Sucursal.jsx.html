@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -130,42 +130,42 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -189,43 +189,43 @@ import axios from "axios";
 &nbsp;
 &nbsp;
 &nbsp;
-function <span class="fstat-no" title="function not covered" >Sucursal(</span>{ sucursal, mode, periodo }) {
-  const [montoVentas, setMontoVentas] = <span class="cstat-no" title="statement not covered" >useState(0);</span>
-  const token = <span class="cstat-no" title="statement not covered" >localStorage.getItem('token');</span>
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-    const fetchVentas = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; { </span>
-<span class="cstat-no" title="statement not covered" >      try {</span>
-        const rutaBase = <span class="cstat-no" title="statement not covered" >"http://localhost:3001/api/sucursal";</span>
-        let endpoint = <span class="cstat-no" title="statement not covered" >"";</span>
+function Sucursal({ sucursal, mode, periodo }) {
+  const [montoVentas, setMontoVentas] = useState(0);
+  const token = localStorage.getItem('token');
+  useEffect(() =&gt; {
+    const fetchVentas = async () =&gt; { 
+      try {
+        const rutaBase = "http://localhost:3001/api/sucursal";
+        let endpoint = "";
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (periodo === "Ventas anuales") {</span>
-<span class="cstat-no" title="statement not covered" >          endpoint = `${rutaBase}/ventas-anuales/${sucursal.id}`;</span>
-        } else <span class="cstat-no" title="statement not covered" >if (periodo === "Ventas mensuales") {</span>
-<span class="cstat-no" title="statement not covered" >          endpoint = `${rutaBase}/ventas-mensuales/${sucursal.id}`;</span>
+        if (periodo === "Ventas anuales") {
+          endpoint = `${rutaBase}/ventas-anuales/${sucursal.id}`;
+        } else if (periodo === "Ventas mensuales") {
+          endpoint = `${rutaBase}/ventas-mensuales/${sucursal.id}`;
         } else {
-<span class="cstat-no" title="statement not covered" >          endpoint = `${rutaBase}/ventas-semanales/${sucursal.id}`;</span>
+          endpoint = `${rutaBase}/ventas-semanales/${sucursal.id}`;
         }
 &nbsp;
-        const res = <span class="cstat-no" title="statement not covered" >await axios.get(endpoint, {</span>
+        const res = await axios.get(endpoint, {
   headers: {
     "Authorization": `Bearer ${token}`
   }
 });
-        const primerResultado = <span class="cstat-no" title="statement not covered" >res.data?.[0];</span>
-        const monto = <span class="cstat-no" title="statement not covered" >primerResultado?.totalVentas ?? 0;</span>
-<span class="cstat-no" title="statement not covered" >        setMontoVentas(monto);</span>
+        const primerResultado = res.data?.[0];
+        const monto = primerResultado?.totalVentas ?? <span class="branch-1 cbranch-no" title="branch not covered" >0;</span>
+        setMontoVentas(monto);
       } catch (error) {
-<span class="cstat-no" title="statement not covered" >        console.error(</span>
+        console.error(
           `Error al cargar ventas de sucursal ${sucursal.id}:`,
           error
         );
       }
     };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    fetchVentas();</span>
+    fetchVentas();
   }, [sucursal.id, periodo]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;div className="w-[33%] h-full flex-shrink-0 flex flex-col items-center mr-5"&gt;
       &lt;img src={market} alt="" className="w-[50%]" /&gt;
       &lt;h1 className="font-bold"&gt;{sucursal.ubicacion}&lt;/h1&gt;
@@ -250,7 +250,7 @@ export default Sucursal;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-11T18:42:37.719Z
+                at 2025-06-11T19:17:22.266Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
