@@ -1,3 +1,4 @@
+//Pedido.jsx
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { StepperComp } from './StepperComp';

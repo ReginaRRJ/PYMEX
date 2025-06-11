@@ -42,7 +42,7 @@ describe('PA03003. Detalles del Pedido', () => {
         method: 'GET',
         url: `http://localhost:3001/api/pedidos/detalle/${savedId}`,
         headers: {
-          Authorization: `Bearer ${window.localStorage.getItem('token')}` // O usa una variable si ya tienes el token almacenado
+          Authorization: `Bearer ${window.localStorage.getItem('token')}` 
         }
       }).then((response) => {
         expect(response.status).to.eq(200);
