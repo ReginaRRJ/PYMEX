@@ -4,6 +4,7 @@ import VendedorMain from '../pages/Vendedor/VendedorMain';
 import * as VentasVendedorModule from '../pages/Vendedor/VentasVendedor';
 import * as TicketModalModule from '../pages/Vendedor/TicketModal';
 
+
 // Mocks de los componentes secundarios
 jest.mock('../components/Header', () => () => <div data-testid="header">Header</div>);
 jest.mock('../components/NavbarIcon', () => (props) => (

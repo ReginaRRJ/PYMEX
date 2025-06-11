@@ -1,7 +1,7 @@
 organization=nancysilva
 projectKey=nancysilva_front-sonarq
 serverUrl=https://sonarcloud.io
-serverVersion=8.0.0.64367
+serverVersion=8.0.0.64372
 dashboardUrl=https://sonarcloud.io/dashboard?id=nancysilva_front-sonarq
-ceTaskId=AZdeRvKxcG91J4hOssNY
-ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZdeRvKxcG91J4hOssNY
+ceTaskId=AZdedJk_om7ExCIBAWF7
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZdedJk_om7ExCIBAWF7
