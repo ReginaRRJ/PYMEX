@@ -2,22 +2,21 @@ import { motion } from "framer-motion"
 import { useState, useEffect } from "react" 
 import sucursalesData from "./sucursales";
 import SucursalStock from "./SucursalStock.jsx";
-// import sucursales from "./sucursales";
-// import productsData from "./products";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const token = localStorage.getItem('token');
+
 function StockCliente() {
     const [productos, setProductos] = useState([]);
     const [producto, setProducto] = useState("")
     const [sucursales, setSucursales] = useState(sucursalesData);
+    const token = localStorage.getItem('token');
     
     const handleProduct = (event) => {
         setProducto(event.target.value);
     };
     
-    //Traer las sucursales de esa pyme
+
     useEffect(() => {
         const fetchSucursales = async () => {
         try {
@@ -42,8 +41,8 @@ function StockCliente() {
             id: sucursal.idSucursal,
             ubicacion: sucursal.nombreSucursal,
             ubicacion_completa: sucursal.ubicacionSucursal,
-            ventas: 10000, // valor temporal o puedes traerlo de otro endpoint
-            unidades: 150, // valor temporal o puedes traerlo de otro endpoint
+            ventas: 10000, 
+            unidades: 150, 
             }));
 
             setSucursales(dataTransformada);
@@ -66,7 +65,6 @@ function StockCliente() {
 });
         const productos = res.data || [];
 
-        // Formatear para el select
         const formattedOptions = productos.map((producto) => ({
           label: producto.nombreProductoo,
           value: producto.idProducto,
@@ -76,7 +74,7 @@ function StockCliente() {
 
         setProductos(formattedOptions);
 
-        // Establecer producto por defecto si hay al menos uno
+       
         if (formattedOptions.length > 0) {
           setProducto(formattedOptions[0].idProductoo);
         }

@@ -12,7 +12,6 @@ let rol = "VENDEDOR";
 function VendedorMain() {
     const [activeScreenVendedor, setActiveScreenVendedor] = useState("ventasVendedor");
     const [ventaModal, setVentaModal] = useState(false);
-    // State to trigger a refresh of tickets in VentasVendedor
     const [refreshTickets, setRefreshTickets] = useState(false);
     const [user, setUser] = useState(null);
 
@@ -23,11 +22,9 @@ function VendedorMain() {
         }
     }, []);
 
-    // Callback function to be passed to TicketModal,
-    // which will be called when a ticket is successfully created.
     const handleTicketCreated = () => {
-        setVentaModal(false); // Close the modal
-        setRefreshTickets(prev => !prev); // Toggle state to trigger re-fetch in VentasVendedor
+        setVentaModal(false); 
+        setRefreshTickets(prev => !prev); 
     };
 
     const renderScreen = () => {
@@ -37,21 +34,21 @@ function VendedorMain() {
                     <VentasVendedor
                         ventaModal={ventaModal}
                         setVentaModal={setVentaModal}
-                        refreshTickets={refreshTickets} // Pass refreshTickets state
+                        refreshTickets={refreshTickets} 
                     />
                 );
             default:
-                return <h2>Screen not found</h2>;
+                return <h2>Pantalla no encontrada</h2>;
         }
     }
 
     return (
         <>
-            {/* Render TicketModal only if ventaModal is true and user data is available */}
+           
             {ventaModal && user && (
                 <TicketModal
                     onClose={() => setVentaModal(false)}
-                    onTicketCreated={handleTicketCreated} // Pass the callback function
+                    onTicketCreated={handleTicketCreated} 
                 />
             )}
 

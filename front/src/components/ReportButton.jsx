@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 import checkmark from '../assets/checkmark.png'
-const token = localStorage.getItem('token');
+
 
 function ReportButton({ reporte }) {
-    const [isSelected, setIsSelected] = useState(reporte.resuelto === true); // Variable que ayuda a mantener el control de resuelto/no resuelto
-
+    const [isSelected, setIsSelected] = useState(reporte.resuelto === true); 
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         if (isSelected && !reporte.resuelto) {
             const currentToken = localStorage.getItem('token');
             fetch(`http://localhost:3001/reportes/${reporte.idReporte}`, {
-                method: 'PUT', // O PATCH si solo actualizas un campo
+                method: 'PUT', 
                 headers: {
                     'Content-Type': 'application/json',
                     "Authorization": `Bearer ${currentToken}`
@@ -26,7 +26,6 @@ function ReportButton({ reporte }) {
             })
             .catch(err => {
                 console.error('Error al actualizar el reporte:', err);
-                // Revertir el estado si falla
                 setIsSelected(false);
             });
         }
@@ -34,7 +33,7 @@ function ReportButton({ reporte }) {
 
     const handleClick = () => {
         if (!isSelected) {
-            setIsSelected(true); // Esto activa el useEffect
+            setIsSelected(true); 
         }
     };
     
@@ -46,14 +45,12 @@ function ReportButton({ reporte }) {
             rounded-2xl font-sans text-white text-center overflow-hidden hover:bg-slate-100 duration-500`}
             onClick={handleClick}
             >
-            {/* Por resolver text */}
             {!isSelected && (
                 <div className="absolute inset-0 flex items-center justify-center transition-all duration-300 group-hover:-top-[200%]">
                     {isSelected ? null : <h1 className="text-white">Por resolver</h1>}
                 </div>
             )}
 
-            {/* Checkmark */}
             <div
                 className={`absolute inset-0 flex items-center justify-center transition-all duration-300 
                 ${isSelected ? 'top-0' : 'top-[200%] group-hover:top-0'}`}>

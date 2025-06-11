@@ -3,14 +3,17 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import market from "../../assets/market-color.png";
 import { toast } from "react-toastify";
-const token = localStorage.getItem('token');
+
+
+
 function StockSucursal() {
   const [producto, setProducto] = useState(null);
   const [montoStock, setMontoStock] = useState(null);
   const [user, setUser] = useState(null);
   const[sucursal, setSucursal] = useState("");
   const [options, setOptions] = useState([]);
-
+  const token = localStorage.getItem('token');
+  
   const handleInterval = (event) => {
     setProducto(Number(event.target.value));
   };
@@ -30,7 +33,7 @@ function StockSucursal() {
     }
   }, []);
 
-  // Cargar lista de productos desde la API
+
   useEffect(() => {
     const fetchProductos = async () => {
       try {
@@ -42,7 +45,7 @@ function StockSucursal() {
 });
         const productos = res.data || [];
 
-        // Formatear para el select
+      
         const formattedOptions = productos.map((producto) => ({
           label: producto.nombreProductoo,
           value: producto.nombreProducto,
@@ -52,13 +55,11 @@ function StockSucursal() {
 
         setOptions(formattedOptions);
 
-        // Establecer producto por defecto si hay al menos uno
+        
         if (formattedOptions.length > 0) {
           setProducto(formattedOptions[0].idProductoo);
         }
 
-        console.log("Productos obtenidos:", productos);
-        console.log("Opciones mapeadas:", formattedOptions);
       } catch (error) {
         console.error("Error al cargar productos:", error);
       }
@@ -67,7 +68,6 @@ function StockSucursal() {
   }, []);
 
 
-  // Cargar stock cuando haya usuario y producto seleccionados
   useEffect(() => {
     if (!user || !producto || options.length === 0) return;
 
@@ -78,7 +78,7 @@ function StockSucursal() {
     const fetchStock = async () => {
       console.log("Cargando stock para producto:", sucursal, idProducto);
       try {
-        if (!user) return null; // o un loader
+        if (!user) return null; 
         
         console.log("Cargando stock para producto:", sucursal, producto);
 

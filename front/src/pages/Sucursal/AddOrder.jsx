@@ -2,7 +2,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-const token = localStorage.getItem('token');
+
+
 function AddOrder({onClose}) {
     const [nombre, setNombre] = useState("");
     const [producto, setProducto] = useState("");
@@ -15,24 +16,20 @@ function AddOrder({onClose}) {
     const nombreSucursal = localStorage.getItem("nombreSucursal");
     const [sucursales, setSucursales] = useState([]);
     const [idSucursal, setIdSucursal] = useState(null);
-
-
-
+    const token = localStorage.getItem('token');
 
     const handleContentClick = (e) => {
         e.stopPropagation();
     };
 
-    // Handle change event to update the selected role
     const handleChange = (e) => {
         setSelectedRole(e.target.value);
     };
 
     const handleCrearPedido = async () => {
-        console.log("handleCrearPedido ejecutado");
         try {
             if (!nombre || !producto || !pieces || !telefono || !tipoPedido || !correo) {
-                toast.error("Por favor completa todos los campos.");
+                toast.error("Por favor llene todos los campos.");
                 return;
             }
             const usuarioStr = localStorage.getItem("usuario");
@@ -60,7 +57,7 @@ function AddOrder({onClose}) {
 });
             toast.success("Pedido creado correctamente");
 
-            onClose(); // Cierra el modal
+            onClose(); 
         } catch (error) {
             console.error("Error al crear pedido:", error);
             toast.error("Error al crear el pedido");
@@ -68,11 +65,10 @@ function AddOrder({onClose}) {
     };
 
 
-
     useEffect(() => {
-        console.log("Fetching proveedores...");
+        console.log("Obteniendo proveedores...");
         const fetchProveedores = async () => {
-            console.log("Fetching proveedores from API...");
+            console.log("Obteniendo proveedores del API...");
             try {
                 const token = localStorage.getItem('token');
                 const res = await axios.get("http://localhost:3001/api/sucursal/proveedores",{
@@ -80,9 +76,8 @@ function AddOrder({onClose}) {
     "Authorization": `Bearer ${token}`
   }
 });
-                console.log("Proveedores:", res.data);
-                console.log("Proveedores length:", res.data.length);
-                setProveedores(res.data); // Guarda arreglo completo
+                
+                setProveedores(res.data); 
                 toast.success("Proveedores cargados correctamente");
             } catch (error) {
                 console.error("Error al cargar proveedores:", error);

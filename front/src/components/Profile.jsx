@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from "react";
-//import { getUsuario } from "../../../controllers/adminCrud";  
+import React, { useEffect, useState } from "react";  
 import axios from "axios";
 import pic from '../assets/user.png';
 import process from 'process';
 
 function Profile() {
-    const [user, setUser] = useState(null); // State to store the fetched user data
+    const [user, setUser] = useState(null); 
 
-    // Fetch user when the component mounts
-    // useEffect(() => {
-    //     const storedUser = localStorage.getItem("usuario");
-    //      if (storedUser) {
-    //     setUser(JSON.parse(storedUser));
-    // }
-    // }, []);
     useEffect(()=> {
         const storedUser=localStorage.getItem("usuario");
         if (storedUser){
@@ -23,24 +15,7 @@ function Profile() {
     if (!user){
         return <div>Loading...</div>
     }
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         try {
-    //             const userId = 1; // Replace with the actual user ID (for example, from session or state)
-    //             const fetchedUser = await getUsuario(userId);
-    //             setUser(fetchedUser); // Set the user data in state
-    //         } catch (error) {
-    //             console.error("Error fetching user:", error);
-    //         }
-    //     };
-
-    //     fetchUser();
-    // }, []); // Empty dependency array ensures this runs once when the component mounts
-
-    // if (!user) {
-    //     return <div>Loading...</div>; // Display a loading message while fetching the user
-    // }
-
+   
     return (
         <div className="w-full h-full flex justify-center pt-[20px]">
             <div className="w-[80%] h-[50%] flex bg-slate-200 rounded-2xl">
@@ -51,7 +26,7 @@ function Profile() {
                     <div className='w-full h-[50%] flex flex-col justify-end'>
                         <h1 className='text-[15px]'>{user.nombreCompleto}</h1>
                     </div>
-                    {/* ID para Pruebas */}
+                    
                     <div id="perfil-info" className='w-full h-[50%]'> 
                         <h1 className='text-[15px]'>{user.correo}</h1>
                     </div>
@@ -62,6 +37,3 @@ function Profile() {
 }
 
 export default Profile;
-/*<h1 className='text-[15px]'>{user.nombreUsuario} {user.apellidoUsuario}</h1>
-<h1 className='text-[15px]'>ID Pyme: {user.idPyme}</h1>
-*/

@@ -1,15 +1,17 @@
 
 import { motion } from 'framer-motion'
 import { useState, useEffect } from "react"
-
 import Switch from '@mui/material/Switch';
-const token = localStorage.getItem('token');
+
+
+
 function NotificacionesDist() {
     const [user, setUser] = useState(null);
     const [pedidoAutorizado, setPedidoAutorizado] = useState(false);
     const [automatizacionPedidos, setAutomatizacionPedidos] = useState(false);
     const [estatusPedido, setEstatusPedido] = useState(false);
-
+    const token = localStorage.getItem('token');
+    
     useEffect(() => {
         const storedUser = localStorage.getItem("usuario");
         if (storedUser) {
@@ -32,7 +34,7 @@ function NotificacionesDist() {
         
                 if (!contentType || !contentType.includes("application/json")) {
                     const text = await response.text();
-                    console.error('Expected JSON, but received:', text);
+                    console.error('Esperando archivo JSON. Se recibió:', text);
                     return;
                 }
         
@@ -55,7 +57,7 @@ function NotificacionesDist() {
                     }
                 });
             } catch (error) {
-                console.error("Error fetching notifications:", error);
+                console.error("Error obteniendo notificaciones:", error);
             }
         };
         
@@ -64,7 +66,7 @@ function NotificacionesDist() {
     }, [user]);
 
     const handleSwitchChange = async (idNotificacion, value) => {
-        // Optimistically update local state first
+        
         if (idNotificacion === 4) setPedidoAutorizado(value);
         if (idNotificacion === 5) setAutomatizacionPedidos(value);
         if (idNotificacion === 6) setEstatusPedido(value);
@@ -89,7 +91,7 @@ function NotificacionesDist() {
     
 
     if (!user) {
-        return <div>Loading...</div>;
+        return <div>Cargando...</div>;
     }
 
     return (
@@ -102,8 +104,11 @@ function NotificacionesDist() {
             </div>
 
             <div className="w-full h-[75%]">
-                {/* ID para Pruebas */}
-                <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
+              
+                <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'
+                data-testid="notificacionEntrega-container">
+
+
                     <div className='w-[80px] h-full flex flex-col justify-center'>
 
                         <Switch size='large' checked={pedidoAutorizado} onChange={(e) => handleSwitchChange(4, e.target.checked)} inputProps={{ 'data-testid': 'switchNotificacionEntrega' }}/>

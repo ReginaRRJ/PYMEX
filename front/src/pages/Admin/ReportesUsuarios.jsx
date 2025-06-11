@@ -3,10 +3,10 @@ import Report from "../../components/Report";
 import { motion } from 'framer-motion';
 import process from 'process';
 
-const token = localStorage.getItem('token');
+
 function ReportesUsuarios() {
     const [reportes, setReportes] = useState([]);
-
+    const token = localStorage.getItem('token');
     useEffect(() => {
         const fetchReportes = async () => {
             try {
@@ -45,7 +45,7 @@ function ReportesUsuarios() {
             <div id="info-reporte" className="h-[70%] w-full overflow-y-auto">
                 {Array.isArray(reportes) && reportes.length > 0 ? ( 
                 reportes
-                    .sort((a, b) => a.resuelto - b.resuelto) // false (0) primero
+                    .sort((a, b) => a.resuelto - b.resuelto) 
                     .map((reporte, index) => (
                         <Report 
                             key={reporte.idReporte || index} 

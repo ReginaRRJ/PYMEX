@@ -1,10 +1,9 @@
-// authMiddleware.js
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY || 'secretPYME123';
-
+//Verificar token JWT
 export const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
 
@@ -16,7 +15,7 @@ export const verifyToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
-    req.user = decoded; // opcional: guardar el payload para uso futuro
+    req.user = decoded; 
     next();
   } catch (error) {
     return res.status(403).json({ message: 'Token inválido o expirado' });

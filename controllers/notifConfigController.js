@@ -9,6 +9,7 @@ const connParams = {
   pwd: process.env.DB_PASSWORD
 };
 
+//Obtener configuración de las notificaciones
 export const getNotificationConfig = async (req, res) => {
   const { idUsuario } = req.params;
   const query = `
@@ -27,17 +28,17 @@ export const getNotificationConfig = async (req, res) => {
     const conn = hana.createConnection();
     conn.connect(connParams);
 
-    // Use a prepared statement and execute directly with parameters
+    
     conn.prepare(query, (err, stmt) => {
       if (err) {
-        console.error('Error preparing statement:', err);
-        return res.status(500).json({ error: 'Error preparing statement' });
+        console.error('Error preparando sentencia:', err);
+        return res.status(500).json({ error: 'Error preparando sentencia' });
       }
 
       stmt.exec([idUsuario], (err, rows) => {
         if (err) {
-          console.error('Error executing statement:', err);
-          return res.status(500).json({ error: 'Error executing statement' });
+          console.error('Error preparando sentenciat:', err);
+          return res.status(500).json({ error: 'Error preparando sentencia' });
         }
 
         res.json(rows);
@@ -45,12 +46,12 @@ export const getNotificationConfig = async (req, res) => {
       });
     });
   } catch (error) {
-    console.error('Error fetching notification configuration:', error);
-    res.status(500).json({ error: 'Error fetching notification configuration' });
+    console.error('Error obteniendo configuración de las notificaciones:', error);
+    res.status(500).json({ error: 'Error obteniendo configuración de las notificaciones' });
   }
 };
 
-
+//Actualizar configuración de las notificaciones
 export const updateNotificationConfig = async (req, res) => {
   const { idUsuario } = req.params;
   const { idNotificacion, activo } = req.body;
@@ -66,25 +67,24 @@ export const updateNotificationConfig = async (req, res) => {
     const conn = hana.createConnection();
     conn.connect(connParams);
 
-    // Directly use the connection's `prepare` and `exec` with a callback
     conn.prepare(query, (err, stmt) => {
       if (err) {
-        console.error('Error preparing statement:', err);
-        return res.status(500).json({ error: 'Error preparing statement' });
+        console.error('Error preparando sentencia:', err);
+        return res.status(500).json({ error: 'Errror preparando sentencia' });
       }
 
       stmt.exec([activo, parametroTiempo, idUsuario, idNotificacion], (err, result) => {
         if (err) {
-          console.error('Error executing statement:', err);
-          return res.status(500).json({ error: 'Error executing statement' });
+          console.error('Error preparando sentencia:', err);
+          return res.status(500).json({ error: 'Error preparando sentencia' });
         }
 
-        res.status(200).json({ message: "Notification configuration updated successfully" });
+        res.status(200).json({ message: "Cambio de configuración exitosa" });
         conn.disconnect();
       });
     });
   } catch (error) {
-    console.error('Error updating notification configuration:', error);
-    res.status(500).json({ error: 'Error updating notification configuration' });
+    console.error('Error actualizando configuración de las notificaciones:', error);
+    res.status(500).json({ error: 'Error actualizando configuración de las notificaciones' });
   }
 };

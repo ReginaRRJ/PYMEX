@@ -5,11 +5,12 @@ import sucursalesData from "./sucursales";
 import Sucursal from "./Sucursal";
 import axios from "axios";
 
-const token = localStorage.getItem('token');
+
 function SucursalCliente() {
   const [periodo, setPeriodo] = useState("Ventas mensuales");
   const [sucursales, setSucursales] = useState(sucursalesData);
-
+  const token = localStorage.getItem('token');
+  
   const handleInterval = (event) => {
     setPeriodo(event.target.value);
   };
@@ -44,8 +45,8 @@ function SucursalCliente() {
           id: sucursal.idSucursal,
           ubicacion: sucursal.nombreSucursal,
           ubicacion_completa: sucursal.ubicacionSucursal,
-          ventas: 10000, // valor temporal o puedes traerlo de otro endpoint
-          unidades: 150, // valor temporal o puedes traerlo de otro endpoint
+          ventas: 10000, 
+          unidades: 150, 
         }));
 
         setSucursales(dataTransformada);

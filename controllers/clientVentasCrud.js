@@ -1,19 +1,17 @@
-// controllers/clientVentasCrud.js
 import hana from "@sap/hana-client";
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Define base connection parameters
 const baseConnParams = {
   serverNode: process.env.DB_HOST,
   uid: process.env.DB_USER,
   pwd: process.env.DB_PASSWORD
 };
 
+//Obtener sucursales por PYME
 export const getSucursalesByPymeService = async (req, res) => {
   const { idPyme } = req.params;
-  console.log("🔍 idPyme recibido:", idPyme);
 
   const query = `
     SELECT "idSucursal", "nombreSucursal", "ubicacionSucursal"
@@ -23,9 +21,9 @@ export const getSucursalesByPymeService = async (req, res) => {
 
   const conn = hana.createConnection();
 
-  conn.connect(baseConnParams, (err) => {  // 👈 aquí usamos baseConnParams
+  conn.connect(baseConnParams, (err) => {  
     if (err) {
-      console.error("❌ Error conectando a SAP HANA:", err);
+      console.error("Error conectando a SAP HANA:", err);
       return res
         .status(500)
         .json({ error: "Error al conectar a la base de datos" });
@@ -33,7 +31,7 @@ export const getSucursalesByPymeService = async (req, res) => {
 
     conn.prepare(query, (err, stmt) => {
       if (err) {
-        console.error("❌ Error preparando consulta:", err);
+        console.error("Error preparando consulta:", err);
         conn.disconnect();
         return res.status(500).json({ error: "Error preparando consulta" });
       }
@@ -42,11 +40,10 @@ export const getSucursalesByPymeService = async (req, res) => {
         conn.disconnect();
 
         if (err) {
-          console.error("❌ Error ejecutando consulta:", err);
+          console.error("Error ejecutando consulta:", err);
           return res.status(500).json({ error: "Error ejecutando consulta" });
         }
 
-        console.log("✅ Sucursales encontradas:", rows);
         res.json(rows);
       });
     });
@@ -54,30 +51,27 @@ export const getSucursalesByPymeService = async (req, res) => {
 };
 
 
-
-// This helper function `executeHanaQuery` is not used in createTicket
-// so it's not directly related to this error.
 const executeHanaQuery = (query, params, res, successCallback) => {
   const conn = hana.createConnection();
-  conn.connect(baseConnParams, (connectErr) => { // Use baseConnParams for auto-commit true scenarios
+  conn.connect(baseConnParams, (connectErr) => { 
     if (connectErr) {
-      console.error('Error connecting to SAP HANA:', connectErr);
-      return res.status(500).json({ error: 'Database connection failed.' });
+      console.error('Error conectando a SAP HANA:', connectErr);
+      return res.status(500).json({ error: 'Conexión con base de datos fallida.' });
     }
 
     conn.prepare(query, (prepareErr, stmt) => {
       if (prepareErr) {
-        console.error('Error preparing statement:', prepareErr);
+        console.error('Error preparando sentencia:', prepareErr);
         conn.disconnect();
-        return res.status(500).json({ error: 'Failed to prepare database statement.' });
+        return res.status(500).json({ error: 'Error preparando sentencia de base de datos.' });
       }
 
       stmt.exec(params, (execErr, result) => {
         if (execErr) {
-          console.error('Error executing statement:', execErr);
+          console.error('Error ejecutando sentencia:', execErr);
           stmt.drop();
           conn.disconnect();
-          return res.status(500).json({ error: 'Failed to execute database statement.' });
+          return res.status(500).json({ error: 'Error ejecutando sentencia de base de datos.' });
         }
 
         successCallback(result, stmt, conn);
@@ -86,9 +80,9 @@ const executeHanaQuery = (query, params, res, successCallback) => {
   });
 };
 
+//Obtener productos por sucursal
 export const getProductsByBranch = async (req, res) => {
   const { idSucursal } = req.params;
-  console.log(`Working on products for idSucursal: ${idSucursal}`);
 
   const query = `
     SELECT
@@ -103,38 +97,34 @@ export const getProductsByBranch = async (req, res) => {
   `;
 
   executeHanaQuery(query, [idSucursal], res, (rows, stmt, conn) => {
-    console.log(`Found ${rows.length} products for idSucursal ${idSucursal}.`);
     res.status(200).json(rows);
     stmt.drop();
     conn.disconnect();
   });
 };
 
+//Crear ticket
 export const createTicket = async (req, res) => {
   const { idSucursal, product, cantidad } = req.body;
-  console.log(`Creating ticket for idSucursal: ${idSucursal}, product: ${product.nombreProductoo}, quantity: ${cantidad}`);
-
+  
   if (!idSucursal || !product || !product.idProducto || !product.precio || !cantidad || cantidad <= 0) {
-    return res.status(400).json({ error: 'Missing or invalid ticket data.' });
+    return res.status(400).json({ error: 'Información de ticket faltante o inválida.' });
   }
 
-  // Define connection parameters for this transaction, with autoCommit set to false
   const transactionConnParams = {
-    ...baseConnParams, // Inherit base parameters
-    autoCommit: false   // Crucial: Disable auto-commit for explicit transactions
+    ...baseConnParams, 
+    autoCommit: false   
   };
 
   const conn = hana.createConnection();
-  conn.connect(transactionConnParams, async (connectErr) => { // Use transaction-specific parameters
+  conn.connect(transactionConnParams, async (connectErr) => { 
     if (connectErr) {
-      console.error('Connection failed for ticket creation:', connectErr);
-      return res.status(500).json({ error: 'Database connection failed for ticket creation.' });
+      console.error('Conexión fallida para creación de ticket:', connectErr);
+      return res.status(500).json({ error: 'Conexión a base de datos fallida para creación de ticket.' });
     }
 
     try {
-      console.log('Transaction started (auto-commit OFF).');
-
-      // --- 1. Check Availability ---
+      
       const checkAvailabilityQuery = `
         SELECT "cantidadProducto" FROM "BACKPYMEX"."Almacenamiento"
         WHERE "idProducto" = ? AND "idSucursal" = ?;
@@ -151,21 +141,21 @@ export const createTicket = async (req, res) => {
       });
 
       if (checkRows.length === 0) {
-        console.warn(`Product idProducto ${product.idProducto} not found in Almacenamiento for idSucursal ${idSucursal}.`);
-        await new Promise(r => conn.exec('ROLLBACK', r)); // Rollback on not found
+        console.warn(`Producto ${product.idProducto} not encontrado en almacenamiento para sucursal ${idSucursal}.`);
+        await new Promise(r => conn.exec('ROLLBACK', r)); 
         conn.disconnect();
-        return res.status(404).json({ error: 'Product not found in this branch\'s inventory.' });
+        return res.status(404).json({ error: 'Producto no encontrado en la sucursal.' });
       }
 
       const availableQuantity = checkRows[0].cantidadProducto;
       if (availableQuantity < cantidad) {
-        console.warn(`Insufficient stock for idProducto ${product.idProducto} at idSucursal ${idSucursal}. Available: ${availableQuantity}, Requested: ${cantidad}`);
-        await new Promise(r => conn.exec('ROLLBACK', r)); // Rollback on insufficient stock
+        console.warn(`Almacenamiento no suficiente para  ${product.idProducto} en sucursal ${idSucursal}. Disponible: ${availableQuantity}, Requerido: ${cantidad}`);
+        await new Promise(r => conn.exec('ROLLBACK', r)); 
         conn.disconnect();
-        return res.status(400).json({ error: `Insufficient product quantity. Only ${availableQuantity} available.` });
+        return res.status(400).json({ error: `Cantidad de producto insuficiente. Sólo ${availableQuantity} dispinibles.` });
       }
 
-      // --- 2. Insert Ticket ---
+ 
       const insertTicketQuery = `
         INSERT INTO "BACKPYMEX"."Ticket" ("fechaVenta", "cantidadTotal", "idSucursal")
         VALUES (CURRENT_DATE, ?, ?);
@@ -181,7 +171,6 @@ export const createTicket = async (req, res) => {
         });
       });
 
-      // --- 3. Get Last Inserted Ticket ID ---
       const idRows = await new Promise((resolve, reject) => {
         conn.exec('SELECT CURRENT_IDENTITY_VALUE() AS "idTicket" FROM DUMMY;', (idErr, result) => {
           if (idErr) return reject(idErr);
@@ -194,7 +183,6 @@ export const createTicket = async (req, res) => {
       }
       const newTicketId = idRows[0].idTicket;
 
-      // --- 4. Insert Ticket_Producto ---
       const insertTicketProductQuery = `
         INSERT INTO "BACKPYMEX"."Ticket_Producto" ("cantidad", "idTicket", "idProducto")
         VALUES (?, ?, ?);
@@ -210,7 +198,6 @@ export const createTicket = async (req, res) => {
         });
       });
 
-      // --- 5. Update Almacenamiento ---
       const updateAlmacenamientoQuery = `
         UPDATE "BACKPYMEX"."Almacenamiento"
         SET "cantidadProducto" = "cantidadProducto" - ?
@@ -227,31 +214,29 @@ export const createTicket = async (req, res) => {
         });
       });
 
-      // --- COMMIT TRANSACTION ---
       await new Promise((resolve, reject) => {
         conn.exec('COMMIT', (err) => {
           if (err) return reject(err);
           resolve();
         });
       });
-      console.log(`Ticket ${newTicketId} created successfully for idSucursal ${idSucursal}. Inventory updated.`);
-      res.status(201).json({ message: 'Ticket created successfully', idTicket: newTicketId });
+      console.log(`Ticket ${newTicketId} creado para sucursal ${idSucursal}. Inventario actualizado.`);
+      res.status(201).json({ message: 'Ticket creado exitosamente', idTicket: newTicketId });
 
     } catch (error) {
-      console.error('Transaction failed:', error);
-      // --- ROLLBACK TRANSACTION ---
-      await new Promise(r => conn.exec('ROLLBACK', r)); // Ensure rollback happens
-      res.status(500).json({ error: `Transaction failed: ${error.message || error}` });
+      console.error('Transacción fallida:', error);
+     
+      await new Promise(r => conn.exec('ROLLBACK', r)); 
+      res.status(500).json({ error: `Transacción fallida: ${error.message || error}` });
     } finally {
-      // Ensure connection is always disconnected
       conn.disconnect();
     }
   });
 };
 
+//Obtener todos los tickets de las sucursales 
 export const getTicketsByBranch = async (req, res) => {
   const { idSucursal } = req.params;
-  console.log(`Working on tickets for idSucursal: ${idSucursal}`);
 
   const query = `
     SELECT
@@ -283,7 +268,6 @@ export const getTicketsByBranch = async (req, res) => {
         });
       }
       const ticket = ticketsMap.get(row.idTicket);
-      // Ensure these are numbers before multiplication
       const cantidad = typeof row.cantidad === 'number' ? row.cantidad : parseFloat(row.cantidad) || 0;
       const precioProducto = typeof row.precioProducto === 'number' ? row.precioProducto : parseFloat(row.precioProducto) || 0;
 
@@ -307,18 +291,18 @@ export const getTicketsByBranch = async (req, res) => {
         cantidadTotal: ticket.totalQuantity
     }));
 
-    console.log(`Found ${formattedTickets.length} formatted tickets for idSucursal ${idSucursal}.`);
     res.status(200).json(formattedTickets);
     stmt.drop();
     conn.disconnect();
   });
 };
 
+//Obtener información de ventas
 export const getSalesData = (req, res) => {
     const { idPyme } = req.params;
 
     if (!idPyme) {
-        return res.status(400).send("idPyme is required.");
+        return res.status(400).send("idPyme requerida.");
     }
 
     const conn = hana.createConnection();
@@ -340,11 +324,11 @@ SELECT
     COALESCE(ProductAgg.productosVendidos, 'No products') AS productosVendidos,
     COALESCE(ProductAgg.totalTicketPrice, 0.00) AS totalTicketPrice
 FROM
-    "BACKPYMEX"."Ticket" AS T  -- Explicitly defined
+    "BACKPYMEX"."Ticket" AS T 
 JOIN
-    "BACKPYMEX"."Sucursal" AS S ON T."idSucursal" = S."idSucursal" -- Explicitly defined
+    "BACKPYMEX"."Sucursal" AS S ON T."idSucursal" = S."idSucursal" 
 JOIN
-    "BACKPYMEX"."Pyme" AS PY ON S."idPyme" = PY."idPyme" -- Explicitly defined
+    "BACKPYMEX"."Pyme" AS PY ON S."idPyme" = PY."idPyme" 
 LEFT JOIN (
     SELECT
         TP."idTicket",
@@ -354,9 +338,9 @@ LEFT JOIN (
         ) AS productosVendidos,
         SUM(COALESCE(TP."cantidad", 0) * COALESCE(P."precioProducto", 0)) AS totalTicketPrice
     FROM
-        "BACKPYMEX"."Ticket_Producto" AS TP -- Explicitly defined
+        "BACKPYMEX"."Ticket_Producto" AS TP 
     JOIN
-        "BACKPYMEX"."Producto" AS P ON TP."idProducto" = P."idProducto" -- Explicitly defined
+        "BACKPYMEX"."Producto" AS P ON TP."idProducto" = P."idProducto" 
     GROUP BY
         TP."idTicket"
 ) AS ProductAgg ON T."idTicket" = ProductAgg."idTicket"
@@ -381,12 +365,6 @@ ORDER BY
                     return res.status(500).send("Error ejecutando la consulta de ventas");
                 }
 
-                // --- ADD THIS DEBUG LOG HERE ---
-                console.log("\n--- DEBUG: Raw Sales Data from HANA ---");
-                console.log(JSON.stringify(results, null, 2)); // Use JSON.stringify for better readability
-                console.log("--- END DEBUG: Raw Sales Data ---\n");
-                // --- END DEBUG LOG ---
-
                 statement.drop();
                 conn.disconnect();
                 return res.status(200).json(results);
@@ -394,169 +372,3 @@ ORDER BY
         });
     });
 };
-// // controllers/clientVentasCrud.js
-// import hana from '@sap/hana-client';
-// import dotenv from 'dotenv';
-
-// dotenv.config();
-
-// const connParams = {
-//     serverNode: process.env.DB_HOST,
-//     uid: process.env.DB_USER,
-//     pwd: process.env.DB_PASSWORD
-// };
-
-// export const getSalesData = (req, res) => {
-//     const { idPyme } = req.params;
-
-//     if (!idPyme) {
-//         return res.status(400).send("idPyme is required.");
-//     }
-
-//     const conn = hana.createConnection();
-
-//     conn.connect(connParams, (err) => {
-//         if (err) {
-//             console.error("Error al conectar a SAP HANA:", err);
-//             return res.status(500).send("Error conectando a SAP HANA");
-//         }
-
-//         console.log("Conectado a SAP HANA Cloud");
-
-//         const sqlQuery = `
-//             SELECT
-//                 T."idTicket",
-//                 T."fechaVenta",
-//                 T."cantidadTotal",
-//                 S."nombreSucursal",
-//                 COALESCE(ProductAgg.productosVendidos, 'No products') AS productosVendidos,
-//                 COALESCE(ProductAgg.totalTicketPrice, 0.00) AS totalTicketPrice
-//             FROM
-//                 "Ticket" AS T
-//             JOIN
-//                 "Sucursal" AS S ON T."idSucursal" = S."idSucursal"
-//             JOIN
-//                 "Pyme" AS PY ON S."idPyme" = PY."idPyme"
-//             LEFT JOIN (
-//                 SELECT
-//                     TP."idTicket",
-//                     STRING_AGG(
-//                         COALESCE(P."nombreProductoo", 'Desconocido') || ' (' || COALESCE(TP."cantidad", 0) || ')',
-//                         ', '
-//                     ) AS productosVendidos,
-//                     SUM(COALESCE(TP."cantidad", 0) * COALESCE(P."precioProducto", 0)) AS totalTicketPrice
-//                 FROM
-//                     "Ticket_Producto" AS TP
-//                 JOIN
-//                     "Producto" AS P ON TP."idProducto" = P."idProducto"
-//                 GROUP BY
-//                     TP."idTicket"
-//             ) AS ProductAgg ON T."idTicket" = ProductAgg."idTicket"
-//             WHERE
-//                 PY."idPyme" = ?
-//             ORDER BY
-//                 T."fechaVenta" DESC;
-//         `;
-
-//         conn.prepare(sqlQuery, (err, statement) => {
-//             if (err) {
-//                 console.error("Error preparando consulta de ventas:", err);
-//                 conn.disconnect();
-//                 return res.status(500).send("Error preparando la consulta de ventas");
-//             }
-
-//             statement.exec([idPyme], (err, results) => {
-//                 if (err) {
-//                     console.error("Error ejecutando consulta de ventas:", err);
-//                     statement.drop();
-//                     conn.disconnect();
-//                     return res.status(500).send("Error ejecutando la consulta de ventas");
-//                 }
-
-//                 // --- ADD THIS DEBUG LOG HERE ---
-//                 console.log("\n--- DEBUG: Raw Sales Data from HANA ---");
-//                 console.log(JSON.stringify(results, null, 2)); // Use JSON.stringify for better readability
-//                 console.log("--- END DEBUG: Raw Sales Data ---\n");
-//                 // --- END DEBUG LOG ---
-
-//                 statement.drop();
-//                 conn.disconnect();
-//                 return res.status(200).json(results);
-//             });
-//         });
-//     });
-// };
-// // import hana from '@sap/hana-client';
-// // import dotenv from 'dotenv';
-
-// // dotenv.config();
-
-// // const connParams = {
-// //     serverNode: process.env.DB_HOST,
-// //     uid: process.env.DB_USER,
-// //     pwd: process.env.DB_PASSWORD
-// // };
-
-// // export const getSalesData = (req, res) => {
-// //     const { idPyme } = req.params;
-
-// //     if (!idPyme) {
-// //         return res.status(400).send("idPyme is required.");
-// //     }
-
-// //     const conn = hana.createConnection();
-
-// //     conn.connect(connParams, (err) => {
-// //         if (err) {
-// //             console.error("Error al conectar a SAP HANA:", err);
-// //             return res.status(500).send("Error conectando a SAP HANA");
-// //         }
-
-// //         console.log("Conectado a SAP HANA Cloud");
-
-        
-// //         const sqlQuery = `
-// //             SELECT
-// //                 T."fechaVenta",
-// //                 T."cantidadTotal" AS totalItemsInTicket, 
-// //                 S."nombre" AS nombreSucursal,
-// //                 P."nombreProductoo",
-// //                 TP."cantidad" AS quantityOfThisProduct, 
-// //                 P."precioProducto", 
-// //                 (TP."cantidad" * P."precioProducto") AS costoProductoUnitario 
-// //             FROM
-// //                 "Ticket" AS T
-// //             JOIN
-// //                 "Sucursal" AS S ON T."idSucursal" = S."idSucursal"
-// //             JOIN
-// //                 "Pyme" AS PY ON S."idPyme" = PY."idPyme"
-// //             JOIN
-// //                 "Ticket_Producto" AS TP ON T."idTicket" = TP."idTicket"
-// //             JOIN
-// //                 "Producto" AS P ON TP."idProducto" = P."idProducto"
-// //             WHERE
-// //                 PY."idPyme" = ?;
-// //         `;
-
-// //         conn.prepare(sqlQuery, (err, statement) => {
-// //             if (err) {
-// //                 console.error("Error preparando consulta:", err);
-// //                 conn.disconnect();
-// //                 return res.status(500).send("Error preparando la consulta");
-// //             }
-
-// //             statement.exec([idPyme], (err, results) => {
-// //                 if (err) {
-// //                     console.error("Error ejecutando consulta:", err);
-// //                     statement.drop();
-// //                     conn.disconnect();
-// //                     return res.status(500).send("Error ejecutando la consulta");
-// //                 }
-
-// //                 statement.drop();
-// //                 conn.disconnect();
-// //                 return res.status(200).json(results);
-// //             });
-// //         });
-// //     });
-// // };

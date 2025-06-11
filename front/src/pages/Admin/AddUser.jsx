@@ -4,7 +4,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const token = localStorage.getItem('token');
+
+
 async function generarHash(contrasena) {
     const encoder = new TextEncoder();
     const data = encoder.encode(contrasena);
@@ -26,15 +27,16 @@ function AddUser({onClose}) {
     const [sucursal, setSucursal] = useState("");
     const [idPyme, setIdPyme] = useState("1");
     const [selectedRole, setSelectedRole] = useState('Admin');
+    const token = localStorage.getItem('token');
 
-    // Handle change event to update the selected role
+    
     const handleChange = (e) => {
         setSelectedRole(e.target.value);
     };
 
     const crearUsuario = async () => { 
         if (!nombre) {
-        toast.error("Error, por favor asigna un nombre") // puedes usar toast también si quieres
+        toast.error("Error, por favor asigna un nombre") 
         return;
         } else if (!apellido) {
             toast.error("Error, por favor asigna un apellido");
@@ -56,7 +58,7 @@ function AddUser({onClose}) {
                 nombreUsuario: nombre,
                 correo,
                 apellidoUsuario: apellido,
-                contrasena: contraseña, // solo si la manejas
+                contrasena: contraseña, 
                 hashContrasena: hash,
                 rol: selectedRole,
                 idPyme: idPyme
@@ -73,8 +75,8 @@ function AddUser({onClose}) {
                 }
             });
             console.log("Usuario creado:", res.data);
-            window.location.reload(); //Nancy: Agregado para recargar la página después de la actualización
-            onClose(); // cerrar modal si todo sale bien
+            window.location.reload(); 
+            onClose(); 
             toast.success("Usuario creado correctamente");
         } catch (error) {
             console.error("Error al crear usuario:", error);
@@ -83,7 +85,7 @@ function AddUser({onClose}) {
 
     return (
         <AnimatePresence>
-            {/* ID para Pruebas */}
+            
             <motion.div data-testid="x" className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50" onClick={onClose}
             initial={{ opacity: 0}}
             animate={{opacity: 1}}
@@ -102,13 +104,13 @@ function AddUser({onClose}) {
                             <div className='h-20%'>
                                 <h1>Nombre</h1>
 
-                                {/* ID para Pruebas */}
+                                
                                 <input data-testid="input-nombre" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={nombre}
   onChange={(e) => setNombre(e.target.value)}/>
 
                             </div>
                             <div className='h-20%'>
-                                {/* ID para Pruebas */}
+                               
                                 <h1>Correo</h1>
                                 <input data-testid="input-correo" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={correo}
   onChange={(e) => setCorreo(e.target.value)}/>
@@ -116,13 +118,13 @@ function AddUser({onClose}) {
                             </div>
                             <div className='h-20%'>
                                 <h1>Rol</h1>
-                                {/* ID para Pruebas */}
+                               
                                 <select data-testid="select-rol" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" 
-                                value={selectedRole} // Binding the state to the select value
+                                value={selectedRole} 
                                 onChange={handleChange}> // Update state when selection changes
                                     {roles.map((role, index) => (
                                         <option key={index} value={role}>
-                                        {role.charAt(0).toUpperCase() + role.slice(1)} {/* Capitalizing the first letter */}
+                                        {role.charAt(0).toUpperCase() + role.slice(1)} 
                                         </option>
                                     ))}
                                 </select>
@@ -132,13 +134,12 @@ function AddUser({onClose}) {
                             <div className='h-20%'>
                                 <h1>Apellido</h1>
 
-                                {/* ID para Pruebas */}
                                 <input data-testid="input-apellido" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={apellido}
   onChange={(e) => setApellido(e.target.value)}/>
                             </div>
                             <div className='h-20%'>
                                 <h1>Contraseña</h1>
-                                {/* ID para Pruebas */}
+                               
                                 <input data-testid="input-contraseña" type="password" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={contraseña}
   onChange={(e) => setContraseña(e.target.value)}/>
 
@@ -151,8 +152,7 @@ function AddUser({onClose}) {
                         </div>
                     </div>
                     <div className='h-[15%] w-full flex justify-center items-center'>
-                    
-                        {/* ID para Pruebas */}                  
+                                    
                         <button id='crearUsuario_button' className='h-[40px] w-[100px] rounded-2xl text-white bg-black hover:bg' onClick={crearUsuario} >Crear</button>
 
                     </div>

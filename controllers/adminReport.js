@@ -3,12 +3,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const connParams = {
-  serverNode: process.env.DB_HOST,  // Ejemplo: 'host:port'
+  serverNode: process.env.DB_HOST,  
   uid: process.env.DB_USER,
   pwd: process.env.DB_PASSWORD
 };
 
-// Crear un nuevo reporte
+//Crear un nuevo reporte
 export function createReporte(reporte) {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();
@@ -29,8 +29,8 @@ export function createReporte(reporte) {
         reporte.titulo,
         reporte.descripcion,
         reporte.urgencia,
-        new Date(reporte.fechaReporte), // ISO string → Date
-        reporte.resuelto ? 1 : 0, // SAP HANA usa 0/1 para boolean
+        new Date(reporte.fechaReporte), 
+        reporte.resuelto ? 1 : 0, 
         reporte.detalleSolucion,
         reporte.idUsuario,
         reporte.idPyme
@@ -48,7 +48,7 @@ export function createReporte(reporte) {
     });
   });
 }
-// Obtener todos los reportes
+//Obtener todos los reportes
 export const getAllReportes = () => {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();
@@ -70,7 +70,7 @@ export const getAllReportes = () => {
   });
 };
 
-// Actualizar el campo "resuelto" de un reporte por su ID 
+//Actualizar el campo "resuelto" de un reporte por su ID 
 export function updateResueltoReporte(idReporte, resuelto) {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();
@@ -102,27 +102,7 @@ export function updateResueltoReporte(idReporte, resuelto) {
   });
 } 
 
-// Update a Reporte
-/*async function updateReporte(id, reporte) {
-    try {
-        const pool = await sql.connect(config);
-        const result = await pool.request()
-            .input('id', sql.Int, id)
-            .input('titulo', sql.NVarChar, reporte.titulo)
-            .input('descripcion', sql.NVarChar, reporte.descripcion)
-            .input('urgencia', sql.NVarChar, reporte.urgencia)
-            .input('resuelto', sql.Bit, reporte.resuelto)
-            .input('detallesResolucion', sql.NVarChar, reporte.detallesResolucion)
-            .input('fechaReporte', sql.DateTime, reporte.fechaReporte)
-            .input('fechaResolucion', sql.DateTime, reporte.fechaResolucion)
-            .query('UPDATE Reportes SET titulo = @titulo, descripcion = @descripcion, urgencia = @urgencia, resuelto = @resuelto, detallesResolucion = @detallesResolucion, fechaReporte = @fechaReporte, fechaResolucion = @fechaResolucion WHERE idReporte = @id');
-        return result;
-    } catch (error) {
-        console.error('Error updating Reporte:', error);
-        throw error;
-    }
-}*/ 
-
+//Obtener reportes
 export function getReporte(id) {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();
@@ -147,6 +127,7 @@ export function getReporte(id) {
   });
 }
 
+//Actualizar reportes
 export function updateReporte(id, reporte) {
   return new Promise((resolve, reject) => {
     const conn = hana.createConnection();
@@ -183,4 +164,3 @@ export function updateReporte(id, reporte) {
     });
   });
 }
-// Export the functions using ES Module export

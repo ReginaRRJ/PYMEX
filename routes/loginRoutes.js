@@ -1,10 +1,9 @@
-// loginRoutes.js
 import express from "express";
-import { login, loginNotificacion } from "../controllers/loginController.js"; // Using named import for the login function
+import { login, loginNotificacion } from "../controllers/loginController.js"; 
 
 const router = express.Router();
 
-// Login route
-router.post("/", login); // This POST route is for logging in
+
+router.post("/", login); 
 router.post("/notificacion", loginNotificacion)
-export default router; // Exporting the router using ES Module syntax
+export default router; 

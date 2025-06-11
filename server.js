@@ -1,12 +1,9 @@
-// Importing necessary modules using ES Modules syntax
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js"; 
 import loginRoutes from "./routes/loginRoutes.js"; 
-{/*import swaggerUI from "swagger-ui-express";*/}
-{/*import swaggerDocs from "./docs/swagger.js";*/}
 import reporteRoutes from "./routes/reporteRutas.js";  
 import path from "path";
 import adminCrudRoutes from "./routes/usuarioCRUDRutas.js";  
@@ -17,7 +14,7 @@ import ticketRoutes from './routes/vendedorRutas.js';
 import clientVentasRoutes from './routes/clientVentasRutas.js'; 
 import pedidosPymeRoutes from './routes/clientPedidosRutas.js';
 import notificacionesRoutes from './routes/notificaciones.js';
-// Initialize dotenv configuration
+
 dotenv.config();
 
 const app = express();
@@ -25,7 +22,7 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 
-// Set up routes
+
 app.use("/users", userRoutes);  
 app.use("/login", loginRoutes);  
 app.use("/api/usuarios", adminCrudRoutes);  

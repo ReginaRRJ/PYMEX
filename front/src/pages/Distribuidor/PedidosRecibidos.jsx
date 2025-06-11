@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 
-const token = localStorage.getItem('token');
+
 
 function PedidosRecibidos({ pedidoModal, setPedidoModal, pedidos, setPedido, setPedidos, user }) {
   const safePedidos = Array.isArray(pedidos) ? pedidos : [];
-
+  const token = localStorage.getItem('token');
+  
   useEffect(() => {
     if (user && user.idUsuario) {
       cargarUsuarioYAlertas();
@@ -15,12 +16,9 @@ function PedidosRecibidos({ pedidoModal, setPedidoModal, pedidos, setPedido, set
 
   const cargarUsuarioYAlertas = async () => {
     if (user.idUsuario) {
-      console.log("Cargando notificaciones...", user.idUsuario);
       try {
         const id = parseInt(user.idUsuario, 10);
-        console.log("Obteniendo notificaciones no leídas para el usuario:", id);
-        
-        const currentToken = localStorage.getItem('token');
+
         const response = await fetch(
           `http://localhost:3001/notificaciones/alertas/${id}`, {
             headers: {
@@ -29,7 +27,6 @@ function PedidosRecibidos({ pedidoModal, setPedidoModal, pedidos, setPedido, set
           }
         );
         const data = await response.json();
-        console.log("Notificaciones:", data);
         notif(data.resultado || []);
       } catch (error) {
         console.error("Error al obtener notificaciones:", error);

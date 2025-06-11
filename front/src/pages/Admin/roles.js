@@ -1,8 +1,8 @@
 const roles = [
-    "Admin",  // Admin role
-    "Cliente", // Client role
-    "Proveedor", // Manager role
-    "Sucursal", // Support role
+    "Admin",  
+    "Cliente", 
+    "Proveedor", 
+    "Sucursal", 
     "Vendedor"
     ];
   

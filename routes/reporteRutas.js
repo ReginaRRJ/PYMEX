@@ -4,7 +4,8 @@ import { createReporte } from "../controllers/reporteAdminController.js";
 import { verifyToken } from '../controllers/authMiddle.js';
 const router = express.Router();
 router.use(verifyToken);
-// Obtener todos los reportes
+
+//Obtener reportes
 router.get("/", async (req, res) => {
   try {
     const reportes = await getAllReportes();
@@ -15,17 +16,14 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Crear un nuevo reporte
+//Crear reporte
 router.post("/pedido", async (req, res) => {
   try {
     const datos = req.body;
 
-    // Validación básica (puedes hacerla más estricta si necesitas)
     if (!datos.titulo || !datos.descripcion || !datos.prioridad) {
       return res.status(400).json({ error: "Faltan campos obligatorios" });
     }
-
-    // Si no se proporciona fecha, se usa la actual
     if (!datos.fechaReporte) {
       datos.fechaReporte = new Date().toISOString();
     }
