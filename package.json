@@ -35,7 +35,7 @@
     "description": "",
     "dependencies": {
         "@fontsource/poppins": "^5.2.5",
-        "@sap/hana-client": "^2.24.24",
+        "@sap/hana-client": "^2.24.26",
         "@vitejs/plugin-legacy": "^6.0.2",
         "autoprefixer": "^10.4.21",
         "axios": "^1.8.4",
@@ -78,6 +78,8 @@
         "concurrently": "^9.1.2",
         "jest": "^29.7.0",
         "nodemon": "^3.1.9",
+        "nyc": "^17.1.0",
+        "supertest": "^7.1.1",
         "tailwindcss": "^3.4.17",
         "wait-on": "^8.0.3"
     },
