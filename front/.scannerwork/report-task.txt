@@ -1,6 +1,7 @@
-projectKey=BTP_front
-serverUrl=http://20.115.80.90:9002
-serverVersion=25.5.0.107428
-dashboardUrl=http://20.115.80.90:9002/dashboard?id=BTP_front
-ceTaskId=2e754fd9-7e3e-4e1e-b9a3-592be50d1f1e
-ceTaskUrl=http://20.115.80.90:9002/api/ce/task?id=2e754fd9-7e3e-4e1e-b9a3-592be50d1f1e
+organization=nancysilva
+projectKey=nancysilva_front-sonarq
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.64367
+dashboardUrl=https://sonarcloud.io/dashboard?id=nancysilva_front-sonarq
+ceTaskId=AZdeRvKxcG91J4hOssNY
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZdeRvKxcG91J4hOssNY
