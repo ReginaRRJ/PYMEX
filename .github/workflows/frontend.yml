@@ -30,16 +30,6 @@ jobs:
         run: npm run lint
         continue-on-error: true
 
-      - name: Run frontend tests
-        working-directory: ./front
-        run: npm test
-        continue-on-error: true
-       
-      - name: Run SonarQube Scan
-        working-directory: ./front
-        run: |
-          npm install -g sonar-scanner
-          sonar-scanner 
 
       - name: Build frontend
         working-directory: ./front
@@ -53,3 +43,14 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./front/dist
+
+       - name: Run frontend tests
+        working-directory: ./front
+        run: npm test
+        continue-on-error: true
+
+      - name: Run SonarQube Scan
+        working-directory: ./front
+        run: |
+          npm install -g sonar-scanner
+          sonar-scanner 
