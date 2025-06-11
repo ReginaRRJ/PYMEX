@@ -16,4 +16,4 @@ test('renderiza el componente About y muestra el texto principal Sobre nosotros'
     element.tagName.toLowerCase() === 'p' && /sobre nosotros/i.test(content)
   );
   expect(titulo).toBeInTheDocument();
-});
+}); 
