@@ -1,3 +1,4 @@
+//AdminMain.test.jsx
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import AdminMain from '../pages/Admin/AdminMain';
