@@ -3,5 +3,5 @@ projectKey=nancysilva_front-sonarq
 serverUrl=https://sonarcloud.io
 serverVersion=8.0.0.64372
 dashboardUrl=https://sonarcloud.io/dashboard?id=nancysilva_front-sonarq
-ceTaskId=AZdedJk_om7ExCIBAWF7
-ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZdedJk_om7ExCIBAWF7
+ceTaskId=AZdeg-3o5K2i5ZDmFZHF
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZdeg-3o5K2i5ZDmFZHF
