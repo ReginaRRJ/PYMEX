@@ -57,3 +57,10 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./front/dist
+
+
+      - name: Run SonarQube Scan
+        working-directory: ./front
+        run: |
+          npm install -g sonar-scanner
+          sonar-scanner 
