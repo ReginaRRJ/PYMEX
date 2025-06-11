@@ -5,5 +5,9 @@ module.exports = {
   moduleFileExtensions: ['js', 'cjs', 'mjs'],  // ← agrega aquí también
   testEnvironment: 'node',
   transform: {},
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/front/"
+  ],
   //experimentalVMModules: true
 };
