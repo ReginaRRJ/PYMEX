@@ -1,3 +1,4 @@
+//App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./Login";
@@ -14,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/PYMEX">
       <ToastContainer 
         position="top-right" 
         autoClose={3000} 
