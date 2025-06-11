@@ -1,3 +1,4 @@
+//ReportesUsuario.test.jsx
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import ReportesUsuarios from '../pages/Admin/ReportesUsuarios';
