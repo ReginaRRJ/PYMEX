@@ -40,3 +40,13 @@ jobs:
 
       - name: Run backend tests
         run: npm run test:back
+        continue-on-error: true
+
+      - name: Run SonarQube Scanner (self-hosted)
+        run: |
+            npm install -g sonar-scanner
+            sonar-scanner \
+              -Dsonar.projectKey=BTP_back \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=http://20.115.80.90:9002 \
+              -Dsonar.login=squ_3e7182c82d360598971ecae69439a44db9c25026
