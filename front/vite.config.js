@@ -1,3 +1,4 @@
+//vite.config.js
 import { defineConfig } from 'vite';
 import path from 'path'; 
 import process from 'process';
@@ -29,7 +30,7 @@ const require = createRequire(import.meta.url)
 
 // 👇 Aquí agregamos base: '/PYMEX/'
 export default defineConfig({
-  base: '/PYMEX/', // 👈 MUY IMPORTANTE para GitHub Pages
+  base: '/PYMEX/', //
   plugins: [react()],
   resolve: {
     alias: {
