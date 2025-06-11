@@ -1,0 +1,7 @@
+organization=nancysilva
+projectKey=nancysilva_front-sonarq
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.64372
+dashboardUrl=https://sonarcloud.io/dashboard?id=nancysilva_front-sonarq
+ceTaskId=AZdeiu5C0d6mWIB73_Jh
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZdeiu5C0d6mWIB73_Jh
