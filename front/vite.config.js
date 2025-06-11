@@ -30,7 +30,7 @@ const require = createRequire(import.meta.url)
 
 // 👇 Aquí agregamos base: '/PYMEX/'
 export default defineConfig({
-  base: '/PYMEX/', //
+  base: '/PYMEX/', // 👈 MUY IMPORTANTE para GitHub Pages
   plugins: [react()],
   resolve: {
     alias: {
