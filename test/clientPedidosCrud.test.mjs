@@ -1,3 +1,4 @@
+// test/clientPedidosCrud.test.js
 import { jest } from '@jest/globals';
 
 jest.unstable_mockModule('@sap/hana-client', () => {
@@ -23,6 +24,7 @@ jest.unstable_mockModule('@sap/hana-client', () => {
   };
 });
 
+// ⚠️ Espera a importar el módulo después del mock
 const { getPedidosByPyme } = await import('../controllers/clientPedidosCrud.js');
 
 describe('clientePedidosCrud controller', () => {

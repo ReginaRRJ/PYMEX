@@ -1,5 +1,6 @@
 // backend/dbClient.js
-import hana from '@sap/hana-client';
+import * as hana from '@sap/hana-client';
+//import hana from '@sap/hana-client';
 import dotenv from 'dotenv';
 
 dotenv.config();
