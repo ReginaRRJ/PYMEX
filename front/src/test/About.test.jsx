@@ -16,3 +16,5 @@ test('renderiza el componente About y muestra el texto principal Sobre nosotros'
   );
   expect(titulo).toBeInTheDocument();
 }); 
+
+//Hola
