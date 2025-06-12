@@ -33,14 +33,14 @@ function ReporteSucursal() {
         fechaReporte: new Date().toISOString(),
         fechaResolucion: null,
       };
-      const currentToken = localStorage.getItem('token');
+
       const res = await axios.post(
         `http://localhost:3001/reportes/pedido`,
         datos, {
-          headers: {
-            "Authorization": `Bearer ${currentToken}`
-          }
-        }
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+}
       );
       console.log("Reporte creado:", res.data);
       toast.success("Reporte creado correctamente");
@@ -82,7 +82,6 @@ function ReporteSucursal() {
       <div className="w-full h-[75%] flex flex-col justify-between">
         <div className="w-full h-[15%] flex items-center justify-between">
           <input
-            data-testid="input-titulo"
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
             className="w-[40%] h-[80%] bg-slate-200 rounded-lg pl-2"
@@ -90,7 +89,6 @@ function ReporteSucursal() {
           />
           <div className="w-[30%] h-[80%] flex justify-between">
             <button
-              data-testid="prioridad-1"
               className={`w-[30%] h-full rounded-xl flex items-center justify-center text-[20px] ${
                 prioridad == 1 ? "bg-green-400" : "bg-slate-200"
               } hover:bg-green-400 duration-300`}
@@ -99,7 +97,6 @@ function ReporteSucursal() {
               !
             </button>
             <button
-              data-testid="prioridad-2"
               className={`w-[30%] h-full rounded-xl flex items-center justify-center text-[20px] ${
                 prioridad == 2 ? "bg-yellow-400" : "bg-slate-200"
               } hover:bg-yellow-400 duration-300`}
@@ -108,7 +105,6 @@ function ReporteSucursal() {
               !!
             </button>
             <button
-              data-testid="prioridad-3"
               className={`w-[30%] h-full rounded-xl flex items-center justify-center text-[20px] ${
                 prioridad == 3 ? "bg-red-400" : "bg-slate-200"
               }  hover:bg-red-400 duration-300`}
@@ -120,7 +116,6 @@ function ReporteSucursal() {
         </div>
         <div className="w-full h-[70%]">
           <textarea
-            data-testid="input-descripcion"
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
             className="w-full h-full rounded-lg px-[1rem] py-[1rem] resize-none bg-slate-200"
@@ -129,7 +124,6 @@ function ReporteSucursal() {
           />
         </div>
         <button
-          data-testid="btn-enviar-reporte"
           className="w-full h-[10%] rounded-2xl text-white bg-blue-600"
           onClick={crearReporte}
         >

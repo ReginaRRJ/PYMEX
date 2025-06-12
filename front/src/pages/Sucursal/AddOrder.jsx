@@ -70,7 +70,6 @@ function AddOrder({onClose}) {
         const fetchProveedores = async () => {
             console.log("Obteniendo proveedores del API...");
             try {
-                const token = localStorage.getItem('token');
                 const res = await axios.get("http://localhost:3001/api/sucursal/proveedores",{
   headers: {
     "Authorization": `Bearer ${token}`
@@ -94,7 +93,6 @@ function AddOrder({onClose}) {
 
         const fetchProductos = async () => {
             try {
-                const token = localStorage.getItem('token');
                 const res = await axios.get(`http://localhost:3001/api/sucursal/productos/${proveedorSeleccionado.idProveedor}`,{
   headers: {
     "Authorization": `Bearer ${token}`
@@ -130,8 +128,7 @@ function AddOrder({onClose}) {
                         <div className='h-full w-[50%] flex flex-col justify-between pl-14 pr-5 pt-3 pb-5'>
                             <div className='h-20%'>
                                 <h1>Nombre del Proveedor</h1>
-                                <select
-                                    data-testid="select-proveedor" 
+                                <select 
                                     className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" 
                                     value={nombre} 
                                     onChange={(e) => setNombre(e.target.value)}
@@ -146,11 +143,11 @@ function AddOrder({onClose}) {
                             </div>
                             <div className='h-20%'>
                                 <h1>Numero de piezas</h1>
-                                <input data-testid="input-piezas" type="number" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={pieces} onChange={(e) => setPieces(e.target.value)}/>
+                                <input type="number" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={pieces} onChange={(e) => setPieces(e.target.value)}/>
                             </div>
                             <div className='h-20%'>
                                 <h1>Tipo pedido</h1>
-                                <select data-testid="select-TipoPedido" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={tipoPedido} onChange={(e) => setTipoPedido(e.target.value)}> 
+                                <select className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={tipoPedido} onChange={(e) => setTipoPedido(e.target.value)}> 
                                     <option value="">Selecciona una categoría</option>
                                     <option value="Electrónica">Electrónica</option>
                                     <option value="Telefonía">Telefonía</option>
@@ -163,7 +160,7 @@ function AddOrder({onClose}) {
                         <div className='h-full w-[50%] flex flex-col justify-between pl-5 pr-14 pt-3 pb-5'>
                             <div className='h-20%'>
                                 <h1>Producto</h1>
-                                <select data-testid="select-producto" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={producto} onChange={(e) => setProducto(e.target.value)}>
+                                <select className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={producto} onChange={(e) => setProducto(e.target.value)}>
                                     <option value="">Selecciona un producto</option>
                                     {productos.map((prod, idx) => (
                                         <option key={idx} value={prod.nombreProductoo}>{prod.nombreProductoo}</option>
@@ -173,16 +170,16 @@ function AddOrder({onClose}) {
                             </div>
                             <div className='h-20%'>
                                 <h1>Teléfono</h1>
-                                <input data-testid="input-telefono" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={telefono} onChange={(e) => setTelefono(e.target.value)}/>
+                                <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={telefono} onChange={(e) => setTelefono(e.target.value)}/>
                             </div>
                             <div className='h-20% relative'>
                                 <h1>Correo</h1>
-                                <input data-testid="input-correo" type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={correo} onChange={(e) => setCorreo(e.target.value)}/>
+                                <input type="text" className="w-full h-[3rem] rounded-xl pl-2 bg-slate-200" value={correo} onChange={(e) => setCorreo(e.target.value)}/>
                             </div>
                         </div>
                     </div>
                     <div className='h-[15%] w-full flex justify-center items-center'>
-                        <button id='crearPedido_button' className='h-[40px] w-[100px] rounded-2xl text-white bg-black hover:bg' onClick={handleCrearPedido} >Crear</button>
+                        <button className='h-[40px] w-[100px] rounded-2xl text-white bg-black hover:bg' onClick={handleCrearPedido} >Crear</button>
                     </div>
                 
                 </motion.div>

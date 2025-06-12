@@ -37,7 +37,6 @@ function StockSucursal() {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const token = localStorage.getItem('token');
         const res = await axios.get("http://localhost:3001/api/sucursal/productos", {
   headers: {
     "Authorization": `Bearer ${token}`

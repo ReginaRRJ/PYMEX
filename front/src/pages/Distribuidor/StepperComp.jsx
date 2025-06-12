@@ -14,7 +14,7 @@ export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
     const fetchStatus = async () => {
       try {
         if (!pedidoId) return;
-
+          
         const response = await axios.get(`http://localhost:3001/api/pedidos/detalle/${pedidoId}`, {
           headers: {
             "Authorization": `Bearer ${token}`

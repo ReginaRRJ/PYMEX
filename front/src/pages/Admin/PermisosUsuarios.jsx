@@ -14,10 +14,9 @@ function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEdi
 
     const fetchUsuarios = async () => {
       try {
-        const currentToken = localStorage.getItem('token');
         const res = await axios.get("http://localhost:3001/api/usuarios", { signal: signal,
             headers: {
-              "Authorization": `Bearer ${currentToken}`
+              "Authorization": `Bearer ${token}`
             }
 });
 

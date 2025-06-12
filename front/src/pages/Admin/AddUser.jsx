@@ -68,12 +68,11 @@ function AddUser({onClose}) {
             }
             
 
-            const currentToken = localStorage.getItem('token');
-            const res = await axios.post(`http://localhost:3001/api/usuarios/admin`, datos, {
-                headers: {
-                    "Authorization": `Bearer ${currentToken}`
-                }
-            });
+            const res = await axios.post(`http://localhost:3001/api/usuarios/admin`, datos,{
+  headers: {
+    "Authorization": `Bearer ${token}`
+  }
+});
             console.log("Usuario creado:", res.data);
             window.location.reload(); 
             onClose(); 

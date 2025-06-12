@@ -24,7 +24,6 @@ function NotificacionesDist() {
     
         const fetchNotificationConfig = async () => {
             try {
-                const token = localStorage.getItem('token');
                 const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
   headers: {
     "Authorization": `Bearer ${token}`
@@ -72,7 +71,6 @@ function NotificacionesDist() {
         if (idNotificacion === 6) setEstatusPedido(value);
     
         try {
-            const token = localStorage.getItem('token');
             await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
                 method: "PUT",
                 headers: {
@@ -108,7 +106,6 @@ function NotificacionesDist() {
                 <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'
                 data-testid="notificacionEntrega-container">
 
-
                     <div className='w-[80px] h-full flex flex-col justify-center'>
 
                         <Switch size='large' checked={pedidoAutorizado} onChange={(e) => handleSwitchChange(4, e.target.checked)} inputProps={{ 'data-testid': 'switchNotificacionEntrega' }}/>
@@ -133,7 +130,7 @@ function NotificacionesDist() {
                 <br />
                 <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
-                        <Switch size='large' checked={estatusPedido} onChange={(e) => handleSwitchChange(6, e.target.checked)} inputProps={{ 'data-testid': 'switchNotificacionEstatus' }} />    
+                        <Switch size='large' checked={estatusPedido} onChange={(e) => handleSwitchChange(6, e.target.checked)}/>    
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
                         <h1 className='text-[18px] font-bold'>Estatus del pedido</h1>

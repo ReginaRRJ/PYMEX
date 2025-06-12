@@ -10,10 +10,9 @@ function ReportesUsuarios() {
     useEffect(() => {
         const fetchReportes = async () => {
             try {
-                const currentToken = localStorage.getItem('token');
                 const response = await fetch("http://localhost:3001/reportes", {
-                    headers: {
-                        "Authorization": `Bearer ${currentToken}`
+  headers: {
+    "Authorization": `Bearer ${token}`
   }
 });
                 const data = await response.json();

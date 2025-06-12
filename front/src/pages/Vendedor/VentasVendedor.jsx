@@ -19,7 +19,6 @@ function VentasVendedor({ ventaModal, setVentaModal, refreshTickets }) {
 
     const fetchTickets = async () => {
       try {
-        const token = localStorage.getItem('token');
         const response = await axios.get(`http://localhost:3001/api/tickets/branch/${user.idSucursal}`, {
   headers: {
     "Authorization": `Bearer ${token}`
@@ -64,9 +63,7 @@ function VentasVendedor({ ventaModal, setVentaModal, refreshTickets }) {
             </tr>
         </thead>
 
-        <tbody
-        id="ventas-list" 
-        className="block max-h-[55vh] overflow-y-auto w-full">
+        <tbody className="block max-h-[55vh] overflow-y-auto w-full">
             {tickets.length > 0 ? (
                 tickets.map((ticket) => (
                     ticket.products.map((product, prodIndex) => (

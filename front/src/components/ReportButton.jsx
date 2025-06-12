@@ -8,12 +8,11 @@ function ReportButton({ reporte }) {
 
     useEffect(() => {
         if (isSelected && !reporte.resuelto) {
-            const currentToken = localStorage.getItem('token');
             fetch(`http://localhost:3001/reportes/${reporte.idReporte}`, {
                 method: 'PUT', 
                 headers: {
                     'Content-Type': 'application/json',
-                    "Authorization": `Bearer ${currentToken}`
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({ resuelto: true }),
             })
