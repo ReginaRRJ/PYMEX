@@ -130,7 +130,7 @@ function NotificacionesDist() {
                 <br />
                 <div className='w-full h-[20%] flex items-center rounded-md bg-slate-200'>
                     <div className='w-[80px] h-full flex flex-col justify-center'>
-                        <Switch size='large' checked={estatusPedido} onChange={(e) => handleSwitchChange(6, e.target.checked)}/>    
+                        <Switch size='large' checked={estatusPedido} onChange={(e) => handleSwitchChange(6, e.target.checked)} inputProps={{ 'data-testid': 'switchNotificacionEstatus' }} />  
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>
                         <h1 className='text-[18px] font-bold'>Estatus del pedido</h1>

@@ -111,7 +111,7 @@ function NotificacionesSucursal() {
                         size='large' 
                         checked={pedidoAutorizado} 
                         onChange={(e) => handleSwitchChange(1, e.target.checked)}
-                        inputProps={{ 'data-testid': 'switchNotificacionAutorizado' }}
+                        inputProps={{ 'data-testid': 'switchNotificacionPedidoAutorizado' }}
                         />
                     </div>
                     <div className='w-[40%] h-full flex flex-col justify-center'>

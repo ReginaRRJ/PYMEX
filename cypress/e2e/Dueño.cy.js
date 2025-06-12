@@ -16,6 +16,7 @@ describe('PA02001. Visualización de Pedidos', () => {
     // Interceptamos la solicitud GET para la ruta de nancyDueño con id=1
 
     cy.wait('@getPedidosVacios');
+    cy.wait(6000)
     cy.get('#pedido-list').should('contain', 'No se encontraron pedidos.');
   });
 });

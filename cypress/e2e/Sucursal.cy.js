@@ -22,7 +22,7 @@ describe('PA03004. LeerPedidos', () => {
 describe('PA02002. Creación de Pedidos', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/api/sucursal/proveedores').as('getProveedores');
-    cy.intercept('GET', '**/api/sucursal/productos/2').as('getProductos');
+    cy.intercept('GET', '**/api/sucursal/productos/*').as('getProductos');
   });
 
   it('Pedido Nuevo', () => {
@@ -32,7 +32,7 @@ describe('PA02002. Creación de Pedidos', () => {
     cy.get("#add-pedido-button").click();
 
     cy.wait('@getProveedores');
-    cy.get('[data-testid="select-proveedor"]').select('Grupo TecnoDistribuciones S.A. de C.V.');
+    cy.get('[data-testid="select-proveedor"]').select('Proveedor Uno');
 
     const randomNumber = Math.floor(Math.random() * 29) + 2;
     cy.wrap(randomNumber).as('cantidadSeleccionada'); // guardamos alias
@@ -223,7 +223,7 @@ it('Notificación Automatización de Pedidos', () => {
         cy.get('#Navbar').contains('Notificaciones').click();
         cy.wait('@getConfig');
 
-        cy.get('[data-testid="switchNotificacionAutorizacion"]', { timeout: 8000 })
+        cy.get('[data-testid="switchNotificacionEstatus"]', { timeout: 8000 })
           .should('have.prop', 'checked', false);
       }
     });
