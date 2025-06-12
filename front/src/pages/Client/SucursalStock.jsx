@@ -14,7 +14,7 @@ function SucursalStock({ sucursal, producto }) {
     const fetchStock = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3001/api/sucursal/stock/${sucursal.id}/${producto}`, {
+          `https://pymex-production.up.railway.app/api/sucursal/stock/${sucursal.id}/${producto}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }

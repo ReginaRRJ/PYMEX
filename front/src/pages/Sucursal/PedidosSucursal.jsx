@@ -25,7 +25,7 @@ function PedidosSucursal({updateButton, setUpdateButton,newOrder, setNewOrder, s
     const fetchPedidos = async () => {
       try {
   
-        const response = await fetch(`http://localhost:3001/api/sucursal/usuario/${user.idUsuario}`,{
+        const response = await fetch(`https://pymex-production.up.railway.app/api/sucursal/usuario/${user.idUsuario}`,{
   headers: {
     "Authorization": `Bearer ${token}`
   }
@@ -59,7 +59,7 @@ function PedidosSucursal({updateButton, setUpdateButton,newOrder, setNewOrder, s
         const id = parseInt(user.idUsuario, 10);
         console.log("Obteniendo notificaciones no leídas para el usuario:", id);
         const response = await fetch(
-          `http://localhost:3001/notificaciones/alertas/${id}`, {
+          `https://pymex-production.up.railway.app/notificaciones/alertas/${id}`, {
             headers:{
               "Authorization": `Bearer ${token}`
             }

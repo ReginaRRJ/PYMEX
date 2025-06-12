@@ -49,7 +49,7 @@ function EditUser({ user, onClose }) {
       
 
       const res = await axios.put(
-        `http://localhost:3001/api/usuarios/${user.idUsuario}`,
+        `https://pymex-production.up.railway.app/api/usuarios/${user.idUsuario}`,
         datos, {
   headers: {
     "Authorization": `Bearer ${token}`
@@ -83,7 +83,7 @@ function EditUser({ user, onClose }) {
       }
 
       const res = await axios.delete(
-        `http://localhost:3001/api/usuarios/${user.idUsuario}`, {
+        `https://pymex-production.up.railway.app/api/usuarios/${user.idUsuario}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }

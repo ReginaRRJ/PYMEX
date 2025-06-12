@@ -13,7 +13,7 @@ function ActualizarPedido({onClose, idPedido}) {
 
     const handleActualizar = async () => {
   try {
-    const response = await axios.put(`http://localhost:3001/api/sucursal/pedido/${idPedido}/estado`, {
+    const response = await axios.put(`https://pymex-production.up.railway.app/api/sucursal/pedido/${idPedido}/estado`, {
       estatusProveedor: "Entregado"
     },{ 
     headers: {
@@ -25,7 +25,7 @@ function ActualizarPedido({onClose, idPedido}) {
     toast.success("Pedido actualizado exitosamente");
 
     try {
-      const spResponse = await fetch(`http://localhost:3001/notificaciones/actualizar/${idPedido}`, {
+      const spResponse = await fetch(`https://pymex-production.up.railway.app/notificaciones/actualizar/${idPedido}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

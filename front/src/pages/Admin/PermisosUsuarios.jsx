@@ -14,7 +14,7 @@ function PermisosUsuarios({ addUserModal, setAddUserModal, editUserModal, setEdi
 
     const fetchUsuarios = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/usuarios", { signal: signal,
+        const res = await axios.get("https://pymex-production.up.railway.app/api/usuarios", { signal: signal,
             headers: {
               "Authorization": `Bearer ${token}`
             }

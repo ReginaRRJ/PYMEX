@@ -10,7 +10,7 @@ function Sucursal({ sucursal, mode, periodo }) {
   useEffect(() => {
     const fetchVentas = async () => { 
       try {
-        const rutaBase = "http://localhost:3001/api/sucursal";
+        const rutaBase = "https://pymex-production.up.railway.app/api/sucursal";
         let endpoint = "";
 
         if (periodo === "Ventas anuales") {

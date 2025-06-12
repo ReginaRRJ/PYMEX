@@ -68,7 +68,7 @@ function AddUser({onClose}) {
             }
             
 
-            const res = await axios.post(`http://localhost:3001/api/usuarios/admin`, datos,{
+            const res = await axios.post(`https://pymex-production.up.railway.app/api/usuarios/admin`, datos,{
   headers: {
     "Authorization": `Bearer ${token}`
   }

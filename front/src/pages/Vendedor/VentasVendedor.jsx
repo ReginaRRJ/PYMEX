@@ -19,7 +19,7 @@ function VentasVendedor({ ventaModal, setVentaModal, refreshTickets }) {
 
     const fetchTickets = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/tickets/branch/${user.idSucursal}`, {
+        const response = await axios.get(`https://pymex-production.up.railway.app/api/tickets/branch/${user.idSucursal}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }

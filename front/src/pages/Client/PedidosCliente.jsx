@@ -24,7 +24,7 @@ function PedidosCliente() {
     }
   }
 
-  const API_BASE_URL = 'http://localhost:3001';
+  const API_BASE_URL = 'https://pymex-production.up.railway.app/';
 
   // Function to handle the actual API call for updating status
 const updatePedidoStatusInBackend = useCallback(async (idPedido, statusForBackend) => {
@@ -51,7 +51,7 @@ const updatePedidoStatusInBackend = useCallback(async (idPedido, statusForBacken
       toast.success("Pedido actualizado exitosamente");
 
       try {
-        const spResponse = await fetch(`http://localhost:3001/notificaciones/actualizarCliente/${idPedido}`, {
+        const spResponse = await fetch(`https://pymex-production.up.railway.app/notificaciones/actualizarCliente/${idPedido}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -190,7 +190,7 @@ const cargarUsuarioYAlertas = async () => {
         const id = parseInt(user.idUsuario, 10);
         console.log("Obteniendo notificaciones no leídas para el usuario:", id);
         const response = await fetch(
-          `http://localhost:3001/notificaciones/alertas/${id}`,{headers: {
+          `https://pymex-production.up.railway.app/notificaciones/alertas/${id}`,{headers: {
     "Authorization": `Bearer ${token}`
   } }
         );

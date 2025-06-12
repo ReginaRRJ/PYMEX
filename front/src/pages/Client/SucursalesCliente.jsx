@@ -33,7 +33,7 @@ function SucursalCliente() {
         }
 
         const response = await axios.get(
-          `http://localhost:3001/api/sucursales/pyme/${idPyme}`, {
+          `https://pymex-production.up.railway.app/api/sucursales/pyme/${idPyme}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }
