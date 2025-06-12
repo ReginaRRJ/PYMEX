@@ -26,6 +26,8 @@ describe('PA03005. Actualización de Pedidos', () => {
     cy.loginDueño();
     cy.get('#pedido-list tr').should('have.length.greaterThan', 0);
 
+    cy.wait(6000)
+
     cy.get('#pedido-list button')
       .then(botones => {
         const botonesAutorizar = [...botones].filter(b => b.innerText === 'Autorizar');

@@ -6,8 +6,8 @@ describe('PA03004. LeerPedidos', () => {
     it('Mensaje si no hay pedidos', () => {
     cy.loginSucursal();
 
-    // Interceptamos la solicitud GET para la ruta de pedidosXimena con id=55
-    cy.intercept('GET', 'http://localhost:3001/api/sucursal/usuario/55', (req) => {
+    // Interceptamos la solicitud GET para la ruta de 
+    cy.intercept('GET', 'http://localhost:3001/api/sucursal/usuario/*', (req) => {
       req.reply({
         statusCode: 200,
         body: [],
@@ -54,6 +54,8 @@ describe('PA02002. Creación de Pedidos', () => {
     cy.get('#crearPedido_button').click();
 
     cy.reload();
+    //cy.wait('@getPedidos');
+    cy.get('#pedido-list tr').should('exist');
 
     // Accedemos a los alias guardados
     cy.get('@productoSeleccionado').then(producto => {

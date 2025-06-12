@@ -34,16 +34,16 @@ Cypress.Commands.add('loginAdmin', () => {
 
   Cypress.Commands.add('loginDueño', () => { //cliente
     cy.visit('http://localhost:5173/')
-    cy.get('input').first().type('nancy@dueño.com')
-    cy.get('input').last().type('dueñoNancy')
+    cy.get('input').first().type('niclas@justx.mx')
+    cy.get('input').last().type('Nicolas')
     cy.get('#login-button').click()
     cy.url().should('include', '/client')
   })
 
   Cypress.Commands.add('loginSucursal', () => { 
     cy.visit('http://localhost:5173/')
-    cy.get('input').first().type('ximena@suc.monterrey.com')
-    cy.get('input').last().type('XsucM')
+    cy.get('input').first().type('pedro@suc.guadalupe.com')
+    cy.get('input').last().type('PedroGua')
     cy.get('#login-button').click()
     cy.url().should('include', '/sucursal')
   })
