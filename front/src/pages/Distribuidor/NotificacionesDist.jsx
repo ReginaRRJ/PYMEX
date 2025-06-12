@@ -24,7 +24,7 @@ function NotificacionesDist() {
     
         const fetchNotificationConfig = async () => {
             try {
-                const response = await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
+                const response = await fetch(`https://pymex-production.up.railway.app/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }
@@ -71,7 +71,7 @@ function NotificacionesDist() {
         if (idNotificacion === 6) setEstatusPedido(value);
     
         try {
-            await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
+            await fetch(`https://pymex-production.up.railway.app/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

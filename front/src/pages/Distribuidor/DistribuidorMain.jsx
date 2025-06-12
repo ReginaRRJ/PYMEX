@@ -52,7 +52,7 @@ function DistribuidorMain() {
       return;
     }
 
-    fetch(`http://localhost:3001/api/pedidos/general`, {
+    fetch(`https://pymex-production.up.railway.app/api/pedidos/general`, {
       headers: {
         "Authorization": `Bearer ${token}`
       }

@@ -51,7 +51,7 @@ function AddOrder({onClose}) {
                 estatusCliente: "Por aprobar"
             };
 
-            const res = await axios.post("http://localhost:3001/api/sucursal/pedidos", nuevoPedido,{
+            const res = await axios.post("https://pymex-production.up.railway.app/api/sucursal/pedidos", nuevoPedido,{
   headers: {
     "Authorization": `Bearer ${token}`
   }
@@ -71,7 +71,7 @@ function AddOrder({onClose}) {
         const fetchProveedores = async () => {
             console.log("Obteniendo proveedores del API...");
             try {
-                const res = await axios.get("http://localhost:3001/api/sucursal/proveedores",{
+                const res = await axios.get("https://pymex-production.up.railway.app/api/sucursal/proveedores",{
   headers: {
     "Authorization": `Bearer ${token}`
   }
@@ -94,7 +94,7 @@ function AddOrder({onClose}) {
 
         const fetchProductos = async () => {
             try {
-                const res = await axios.get(`http://localhost:3001/api/sucursal/productos/${proveedorSeleccionado.idProveedor}`,{
+                const res = await axios.get(`https://pymex-production.up.railway.app/api/sucursal/productos/${proveedorSeleccionado.idProveedor}`,{
   headers: {
     "Authorization": `Bearer ${token}`
   }

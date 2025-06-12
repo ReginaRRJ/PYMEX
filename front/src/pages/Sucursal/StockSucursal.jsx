@@ -37,7 +37,7 @@ function StockSucursal() {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/sucursal/productos", {
+        const res = await axios.get("https://pymex-production.up.railway.app/api/sucursal/productos", {
   headers: {
     "Authorization": `Bearer ${token}`
   }
@@ -82,7 +82,7 @@ function StockSucursal() {
         console.log("Cargando stock para producto:", sucursal, producto);
 
         const res = await axios.get(
-          `http://localhost:3001/api/sucursal/stock/${sucursal}/${idProducto}`, {
+          `https://pymex-production.up.railway.app/api/sucursal/stock/${sucursal}/${idProducto}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }

@@ -19,7 +19,7 @@ function PedidosRecibidos({ pedidoModal, setPedidoModal, pedidos, setPedido, set
       try {
         const id = parseInt(user.idUsuario, 10);
         const response = await fetch(
-          `http://localhost:3001/notificaciones/alertas/${id}`, {
+          `https://pymex-production.up.railway.app/notificaciones/alertas/${id}`, {
             headers: {
               "Authorization": `Bearer ${token}`
             }

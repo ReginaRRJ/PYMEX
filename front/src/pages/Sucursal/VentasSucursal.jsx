@@ -44,7 +44,7 @@ function VentasSucursal() {
       if (ventas === "anual") {
         try {
           const res = await axios.get(
-            `http://localhost:3001/api/sucursal/ventas-anuales/${sucursal}`, {
+            `https://pymex-production.up.railway.app/api/sucursal/ventas-anuales/${sucursal}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }
@@ -60,7 +60,7 @@ function VentasSucursal() {
       } else if (ventas === "mensual") {
         try {
           const res = await axios.get(
-            `http://localhost:3001/api/sucursal/ventas-mensuales/${sucursal}`, {
+            `https://pymex-production.up.railway.app/api/sucursal/ventas-mensuales/${sucursal}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }
@@ -77,7 +77,7 @@ function VentasSucursal() {
       } else {
         try {
           const res = await axios.get(
-            `http://localhost:3001/api/sucursal/ventas-semanales/${sucursal}`, {
+            `https://pymex-production.up.railway.app/api/sucursal/ventas-semanales/${sucursal}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }

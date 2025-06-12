@@ -15,7 +15,7 @@ export function StepperComp({ pedidoId, estadoActual, onStatusChange }) {
       try {
         if (!pedidoId) return;
           
-        const response = await axios.get(`http://localhost:3001/api/pedidos/detalle/${pedidoId}`, {
+        const response = await axios.get(`https://pymex-production.up.railway.app/api/pedidos/detalle/${pedidoId}`, {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -61,7 +61,7 @@ const updateStatus = async (status) => {
     }
 
     const response = await axios.put(
-      `http://localhost:3001/api/pedidos/estatus/${pedidoId}`,
+      `https://pymex-production.up.railway.app/api/pedidos/estatus/${pedidoId}`,
       { estatusPedido: status },
       {
         headers: {
@@ -86,7 +86,7 @@ const updateStatus = async (status) => {
       console.log("typeof idPedido:", typeof idPedido); 
       console.log("typeof idTipoNotificacion:", typeof idTipoNotificacion);
       console.log("typeof mensaje:", typeof mensaje);
-      const spResponse = await fetch(`http://localhost:3001/notificaciones/actualizarProveedor/${pedidoId}`, {
+      const spResponse = await fetch(`https://pymex-production.up.railway.app/notificaciones/actualizarProveedor/${pedidoId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

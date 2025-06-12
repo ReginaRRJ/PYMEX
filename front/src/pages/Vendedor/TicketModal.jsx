@@ -26,7 +26,7 @@ function TicketModal({ onClose, onTicketCreated }) {
 
         const fetchProducts = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/api/products/branch/${user.idSucursal}`, {
+                const response = await axios.get(`https://pymex-production.up.railway.app/api/products/branch/${user.idSucursal}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }
@@ -113,7 +113,7 @@ function TicketModal({ onClose, onTicketCreated }) {
                 cantidad: parseFloat(cantidad)
             };
 
-            const response = await axios.post('http://localhost:3001/api/tickets', ticketData, {
+            const response = await axios.post('https://pymex-production.up.railway.app/api/tickets', ticketData, {
   headers: {
     "Authorization": `Bearer ${token}`
   }

@@ -33,7 +33,7 @@ function ReporteCliente() {
       };
 
       const res = await axios.post(
-        `http://localhost:3001/reportes/pedido`,
+        `https://pymex-production.up.railway.app/reportes/pedido`,
         datos, {
   headers: {
     "Authorization": `Bearer ${token}`

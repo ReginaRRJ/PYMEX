@@ -10,7 +10,7 @@ function ReportesUsuarios() {
     useEffect(() => {
         const fetchReportes = async () => {
             try {
-                const response = await fetch("http://localhost:3001/reportes", {
+                const response = await fetch("https://pymex-production.up.railway.app/reportes", {
   headers: {
     "Authorization": `Bearer ${token}`
   }

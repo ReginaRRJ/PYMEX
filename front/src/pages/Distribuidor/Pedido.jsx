@@ -19,7 +19,7 @@ function Pedido({ pedido, onClose }) {
 
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/api/pedidos/detalle/${pedido.id}`, {
+        const res = await fetch(`https://pymex-production.up.railway.app/api/pedidos/detalle/${pedido.id}`, {
           headers: {
             "Authorization": `Bearer ${token}`
           }

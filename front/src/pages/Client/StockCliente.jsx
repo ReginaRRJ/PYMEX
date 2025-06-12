@@ -29,7 +29,7 @@ function StockCliente() {
             }
 
             const response = await axios.get(
-            `http://localhost:3001/api/sucursales/pyme/${idPyme}`, {
+            `https://pymex-production.up.railway.app/api/sucursales/pyme/${idPyme}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }
@@ -57,7 +57,7 @@ function StockCliente() {
     useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/sucursal/productos", {
+        const res = await axios.get("https://pymex-production.up.railway.app/api/sucursal/productos", {
   headers: {
     "Authorization": `Bearer ${token}`
   }
