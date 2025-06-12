@@ -7,7 +7,8 @@ dotenv.config();
 const connParams = {
   serverNode: process.env.DB_HOST,
   uid: process.env.DB_USER,
-  pwd: process.env.DB_PASSWORD
+  pwd: process.env.DB_PASSWORD,
+  encrypt: "true", // Important for cloud connections
 };
 
 export default {
