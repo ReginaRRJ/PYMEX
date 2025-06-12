@@ -82,7 +82,7 @@ function StockSucursal() {
         console.log("Cargando stock para producto:", sucursal, producto);
 
         const res = await axios.get(
-          `hhttps://pymex-production.up.railway.app/api/sucursal/stock/${sucursal}/${idProducto}`, {
+          `http://localhost:3001/api/sucursal/stock/${sucursal}/${idProducto}`, {
   headers: {
     "Authorization": `Bearer ${token}`
   }

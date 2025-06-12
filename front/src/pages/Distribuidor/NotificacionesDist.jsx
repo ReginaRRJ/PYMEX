@@ -71,7 +71,7 @@ function NotificacionesDist() {
         if (idNotificacion === 6) setEstatusPedido(value);
     
         try {
-            await fetch(`https://pymex-production.up.railway.app/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
+            await fetch(`http://localhost:3001/api/notificaciones/configuracion-notificaciones/${user.idUsuario}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
