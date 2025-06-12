@@ -13,7 +13,7 @@ const Login = () => {
     e.preventDefault();
   
     try { 
-      const response = await axios.post("http://localhost:3001/login", {
+      const response = await axios.post("https://pymex-production.up.railway.app/login", {
         correo: correo,
         hashContrasena: contrasena, 
       });
@@ -26,7 +26,7 @@ const Login = () => {
 
       try {
         console.log("Login successful.");
-        const notiResponse = await axios.post("http://localhost:3001/login/notificacion", {
+        const notiResponse = await axios.post("https://pymex-production.up.railway.app/login/notificacion", {
           idUsuario: response.data.usuario.idUsuario,
         });
         console.log("Notificaciones correcto.", notiResponse.data);
