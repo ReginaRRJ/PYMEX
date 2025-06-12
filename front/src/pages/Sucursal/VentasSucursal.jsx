@@ -140,15 +140,7 @@ function VentasSucursal() {
             </h1>
           </div>
           <div className="w-[10%] h-full"></div>
-          <div className="w-[30%] h-full">
-            <h1 className="text-[5rem] font-bold text-center">50%</h1>
-            <h1 className="text-center">
-              De aumento en ventas con respecto al mes pasado
-            </h1>
-            <h1 className="font-bold underline cursor-pointer text-center">
-              Ver bitácora
-            </h1>
-          </div>
+          
         </div>
       </div>
     </motion.div>

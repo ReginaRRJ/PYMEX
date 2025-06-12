@@ -142,10 +142,7 @@ function StockSucursal() {
             <h1>Existen {montoStock} unidades.</h1>
           </div>
           <div className="w-[10%]"></div>
-          <div className="w-[30%] rounded-2xl px-2 py-2 bg-slate-200">
-            <h1 className="text-[1.5rem] font-bold text-center">Predicción</h1>
-            <h1 className="text-center">Lorem ipsum dolor sit amet..</h1>
-          </div>
+          
         </div>
       </div>
     </motion.div>
